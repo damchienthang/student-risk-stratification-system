@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Risk Stratification System | Nhóm 14</title>
+<meta name="description" content="Hệ thống phân tầng rủi ro học tập sinh viên sử dụng AI - LightGBM trên dữ liệu OULAD">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────── -->
+<header class="header">
+  <div class="container header-inner">
+    <div class="logo">
+      <span class="logo-icon">🎓</span>
+      <div>
+        <span class="logo-title">RiskSight AI</span>
+        <span class="logo-sub">Student Risk Stratification</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#dashboard" class="nav-link active">Dashboard</a>
+      <a href="#predict" class="nav-link">Dự Đoán</a>
+      <a href="#model" class="nav-link">Mô Hình</a>
+      <a href="#visuals" class="nav-link">Phân Tích</a>
+    </nav>
+    <div class="header-badge">
+      <span class="dot-live"></span> Live Demo
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">Nhóm 14 · Học kỳ 6 · OULAD Dataset</div>
+    <h1 class="hero-title">Phân Tầng Rủi Ro<br><span class="gradient-text">Học Tập Sinh Viên</span></h1>
+    <p class="hero-desc">Hệ thống AI sử dụng mô hình LightGBM dự đoán mức độ rủi ro học tập của sinh viên với độ chính xác <strong>81%</strong> và AUC <strong>0.946</strong></p>
+    <div class="hero-stats">
+      <div class="stat-pill"><span class="stat-num">32,593</span><span class="stat-lbl">Sinh viên</span></div>
+      <div class="stat-pill"><span class="stat-num">4</span><span class="stat-lbl">Mức rủi ro</span></div>
+      <div class="stat-pill"><span class="stat-num">94.6%</span><span class="stat-lbl">AUC Score</span></div>
+      <div class="stat-pill"><span class="stat-num">LightGBM</span><span class="stat-lbl">Model tốt nhất</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DASHBOARD CARDS ────────────────────────────────────── -->
+<section class="section" id="dashboard">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">📊 Tổng Quan Dataset</h2>
+      <p class="section-sub">Thống kê từ bộ dữ liệu OULAD (Open University Learning Analytics Dataset)</p>
+    </div>
+    <div class="cards-grid">
+      <div class="card card--green">
+        <div class="card-icon">📘</div>
+        <div class="card-body">
+          <div class="card-value">7,052</div>
+          <div class="card-label">Low Risk</div>
+          <div class="card-bar"><div class="bar-fill bar-green" style="width:22%"></div></div>
+        </div>
+      </div>
+      <div class="card card--amber">
+        <div class="card-icon">📙</div>
+        <div class="card-body">
+          <div class="card-value">9,614</div>
+          <div class="card-label">Medium Risk</div>
+          <div class="bar-fill bar-amber" style="width:29%"></div>
+        </div>
+      </div>
+      <div class="card card--orange">
+        <div class="card-icon">📕</div>
+        <div class="card-body">
+          <div class="card-value">8,934</div>
+          <div class="card-label">High Risk</div>
+          <div class="bar-fill bar-orange" style="width:27%"></div>
+        </div>
+      </div>
+      <div class="card card--red">
+        <div class="card-icon">🚨</div>
+        <div class="card-body">
+          <div class="card-value">6,993</div>
+          <div class="card-label">Very High Risk</div>
+          <div class="bar-fill bar-red" style="width:22%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PREDICTION FORM ────────────────────────────────────── -->
+<section class="section section--dark" id="predict">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">🔮 Dự Đoán Rủi Ro</h2>
+      <p class="section-sub">Nhập thông tin sinh viên để dự đoán mức độ rủi ro học tập</p>
+    </div>
+    <div class="predict-layout">
+      <!-- Form -->
+      <div class="form-card glass">
+        <form id="predictForm">
+          <div class="form-group-title">👤 Thông Tin Cơ Bản</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="gender_num">Giới tính</label>
+              <select id="gender_num" name="gender_num" class="input">
+                <option value="0">Nam</option>
+                <option value="1">Nữ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="age_num">Nhóm tuổi</label>
+              <select id="age_num" name="age_num" class="input">
+                <option value="0">Dưới 35</option>
+                <option value="1">35–55</option>
+                <option value="2">Trên 55</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="education_num">Trình độ học vấn</label>
+              <select id="education_num" name="education_num" class="input">
+                <option value="0">Dưới A Level</option>
+                <option value="1">A Level hoặc tương đương</option>
+                <option value="2">Trình độ thấp hơn</option>
+                <option value="3">Trình độ cao hơn</option>
+                <option value="4">Sau đại học</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="imd_band_num">Chỉ số KT-XH (IMD) <span class="hint">0=thấp, 9=cao</span></label>
+              <input type="number" id="imd_band_num" name="imd_band_num" class="input" min="0" max="9" value="5">
+            </div>
+            <div class="form-group">
+              <label for="disability_num">Khuyết tật</label>
+              <select id="disability_num" name="disability_num" class="input">
+                <option value="0">Không</option>
+                <option value="1">Có</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group-title">📚 Khóa Học & Đăng Ký</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="num_of_prev_attempts">Số lần học lại</label>
+              <input type="number" id="num_of_prev_attempts" name="num_of_prev_attempts" class="input" min="0" value="0">
+            </div>
+            <div class="form-group">
+              <label for="studied_credits">Số tín chỉ đang học</label>
+              <input type="number" id="studied_credits" name="studied_credits" class="input" min="0" value="60">
+            </div>
+            <div class="form-group">
+              <label for="early_registration">Đăng ký sớm</label>
+              <select id="early_registration" name="early_registration" class="input">
+                <option value="1">Có</option>
+                <option value="0">Không</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="reg_days_before">Đăng ký trước (ngày)</label>
+              <input type="number" id="reg_days_before" name="reg_days_before" class="input" value="30">
+            </div>
+            <div class="form-group">
+              <label for="unregistered">Trạng thái hủy</label>
+              <select id="unregistered" name="unregistered" class="input">
+                <option value="0">Không hủy</option>
+                <option value="1">Đã hủy</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group-title">💻 Tương Tác VLE (Hệ thống)</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="total_clicks">Tổng số click</label>
+              <input type="number" id="total_clicks" name="total_clicks" class="input" min="0" value="500">
+            </div>
+            <div class="form-group">
+              <label for="active_days">Số ngày hoạt động</label>
+              <input type="number" id="active_days" name="active_days" class="input" min="0" value="30">
+            </div>
+            <div class="form-group">
+              <label for="avg_clicks_day">Click TB/ngày</label>
+              <input type="number" id="avg_clicks_day" name="avg_clicks_day" class="input" min="0" step="0.1" value="16.7">
+            </div>
+            <div class="form-group">
+              <label for="max_clicks_day">Max click/ngày</label>
+              <input type="number" id="max_clicks_day" name="max_clicks_day" class="input" min="0" value="50">
+            </div>
+            <div class="form-group">
+              <label for="n_resources">Số loại tài nguyên</label>
+              <input type="number" id="n_resources" name="n_resources" class="input" min="0" value="10">
+            </div>
+            <div class="form-group">
+              <label for="click_density">Mật độ click</label>
+              <input type="number" id="click_density" name="click_density" class="input" min="0" step="0.01" value="5.2">
+            </div>
+          </div>
+
+          <div class="form-group-title">📝 Kết Quả Đánh Giá</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="avg_score">Điểm TB (0–100)</label>
+              <input type="number" id="avg_score" name="avg_score" class="input" min="0" max="100" step="0.1" value="65">
+            </div>
+            <div class="form-group">
+              <label for="min_score">Điểm thấp nhất</label>
+              <input type="number" id="min_score" name="min_score" class="input" min="0" max="100" step="0.1" value="40">
+            </div>
+            <div class="form-group">
+              <label for="std_score">Độ lệch chuẩn điểm</label>
+              <input type="number" id="std_score" name="std_score" class="input" min="0" step="0.1" value="10">
+            </div>
+            <div class="form-group">
+              <label for="avg_tma_score">Điểm TMA trung bình</label>
+              <input type="number" id="avg_tma_score" name="avg_tma_score" class="input" min="0" max="100" step="0.1" value="70">
+            </div>
+            <div class="form-group">
+              <label for="n_submitted">Số bài đã nộp</label>
+              <input type="number" id="n_submitted" name="n_submitted" class="input" min="0" value="4">
+            </div>
+            <div class="form-group">
+              <label for="n_late">Số bài nộp muộn</label>
+              <input type="number" id="n_late" name="n_late" class="input" min="0" value="0">
+            </div>
+            <div class="form-group">
+              <label for="avg_submit_delay">Độ trễ nộp (ngày)</label>
+              <input type="number" id="avg_submit_delay" name="avg_submit_delay" class="input" step="0.1" value="-2.5">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="demoBtn" class="btn btn--secondary">📋 Điền Demo</button>
+            <button type="submit" id="predictBtn" class="btn btn--primary">
+              <span id="btnText">🔮 Dự Đoán Ngay</span>
+              <span id="btnSpinner" class="spinner hidden"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Result Panel -->
+      <div class="result-panel" id="resultPanel">
+        <div class="result-placeholder" id="resultPlaceholder">
+          <div class="placeholder-icon">🤖</div>
+          <p>Nhập thông tin sinh viên và nhấn <strong>Dự Đoán Ngay</strong> để xem kết quả</p>
+        </div>
+        <div class="result-content hidden" id="resultContent">
+          <div class="result-header">
+            <div class="risk-badge" id="riskBadge">
+              <span class="risk-icon" id="riskIcon">🟢</span>
+              <div>
+                <div class="risk-level" id="riskLevel">Low Risk</div>
+                <div class="risk-sub">Mức độ rủi ro</div>
+              </div>
+            </div>
+            <div class="confidence-ring">
+              <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="10"/>
+                <circle id="confRing" cx="60" cy="60" r="50" fill="none" stroke="#22c55e" stroke-width="10"
+                  stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="conf-text">
+                <div class="conf-value" id="confValue">0%</div>
+                <div class="conf-lbl">Confidence</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="prob-bars" id="probBars"></div>
+
+          <div class="recommendation glass-light" id="recommendation">
+            <div class="rec-title">💡 Khuyến nghị</div>
+            <p id="recText"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MODEL INFO ─────────────────────────────────────────── -->
+<section class="section" id="model">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">🤖 So Sánh Mô Hình</h2>
+      <p class="section-sub">Hiệu suất các mô hình ML trên tập Validation (SMOTE balanced)</p>
+    </div>
+    <div class="model-table-wrap glass">
+      <table class="model-table">
+        <thead>
+          <tr>
+            <th>Mô hình</th>
+            <th>F1 Macro</th>
+            <th>Balanced Acc.</th>
+            <th>AUC</th>
+            <th>Accuracy</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="best-row">
+            <td><span class="model-name">⚡ LightGBM</span></td>
+            <td><span class="metric-bar"><span class="bar" style="width:78.2%"></span>78.2%</span></td>
+            <td><span class="metric-bar"><span class="bar" style="width:78.9%"></span>78.9%</span></td>
+            <td><span class="metric-bar"><span class="bar" style="width:94.6%"></span>94.6%</span></td>
+            <td>81.0%</td>
+            <td><span class="badge badge--green">✅ Đang dùng</span></td>
+          </tr>
+          <tr>
+            <td><span class="model-name">🌲 Random Forest</span></td>
+            <td><span class="metric-bar"><span class="bar bar--dim" style="width:75%"></span>75.0%</span></td>
+            <td><span class="metric-bar"><span class="bar bar--dim" style="width:75.5%"></span>75.5%</span></td>
+            <td><span class="metric-bar"><span class="bar bar--dim" style="width:92.1%"></span>92.1%</span></td>
+            <td>78.3%</td>
+            <td><span class="badge badge--gray">Backup</span></td>
+          </tr>
+          <tr>
+            <td><span class="model-name">🚀 XGBoost</span></td>
+            <td><span class="metric-bar"><span class="bar bar--dim" style="width:74%"></span>74.0%</span></td>
+            <td><span class="metric-bar"><span class="bar bar--dim" style="width:74.8%"></span>74.8%</span></td>
+            <td><span class="metric-bar"><span class="bar bar--dim" style="width:91.5%"></span>91.5%</span></td>
+            <td>77.1%</td>
+            <td><span class="badge badge--gray">Backup</span></td>
+          </tr>
+          <tr>
+            <td><span class="model-name">📈 Logistic Reg.</span></td>
+            <td><span class="metric-bar"><span class="bar bar--dim" style="width:58%"></span>58.0%</span></td>
+            <td><span class="metric-bar"><span class="bar bar--dim" style="width:61%"></span>61.0%</span></td>
+            <td><span class="metric-bar"><span class="bar bar--dim" style="width:83%"></span>83.0%</span></td>
+            <td>62.4%</td>
+            <td><span class="badge badge--gray">Baseline</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── VISUALS ─────────────────────────────────────────────── -->
+<section class="section section--dark" id="visuals">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">📈 Phân Tích Dữ Liệu & Mô Hình</h2>
+      <p class="section-sub">Kết quả EDA và đánh giá mô hình từ bộ dữ liệu OULAD</p>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('eda')">EDA</button>
+      <button class="tab-btn" onclick="showTab('model-eval')">Model Evaluation</button>
+    </div>
+    <div id="tab-eda" class="tab-content active">
+      <div class="visuals-grid">
+        <div class="visual-card glass" onclick="openModal('/visuals/01_class_distribution.png','Phân Phối Nhãn Rủi Ro')">
+          <img src="/visuals/01_class_distribution.png" alt="Class Distribution" loading="lazy">
+          <div class="visual-caption">Phân Phối Nhãn Rủi Ro</div>
+        </div>
+        <div class="visual-card glass" onclick="openModal('/visuals/02_01_imbalance_analysis.png','Phân Tích Mất Cân Bằng')">
+          <img src="/visuals/02_01_imbalance_analysis.png" alt="Imbalance Analysis" loading="lazy">
+          <div class="visual-caption">Phân Tích Mất Cân Bằng Dữ Liệu</div>
+        </div>
+        <div class="visual-card glass" onclick="openModal('/visuals/02_03_demographic_features.png','Đặc Trưng Nhân Khẩu')">
+          <img src="/visuals/02_03_demographic_features.png" alt="Demographic" loading="lazy">
+          <div class="visual-caption">Đặc Trưng Nhân Khẩu Học</div>
+        </div>
+        <div class="visual-card glass" onclick="openModal('/visuals/02_04_vle_features.png','Tương Tác VLE')">
+          <img src="/visuals/02_04_vle_features.png" alt="VLE Features" loading="lazy">
+          <div class="visual-caption">Tương Tác VLE theo Rủi Ro</div>
+        </div>
+        <div class="visual-card glass" onclick="openModal('/visuals/02_05_assessment_features.png','Đặc Trưng Kiểm Tra')">
+          <img src="/visuals/02_05_assessment_features.png" alt="Assessment" loading="lazy">
+          <div class="visual-caption">Đặc Trưng Điểm Kiểm Tra</div>
+        </div>
+        <div class="visual-card glass" onclick="openModal('/visuals/02_07_correlation.png','Ma Trận Tương Quan')">
+          <img src="/visuals/02_07_correlation.png" alt="Correlation" loading="lazy">
+          <div class="visual-caption">Ma Trận Tương Quan</div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-model-eval" class="tab-content">
+      <div class="visuals-grid">
+        <div class="visual-card glass" onclick="openModal('/visuals/03_model_comparison.png','So Sánh Mô Hình')">
+          <img src="/visuals/03_model_comparison.png" alt="Model Comparison" loading="lazy">
+          <div class="visual-caption">So Sánh Hiệu Suất Mô Hình</div>
+        </div>
+        <div class="visual-card glass" onclick="openModal('/visuals/03_confusion_matrix_lightgbm.png','Confusion Matrix')">
+          <img src="/visuals/03_confusion_matrix_lightgbm.png" alt="Confusion Matrix" loading="lazy">
+          <div class="visual-caption">Confusion Matrix - LightGBM</div>
+        </div>
+        <div class="visual-card glass" onclick="openModal('/visuals/03_roc_curve_ovr.png','ROC Curve')">
+          <img src="/visuals/03_roc_curve_ovr.png" alt="ROC Curve" loading="lazy">
+          <div class="visual-caption">ROC Curve (One-vs-Rest)</div>
+        </div>
+        <div class="visual-card glass" onclick="openModal('/visuals/03_feature_importance_lightgbm.png','Feature Importance')">
+          <img src="/visuals/03_feature_importance_lightgbm.png" alt="Feature Importance" loading="lazy">
+          <div class="visual-caption">Top 15 Feature Importances</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <p>🎓 <strong>Student Risk Stratification System</strong> · Nhóm 14 · Học kỳ 6</p>
+    <p class="footer-sub">Dataset: OULAD · Model: LightGBM · Stack: FastAPI + Python</p>
+  </div>
+</footer>
+
+<!-- ── IMAGE MODAL ────────────────────────────────────────── -->
+<div class="modal-overlay hidden" id="modalOverlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle"></div>
+    <img id="modalImg" src="" alt="">
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

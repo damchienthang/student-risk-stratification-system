@@ -1,0 +1,66 @@
+"""
+Schemas - Định nghĩa kiểu dữ liệu đầu vào/đầu ra (Pydantic)
+"""
+from pydantic import BaseModel, Field
+from typing import Optional
+
+
+class StudentInput(BaseModel):
+    """Format dữ liệu sinh viên cần truyền vào để dự đoán rủi ro học tập (23 features)"""
+
+    # Demographics
+    gender_num: int = Field(..., ge=0, le=1, description="Giới tính: 0=M, 1=F")
+    imd_band_num: int = Field(..., ge=0, le=9, description="Chỉ số kinh tế xã hội")
+    education_num: int = Field(..., ge=0, le=4, description="Trình độ học vấn")
+    age_num: int = Field(..., ge=0, le=2, description="Nhóm tuổi")
+    disability_num: int = Field(..., ge=0, le=1, description="Khuyết tật: 0=Không, 1=Có")
+    num_of_prev_attempts: int = Field(..., ge=0, description="Số lần đăng ký trước")
+    studied_credits: int = Field(..., ge=0, description="Số tín chỉ đang học")
+
+    # Registration
+    early_registration: int = Field(..., ge=0, le=1, description="Đăng ký sớm")
+    reg_days_before: int = Field(..., description="Số ngày đăng ký trước khi bắt đầu")
+    unregistered: int = Field(..., ge=0, le=1, description="Trạng thái hủy đăng ký")
+
+    # VLE Interaction
+    total_clicks: int = Field(..., ge=0, description="Tổng số click")
+    active_days: int = Field(..., ge=0, description="Số ngày hoạt động")
+    avg_clicks_day: float = Field(..., ge=0.0, description="Trung bình click/ngày")
+    max_clicks_day: int = Field(..., ge=0, description="Số click tối đa trong 1 ngày")
+    n_resources: int = Field(..., ge=0, description="Số loại tài nguyên tương tác")
+    click_density: float = Field(..., ge=0.0, description="Mật độ click")
+
+    # Assessment
+    avg_score: float = Field(..., ge=0.0, le=100.0, description="Điểm trung bình")
+    min_score: float = Field(..., ge=0.0, le=100.0, description="Điểm thấp nhất")
+    std_score: float = Field(..., ge=0.0, description="Độ lệch chuẩn của điểm")
+    avg_tma_score: float = Field(..., ge=0.0, le=100.0, description="Điểm trung bình TMA")
+    n_submitted: int = Field(..., ge=0, description="Số bài kiểm tra đã nộp")
+    n_late: int = Field(..., ge=0, description="Số bài nộp muộn")
+    avg_submit_delay: float = Field(..., description="Trung bình độ trễ nộp bài (ngày)")
+
+
+class RiskPrediction(BaseModel):
+    """Kết quả dự đoán mức độ rủi ro"""
+
+    risk_level: int = Field(..., description="Mức độ rủi ro: 0=Low, 1=Medium, 2=High, 3=Very High")
+    risk_label: str = Field(..., description="Nhãn mức độ rủi ro")
+    confidence: float = Field(..., description="Độ tin cậy dự đoán (0-100%)")
+    probabilities: dict = Field(..., description="Xác suất cho từng mức rủi ro")
+    recommendation: str = Field(..., description="Khuyến nghị hành động")
+    model_used: str = Field(default="LightGBM", description="Mô hình được sử dụng")
+
+
+class HealthResponse(BaseModel):
+    status: str
+    model_loaded: bool
+    model_name: str
+    version: str = "1.0.0"
+
+
+class ModelInfoResponse(BaseModel):
+    model_name: str
+    features: list
+    num_features: int
+    classes: list
+    metrics: dict
