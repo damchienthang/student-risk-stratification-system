@@ -13,7 +13,7 @@ from src.services.predictor import get_predictor
 # Khởi tạo router
 router = APIRouter()
 
-# Templates (để dự phòng)
+# Templates
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "src", "web", "templates"))
 
@@ -22,9 +22,14 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "src", "web", "temp
 
 @router.get("/", response_class=HTMLResponse, tags=["Web"])
 async def dashboard(request: Request):
-    """Trang chủ - Dashboard hệ thống"""
-    index_path = os.path.join(BASE_DIR, "src", "web", "templates", "index.html")
-    return FileResponse(index_path)
+    """Trang chủ - Hiển thị Landing Page"""
+    from src.api.auth_routes import get_current_user
+    user = get_current_user(request)
+    
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "user": user
+    })
 
 
 # ─── API Routes ──────────────────────────────────────────────────────────────
@@ -59,13 +64,6 @@ async def get_model_info():
 async def predict_risk(student: StudentInput):
     """
     Dự đoán mức độ rủi ro học tập của sinh viên.
-    
-    Trả về:
-    - **risk_level**: 0=Low, 1=Medium, 2=High, 3=Very High
-    - **risk_label**: Nhãn mức độ rủi ro
-    - **confidence**: Độ tin cậy dự đoán (%)
-    - **probabilities**: Xác suất cho từng mức rủi ro
-    - **recommendation**: Khuyến nghị hành động cụ thể
     """
     try:
         predictor = get_predictor()
@@ -77,14 +75,34 @@ async def predict_risk(student: StudentInput):
         raise HTTPException(status_code=500, detail=f"Lỗi dự đoán: {str(e)}")
 
 
-@router.post("/api/predict/batch", tags=["Prediction"])
-async def predict_batch(students: list[StudentInput]):
-    """Dự đoán hàng loạt cho nhiều sinh viên"""
-    if len(students) > 100:
-        raise HTTPException(status_code=400, detail="Tối đa 100 sinh viên mỗi batch")
-    try:
-        predictor = get_predictor()
-        results = [predictor.predict(s.model_dump()) for s in students]
-        return {"count": len(results), "predictions": results}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+@router.get("/api/query/{student_id}", tags=["Query"])
+async def query_student_by_id(student_id: int):
+    """Truy vấn thông tin chi tiết và dự báo cho một sinh viên cụ thể"""
+    from src.services.db_manager import get_db_manager
+    
+    dbm = get_db_manager()
+    student = dbm.get_student_by_id(student_id)
+
+    if not student:
+        raise HTTPException(status_code=404, detail=f"Student ID {student_id} not found")
+
+    # Convert SQLModel object to dict
+    student_dict = student.model_dump()
+    
+    return {
+        "student": student_dict,
+        "prediction": {
+            "risk_level": student.risk_level,
+            "risk_label": student.risk_label,
+            "recommendation": get_recommendation(student.risk_level)
+        }
+    }
+
+def get_recommendation(risk_level: int) -> str:
+    recs = [
+        "Sinh viên đang có tiến độ học tập tốt. Tiếp tục duy trì và tham gia đầy đủ các hoạt động học tập.",
+        "Sinh viên cần chú ý hơn đến việc học. Nên tăng cường tương tác với hệ thống VLE.",
+        "Sinh viên có nguy cơ cao cần được hỗ trợ ngay. Giảng viên nên liên hệ trực tiếp.",
+        "Sinh viên có nguy cơ rất cao bỏ học. Cần can thiệp khẩn cấp từ cố vấn học thuật."
+    ]
+    return recs[risk_level] if 0 <= risk_level < len(recs) else "Không có khuyến nghị."

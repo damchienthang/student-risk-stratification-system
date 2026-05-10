@@ -67,6 +67,17 @@ async def lifespan(app: FastAPI):
         predictor = get_predictor()
         status = "OK" if predictor.is_loaded() else "FAILED"
         print(f"[MODEL] LightGBM load: {status}", flush=True)
+        
+        # Load data into memory (Legacy - can be removed later)
+        from src.services.data_manager import get_data_manager
+        data_path = os.path.join(BASE_DIR, 'data', 'processed', 'student_features_labeled.csv')
+        dm = get_data_manager()
+        dm.load_data(data_path)
+        
+        # Initialize Database
+        from src.services.db_manager import get_db_manager
+        dbm = get_db_manager()
+        dbm.initialize_db(data_path)
     except Exception as e:
         print(f"[ERROR] {e}", flush=True)
     yield
@@ -77,8 +88,15 @@ async def lifespan(app: FastAPI):
 app.router.lifespan_context = lifespan
 
 # Include routers
-from src.api.routes import router
-app.include_router(router)
+from src.api.routes import router as general_router
+from src.api.auth_routes import router as auth_router
+from src.api.admin_routes import router as admin_router
+from src.api.student_routes import router as student_router
+
+app.include_router(auth_router)
+app.include_router(admin_router)
+app.include_router(student_router)
+app.include_router(general_router)
 
 
 if __name__ == "__main__":

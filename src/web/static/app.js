@@ -33,77 +33,93 @@ function showTab(tabId) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + tabId).classList.add('active');
-  event.target.classList.add('active');
+  if (event && event.target) {
+    event.target.classList.add('active');
+  }
 }
 
 // ── Modal ─────────────────────────────────────────────────────
 function openModal(src, title) {
-  document.getElementById('modalImg').src = src;
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalOverlay').classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalOverlay = document.getElementById('modalOverlay');
+  if (modalImg && modalTitle && modalOverlay) {
+    modalImg.src = src;
+    modalTitle.textContent = title;
+    modalOverlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
 }
 function closeModal() {
-  document.getElementById('modalOverlay').classList.add('hidden');
-  document.body.style.overflow = '';
+  const modalOverlay = document.getElementById('modalOverlay');
+  if (modalOverlay) {
+    modalOverlay.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
 }
 
 // ── Fill demo data ────────────────────────────────────────────
-document.getElementById('demoBtn').addEventListener('click', function() {
-  const preset = this._toggle ? DEMO_PRESETS.low : DEMO_PRESETS.high;
-  this._toggle = !this._toggle;
-  Object.entries(preset).forEach(([key, val]) => {
-    const el = document.getElementById(key);
-    if (el) el.value = val;
+const demoBtn = document.getElementById('demoBtn');
+if (demoBtn) {
+  demoBtn.addEventListener('click', function() {
+    const preset = this._toggle ? DEMO_PRESETS.low : DEMO_PRESETS.high;
+    this._toggle = !this._toggle;
+    Object.entries(preset).forEach(([key, val]) => {
+      const el = document.getElementById(key);
+      if (el) el.value = val;
+    });
+    this.textContent = this._toggle ? '📋 Demo Rủi Ro Thấp' : '📋 Demo Rủi Ro Cao';
   });
-  this.textContent = this._toggle ? '📋 Demo Rủi Ro Thấp' : '📋 Demo Rủi Ro Cao';
-});
+}
 
 // ── Form submit ───────────────────────────────────────────────
-document.getElementById('predictForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById('predictBtn');
-  const btnText = document.getElementById('btnText');
-  const btnSpinner = document.getElementById('btnSpinner');
+const predictForm = document.getElementById('predictForm');
+if (predictForm) {
+  predictForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('predictBtn');
+    const btnText = document.getElementById('btnText');
+    const btnSpinner = document.getElementById('btnSpinner');
 
-  // Loading state
-  btnText.classList.add('hidden');
-  btnSpinner.classList.remove('hidden');
-  btn.disabled = true;
+    // Loading state
+    if (btnText) btnText.classList.add('hidden');
+    if (btnSpinner) btnSpinner.classList.remove('hidden');
+    if (btn) btn.disabled = true;
 
-  const formData = new FormData(this);
-  const payload = {};
-  formData.forEach((val, key) => {
-    payload[key] = FLOAT_FIELDS.includes(key) ? parseFloat(val) : parseInt(val);
-  });
-
-  try {
-    const res = await fetch('/api/predict', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+    const formData = new FormData(this);
+    const payload = {};
+    formData.forEach((val, key) => {
+      payload[key] = FLOAT_FIELDS.includes(key) ? parseFloat(val) : parseInt(val);
     });
 
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.detail || 'Lỗi server');
-    }
+    try {
+      const res = await fetch('/api/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-    const data = await res.json();
-    showResult(data);
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail || 'Lỗi server');
+      }
 
-  } catch (err) {
-    if (err.message.includes('fetch') || err.message.includes('Failed')) {
-      showResult(simulateResult(payload));
-    } else {
-      alert('❌ Lỗi: ' + err.message);
+      const data = await res.json();
+      showResult(data);
+
+    } catch (err) {
+      if (err.message.includes('fetch') || err.message.includes('Failed')) {
+        showResult(simulateResult(payload));
+      } else {
+        alert('❌ Lỗi: ' + err.message);
+      }
+    } finally {
+      if (btnText) btnText.classList.remove('hidden');
+      if (btnSpinner) btnSpinner.classList.add('hidden');
+      if (btn) btn.disabled = false;
     }
-  } finally {
-    btnText.classList.remove('hidden');
-    btnSpinner.classList.add('hidden');
-    btn.disabled = false;
-  }
-});
+  });
+}
 
 // ── Simulate result (demo mode without API) ───────────────────
 function simulateResult(payload) {
@@ -151,48 +167,64 @@ function showResult(data) {
   const { risk_level, risk_label, confidence, probabilities, recommendation } = data;
   const color = RISK_COLORS[risk_level];
 
-  document.getElementById('resultPlaceholder').classList.add('hidden');
+  const placeholder = document.getElementById('resultPlaceholder');
+  if (placeholder) placeholder.classList.add('hidden');
+  
   const content = document.getElementById('resultContent');
-  content.classList.remove('hidden');
-
-  if (window.innerWidth < 900) {
-    content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (content) {
+    content.classList.remove('hidden');
+    if (window.innerWidth < 900) {
+      content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
-  document.getElementById('riskIcon').textContent = RISK_ICONS[risk_level];
+  const iconEl = document.getElementById('riskIcon');
+  if (iconEl) iconEl.textContent = RISK_ICONS[risk_level];
+  
   const riskLevel = document.getElementById('riskLevel');
-  riskLevel.textContent = risk_label + ' Risk';
-  riskLevel.style.color = color;
+  if (riskLevel) {
+    riskLevel.textContent = risk_label + ' Risk';
+    riskLevel.style.color = color;
+  }
 
-  const circumference = 314;
-  const offset = circumference - (confidence / 100) * circumference;
   const ring = document.getElementById('confRing');
-  ring.style.stroke = color;
-  setTimeout(() => { ring.style.strokeDashoffset = offset; }, 50);
-  document.getElementById('confValue').textContent = Math.round(confidence) + '%';
+  if (ring) {
+    const circumference = 314;
+    const offset = circumference - (confidence / 100) * circumference;
+    ring.style.stroke = color;
+    setTimeout(() => { ring.style.strokeDashoffset = offset; }, 50);
+  }
+  
+  const confVal = document.getElementById('confValue');
+  if (confVal) confVal.textContent = Math.round(confidence) + '%';
 
   const probColors = { Low: '#22c55e', Medium: '#f59e0b', High: '#f97316', 'Very High': '#ef4444' };
   const probBars = document.getElementById('probBars');
-  probBars.innerHTML = '';
-  Object.entries(probabilities).forEach(([label, pct]) => {
-    probBars.innerHTML += `
-      <div class="prob-row">
-        <span class="prob-label">${label}</span>
-        <div class="prob-track">
-          <div class="prob-fill" style="width:0%;background:${probColors[label]}" 
-               data-width="${pct}"></div>
-        </div>
-        <span class="prob-val" style="color:${probColors[label]}">${pct}%</span>
-      </div>`;
-  });
-  setTimeout(() => {
-    probBars.querySelectorAll('.prob-fill').forEach(el => {
-      el.style.width = el.dataset.width + '%';
+  if (probBars) {
+    probBars.innerHTML = '';
+    Object.entries(probabilities).forEach(([label, pct]) => {
+      probBars.innerHTML += `
+        <div class="prob-row">
+          <span class="prob-label">${label}</span>
+          <div class="prob-track">
+            <div class="prob-fill" style="width:0%;background:${probColors[label]}" 
+                 data-width="${pct}"></div>
+          </div>
+          <span class="prob-val" style="color:${probColors[label]}">${pct}%</span>
+        </div>`;
     });
-  }, 100);
+    setTimeout(() => {
+      probBars.querySelectorAll('.prob-fill').forEach(el => {
+        el.style.width = el.dataset.width + '%';
+      });
+    }, 100);
+  }
 
-  document.getElementById('recText').textContent = recommendation;
-  document.getElementById('recommendation').style.borderLeft = `3px solid ${color}`;
+  const recText = document.getElementById('recText');
+  if (recText) recText.textContent = recommendation;
+  
+  const recEl = document.getElementById('recommendation');
+  if (recEl) recEl.style.borderLeft = `3px solid ${color}`;
 }
 
 const sections = document.querySelectorAll('section[id]');

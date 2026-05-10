@@ -89,17 +89,13 @@ class RiskPredictor:
     def predict(self, student_data: dict) -> dict:
         """
         Thực hiện dự đoán mức độ rủi ro từ dữ liệu sinh viên
-        
-        Args:
-            student_data: Dict chứa các feature của sinh viên
-            
-        Returns:
-            Dict chứa kết quả dự đoán
         """
         try:
             # Chuẩn bị input data theo đúng thứ tự feature (23 tính năng)
             input_values = [student_data.get(col, 0) for col in FEATURE_COLUMNS]
-            X = np.array(input_values).reshape(1, -1)
+            
+            # Chuyển thành DataFrame để có feature names (Tránh lỗi StandardScaler)
+            X = pd.DataFrame([input_values], columns=FEATURE_COLUMNS)
 
             # Chuẩn hóa dữ liệu
             X_scaled = self.scaler.transform(X)
