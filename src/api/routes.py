@@ -32,6 +32,18 @@ async def dashboard(request: Request):
     })
 
 
+@router.get("/about", response_class=HTMLResponse, tags=["Web"])
+async def about_page(request: Request):
+    """Trang Giới thiệu - Về chúng tôi"""
+    from src.api.auth_routes import get_current_user
+    user = get_current_user(request)
+    
+    return templates.TemplateResponse("about.html", {
+        "request": request,
+        "user": user
+    })
+
+
 # ─── API Routes ──────────────────────────────────────────────────────────────
 
 @router.get("/api/health", response_model=HealthResponse, tags=["Health"])

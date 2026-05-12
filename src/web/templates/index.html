@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hệ thống Phân tầng Rủi ro Sinh viên | Nhóm 14</title>
+  <title>Hệ thống Phân tầng Rủi ro Sinh viên</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
@@ -22,9 +22,9 @@
         style="display: flex; align-items: center; gap: 15px; text-decoration: none; flex-shrink: 0;">
         <div
           style="height: 55px; display: flex; align-items: center; justify-content: center; background: white; border-radius: 4px;">
-          <img src="https://ptit.edu.vn/wp-content/uploads/2016/04/Logo-PTIT.png" alt="PTIT Logo"
+          <img src="https://daotao.ptit.edu.vn/wp-content/uploads/sites/3/2024/08/Slide-16_9-1.png" alt="PTIT Logo"
             referrerpolicy="no-referrer" style="height: 55px; width: auto; object-fit: contain;"
-            onerror="this.src='https://upload.wikimedia.org/wikipedia/vi/1/1d/Logo_H%E1%BB%8Dc_vi%E1%BB%87n_C%C3%B4ng_ngh%E1%BB%87_B%C2%B0u_ch%C3%ADnh_Vi%E1%BB%85n_th%C3%B4ng.png'; this.onerror=function(){this.style.display='none'; document.getElementById('logo-text-fallback').style.display='block';}">
+            onerror="this.src='https://daotao.ptit.edu.vn/wp-content/uploads/sites/3/2024/08/Slide-16_9-1.png'; this.onerror=function(){this.style.display='none'; document.getElementById('logo-text-fallback').style.display='block';}">
           <div id="logo-text-fallback"
             style="display: none; font-weight: 900; color: var(--primary); font-size: 1.8rem;">PTIT</div>
         </div>
@@ -40,12 +40,12 @@
 
       <!-- NAVIGATE CĂN PHẢI -->
       <nav class="nav" style="display: flex; gap: 30px; align-items: center; margin-left: auto;">
-        <a href="/#about" class="nav-link"
-          style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">GIỚI
-          THIỆU</a>
-        <a href="/#dataset" class="nav-link"
-          style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">DỮ
-          LIỆU</a>
+        <a href="/" class="nav-link"
+          style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">TRANG
+          CHỦ</a>
+        <a href="/about" class="nav-link"
+          style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">VỀ
+          CHÚNG TÔI</a>
         <a href="/#model" class="nav-link"
           style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">MÔ
           HÌNH</a>
@@ -188,7 +188,6 @@
   <!-- ── HERO ──────────────────────────────────────────────── -->
   <section class="hero" id="about">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-      <div class="hero-badge">Đồ án thực tập cơ sở · Nhóm 14 · Học kỳ 6</div>
       <h1 class="hero-title">Phân Tầng Rủi Ro <span class="gradient-text text-primary">Học Tập Sinh Viên</span></h1>
       <p class="hero-desc">Ứng dụng trí tuệ nhân tạo (XGBoost) giúp nhận diện sớm các sinh viên có nguy cơ bỏ học hoặc
         trượt môn dựa trên tương tác hệ thống và kết quả đánh giá.</p>
@@ -315,37 +314,6 @@
     </div>
   </div>
 
-  <!-- ── DATASET OVERVIEW ────────────────────────────────────── -->
-  <section class="section" id="dataset">
-    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-      <div class="section-header">
-        <h2 class="section-title">Tổng Quan Dataset</h2>
-        <p class="section-sub">Phân tích từ bộ dữ liệu OULAD (Open University Learning Analytics Dataset)</p>
-      </div>
-      <div class="cards-grid">
-        <div class="card">
-          <span class="card-icon">👥</span>
-          <span class="card-value">32,593</span>
-          <span class="card-label">Tổng số sinh viên</span>
-        </div>
-        <div class="card">
-          <span class="card-icon">📚</span>
-          <span class="card-value">7</span>
-          <span class="card-label">Môn học (Modules)</span>
-        </div>
-        <div class="card">
-          <span class="card-icon">📉</span>
-          <span class="card-value">22.1%</span>
-          <span class="card-label">Tỷ lệ bỏ học (Withdrawn)</span>
-        </div>
-        <div class="card">
-          <span class="card-icon">⚡</span>
-          <span class="card-value">23</span>
-          <span class="card-label">Đặc trưng đầu vào</span>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ── MODEL COMPARISON ─────────────────────────────────────── -->
   <section class="section section--dark" id="model">
