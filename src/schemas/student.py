@@ -48,7 +48,7 @@ class RiskPrediction(BaseModel):
     confidence: float = Field(..., description="Độ tin cậy dự đoán (0-100%)")
     probabilities: dict = Field(..., description="Xác suất cho từng mức rủi ro")
     recommendation: str = Field(..., description="Khuyến nghị hành động")
-    model_used: str = Field(default="LightGBM", description="Mô hình được sử dụng")
+    model_used: str = Field(default="XGBoost", description="Mô hình được sử dụng")
 
 
 class HealthResponse(BaseModel):

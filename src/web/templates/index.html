@@ -1,498 +1,604 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hệ thống Phân tầng Rủi ro Sinh viên | Nhóm 14</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ thống Phân tầng Rủi ro Sinh viên | Nhóm 14</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
-<!-- ── HEADER ──────────────────────────────────────────── -->
-<header class="header" style="background: white; border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100vw; left: 0; right: 0;">
-  <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 4%;">
-    <!-- LOGO CĂN TRÁI -->
-    <a href="/" class="logo" style="display: flex; align-items: center; gap: 15px; text-decoration: none; flex-shrink: 0;">
-      <div style="height: 55px; display: flex; align-items: center; justify-content: center; background: white; border-radius: 4px;">
-        <img src="https://ptit.edu.vn/wp-content/uploads/2016/04/Logo-PTIT.png" 
-             alt="PTIT Logo" 
-             referrerpolicy="no-referrer"
-             style="height: 55px; width: auto; object-fit: contain;"
-             onerror="this.src='https://upload.wikimedia.org/wikipedia/vi/1/1d/Logo_H%E1%BB%8Dc_vi%E1%BB%87n_C%C3%B4ng_ngh%E1%BB%87_B%C2%B0u_ch%C3%ADnh_Vi%E1%BB%85n_th%C3%B4ng.png'; this.onerror=function(){this.style.display='none'; document.getElementById('logo-text-fallback').style.display='block';}">
-        <div id="logo-text-fallback" style="display: none; font-weight: 900; color: var(--primary); font-size: 1.8rem;">PTIT</div>
-      </div>
-      <div style="border-left: 2px solid var(--primary); padding-left: 15px;">
-        <span style="font-size: 1.15rem; line-height: 1.2; display: block; font-weight: 800; color: var(--primary);">HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG</span>
-        <span style="font-size: 0.75rem; letter-spacing: 0.5px; color: var(--text-dim); font-weight: 600; display: block; text-transform: uppercase;">Posts and Telecommunications Institute of Technology</span>
-      </div>
-    </a>
+  <!-- ── HEADER ──────────────────────────────────────────── -->
+  <header class="header"
+    style="background: white; border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100vw; left: 0; right: 0;">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 4%;">
+      <!-- LOGO CĂN TRÁI -->
+      <a href="/" class="logo"
+        style="display: flex; align-items: center; gap: 15px; text-decoration: none; flex-shrink: 0;">
+        <div
+          style="height: 55px; display: flex; align-items: center; justify-content: center; background: white; border-radius: 4px;">
+          <img src="https://ptit.edu.vn/wp-content/uploads/2016/04/Logo-PTIT.png" alt="PTIT Logo"
+            referrerpolicy="no-referrer" style="height: 55px; width: auto; object-fit: contain;"
+            onerror="this.src='https://upload.wikimedia.org/wikipedia/vi/1/1d/Logo_H%E1%BB%8Dc_vi%E1%BB%87n_C%C3%B4ng_ngh%E1%BB%87_B%C2%B0u_ch%C3%ADnh_Vi%E1%BB%85n_th%C3%B4ng.png'; this.onerror=function(){this.style.display='none'; document.getElementById('logo-text-fallback').style.display='block';}">
+          <div id="logo-text-fallback"
+            style="display: none; font-weight: 900; color: var(--primary); font-size: 1.8rem;">PTIT</div>
+        </div>
+        <div style="border-left: 2px solid var(--primary); padding-left: 15px;">
+          <span
+            style="font-size: 1.15rem; line-height: 1.2; display: block; font-weight: 800; color: var(--primary);">HỌC
+            VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG</span>
+          <span
+            style="font-size: 0.75rem; letter-spacing: 0.5px; color: var(--text-dim); font-weight: 600; display: block; text-transform: uppercase;">Posts
+            and Telecommunications Institute of Technology</span>
+        </div>
+      </a>
 
-    <!-- NAVIGATE CĂN PHẢI -->
-    <nav class="nav" style="display: flex; gap: 30px; align-items: center; margin-left: auto;">
-      <a href="/#about" class="nav-link" style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">GIỚI THIỆU</a>
-      <a href="/#dataset" class="nav-link" style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">DỮ LIỆU</a>
-      <a href="/#model" class="nav-link" style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">MÔ HÌNH</a>
-      <a href="/#visuals" class="nav-link" style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">PHÂN TÍCH</a>
-      
-      <div id="authNavArea" style="display: flex; align-items: center; gap: 15px; margin-left: 10px;">
-        {% if user %}
+      <!-- NAVIGATE CĂN PHẢI -->
+      <nav class="nav" style="display: flex; gap: 30px; align-items: center; margin-left: auto;">
+        <a href="/#about" class="nav-link"
+          style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">GIỚI
+          THIỆU</a>
+        <a href="/#dataset" class="nav-link"
+          style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">DỮ
+          LIỆU</a>
+        <a href="/#model" class="nav-link"
+          style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">MÔ
+          HÌNH</a>
+        <a href="/#visuals" class="nav-link"
+          style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">PHÂN
+          TÍCH</a>
+
+        <div id="authNavArea" style="display: flex; align-items: center; gap: 15px; margin-left: 10px;">
+          {% if user %}
           <div class="user-dropdown">
-            <button class="user-btn" onclick="toggleDropdown(event)" style="background: var(--bg-alt); border: 1px solid var(--border); padding: 10px 25px; border-radius: 50px; display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 700; transition: all 0.2s;">
-              <span class="user-avatar" style="background: var(--primary); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">👤</span>
+            <button class="user-btn" onclick="toggleDropdown(event)"
+              style="background: var(--bg-alt); border: 1px solid var(--border); padding: 10px 25px; border-radius: 50px; display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 700; transition: all 0.2s;">
+              <span class="user-avatar"
+                style="background: var(--primary); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">👤</span>
               <span class="user-name">{{ user.username }}</span>
               <span class="dropdown-arrow" style="font-size: 0.6rem; opacity: 0.5;">▼</span>
             </button>
-            <div class="dropdown-content" style="display: none; position: absolute; right: 0; background: white; min-width: 220px; box-shadow: 0 10px 35px rgba(0,0,0,0.15); border-radius: 12px; padding: 12px 0; z-index: 9999; border: 1px solid var(--border); margin-top: 10px;">
+            <div class="dropdown-content"
+              style="display: none; position: absolute; right: 0; background: white; min-width: 220px; box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15); border-radius: 12px; padding: 12px 0; z-index: 9999; border: 1px solid var(--border); margin-top: 10px;">
               {% if user.role == 'admin' %}
-                <a href="/admin" style="color: var(--text); padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 600;">⚙️ Bảng quản trị</a>
+              <a href="/admin"
+                style="color: var(--text); padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 600;">⚙️
+                Bảng quản trị</a>
               {% else %}
-                <a href="/student" style="color: var(--text); padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 600;">📊 Kết quả của tôi</a>
+              <a href="/student"
+                style="color: var(--text); padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 600;">📊
+                Kết quả của tôi</a>
               {% endif %}
               <hr style="border: 0; border-top: 1px solid var(--border); margin: 8px 0;">
-              <a href="/logout" style="color: var(--primary) !important; padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 800;">🚪 Đăng xuất</a>
+              <a href="/logout"
+                style="color: var(--primary) !important; padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 800;">🚪
+                Đăng xuất</a>
             </div>
           </div>
-        {% else %}
-          <button onclick="toggleLoginModal()" class="login-trigger-btn" style="background: var(--primary); color: white; border: none; padding: 12px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 20px rgba(200, 16, 46, 0.25); font-size: 0.9rem; letter-spacing: 0.5px;">ĐĂNG NHẬP</button>
-        {% endif %}
-      </div>
-    </nav>
-  </div>
-</header>
-
-<style>
-  /* Dropdown Styles */
-  .user-dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  .user-btn {
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    padding: 8px 15px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-weight: 700;
-    color: var(--secondary);
-  }
-  .user-btn:hover {
-    border-color: var(--primary);
-    background: white;
-  }
-  .user-avatar {
-    background: var(--primary);
-    color: white;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-  }
-  .dropdown-arrow {
-    font-size: 0.6rem;
-    opacity: 0.5;
-  }
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: white;
-    min-width: 180px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border-radius: 12px;
-    padding: 8px 0;
-    z-index: 9999;
-    border: 1px solid var(--border);
-    margin-top: 5px;
-    top: 100%;
-  }
-  .dropdown-content a {
-    color: var(--text);
-    padding: 10px 20px;
-    text-decoration: none;
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.2s;
-  }
-  .dropdown-content a:hover {
-    background-color: var(--bg-alt);
-    color: var(--primary);
-  }
-  .user-dropdown:focus-within .dropdown-content {
-    display: block;
-  }
-  .login-trigger-btn {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 50px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .login-trigger-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(160, 27, 33, 0.3);
-  }
-</style>
-
-<!-- ── HERO ──────────────────────────────────────────────── -->
-<section class="hero" id="about">
-  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-    <div class="hero-badge">Đồ án thực tập cơ sở · Nhóm 14 · Học kỳ 6</div>
-    <h1 class="hero-title">Phân Tầng Rủi Ro <span class="gradient-text text-primary">Học Tập Sinh Viên</span></h1>
-    <p class="hero-desc">Ứng dụng trí tuệ nhân tạo (LightGBM) giúp nhận diện sớm các sinh viên có nguy cơ bỏ học hoặc trượt môn dựa trên tương tác hệ thống và kết quả đánh giá.</p>
-    
-    <!-- Student Search -->
-    <div class="search-container" style="max-width: 850px; margin: 0 auto 50px; position: relative; padding: 0 20px;">
-      <div class="search-box" style="display: flex; background: white; padding: 6px; border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid var(--border); transition: all 0.3s; overflow: hidden;">
-        <input type="text" id="studentSearchInput" class="search-input" 
-               placeholder="Nhập mã sinh viên để truy vấn thông tin rủi ro (VD: 11391)..."
-               style="flex: 1; border: none; padding: 15px 30px; font-size: 1.05rem; outline: none; font-weight: 500; background: transparent;"
-               value="{{ user.username if user and user.role == 'student' else '' }}">
-        {% if user %}
-          <button class="search-btn" onclick="searchStudent()" style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase;">🔍 Truy vấn ngay</button>
-        {% else %}
-          <button class="search-btn" onclick="toggleLoginModal()" style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase;">🔍 Đăng nhập để truy vấn</button>
-        {% endif %}
-      </div>
-      <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px; text-align: center;">* Chỉ dành cho sinh viên tham gia khóa học trong bộ dữ liệu OULAD</p>
+          {% else %}
+          <button onclick="toggleLoginModal()" class="login-trigger-btn"
+            style="background: var(--primary); color: white; border: none; padding: 12px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 20px rgba(200, 16, 46, 0.25); font-size: 0.9rem; letter-spacing: 0.5px;">ĐĂNG
+            NHẬP</button>
+          {% endif %}
+        </div>
+      </nav>
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- ── SEARCH RESULT PANEL ────────────────────────────────── -->
-<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-  {% if error %}
-    <div id="errorMessage" style="background: rgba(231, 76, 60, 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 700;">
+  <style>
+    /* Dropdown Styles */
+    .user-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .user-btn {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      padding: 8px 15px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+
+    .user-btn:hover {
+      border-color: var(--primary);
+      background: white;
+    }
+
+    .user-avatar {
+      background: var(--primary);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .dropdown-arrow {
+      font-size: 0.6rem;
+      opacity: 0.5;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      min-width: 180px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 8px 0;
+      z-index: 9999;
+      border: 1px solid var(--border);
+      margin-top: 5px;
+      top: 100%;
+    }
+
+    .dropdown-content a {
+      color: var(--text);
+      padding: 10px 20px;
+      text-decoration: none;
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--bg-alt);
+      color: var(--primary);
+    }
+
+    .user-dropdown:focus-within .dropdown-content {
+      display: block;
+    }
+
+    .login-trigger-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 50px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .login-trigger-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(160, 27, 33, 0.3);
+    }
+  </style>
+
+  <!-- ── HERO ──────────────────────────────────────────────── -->
+  <section class="hero" id="about">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+      <div class="hero-badge">Đồ án thực tập cơ sở · Nhóm 14 · Học kỳ 6</div>
+      <h1 class="hero-title">Phân Tầng Rủi Ro <span class="gradient-text text-primary">Học Tập Sinh Viên</span></h1>
+      <p class="hero-desc">Ứng dụng trí tuệ nhân tạo (XGBoost) giúp nhận diện sớm các sinh viên có nguy cơ bỏ học hoặc
+        trượt môn dựa trên tương tác hệ thống và kết quả đánh giá.</p>
+
+      <!-- Student Search -->
+      <div class="search-container" style="max-width: 850px; margin: 0 auto 50px; position: relative; padding: 0 20px;">
+        <div class="search-box"
+          style="display: flex; background: white; padding: 6px; border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid var(--border); transition: all 0.3s; overflow: hidden;">
+          <input type="text" id="studentSearchInput" class="search-input"
+            placeholder="Nhập mã sinh viên để truy vấn thông tin rủi ro (VD: 11391)..."
+            style="flex: 1; border: none; padding: 15px 30px; font-size: 1.05rem; outline: none; font-weight: 500; background: transparent;"
+            value="{{ user.username if user and user.role == 'student' else '' }}">
+          {% if user %}
+          <button class="search-btn" onclick="searchStudent()"
+            style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase;">🔍
+            Truy vấn ngay</button>
+          {% else %}
+          <button class="search-btn" onclick="toggleLoginModal()"
+            style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase;">🔍
+            Đăng nhập để truy vấn</button>
+          {% endif %}
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px; text-align: center;">* Chỉ dành cho sinh
+          viên tham gia khóa học trong bộ dữ liệu OULAD</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SEARCH RESULT PANEL ────────────────────────────────── -->
+  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    {% if error %}
+    <div id="errorMessage"
+      style="background: rgba(231, 76, 60, 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 700;">
       ⚠️ {{ error }}
     </div>
-  {% endif %}
-  
-  <div id="studentDataPanel" class="student-data-panel" style="{% if student %}display: block;{% endif %}">
-    <div class="panel-header" style="background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px 8px 0 0;">
-      <h3 style="color: white; margin: 0;">📋 Kết quả truy vấn sinh viên #<span id="resStudentId">{{ student.id_student if student else '' }}</span></h3>
-      <button onclick="closeStudentPanel()" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.5rem;">✕</button>
-    </div>
-    <div class="panel-content" style="padding: 30px; background: white; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; box-shadow: var(--shadow-lg);">
-      {% if student %}
-      <div style="display: flex; gap: 30px; margin-bottom: 40px; align-items: center; flex-wrap: wrap;">
-        <div id="resRiskBadge" class="badge badge-{{ prediction.risk_label.lower().replace(' ', '') }}" style="font-size: 1.5rem; padding: 15px 30px; border-radius: 50px; font-weight: 800; text-transform: uppercase;">{{ prediction.risk_label }} RISK</div>
-        <div>
-          <p style="margin: 0; font-weight: 700; font-size: 1.1rem; color: var(--secondary);">Độ tin cậy mô hình: <span id="resConfidence">{{ prediction.confidence }}</span>%</p>
-          <p id="resRecommendation" style="margin: 5px 0 0; color: var(--text-dim); max-width: 600px; font-weight: 500;">{{ prediction.recommendation }}</p>
-        </div>
-      </div>
+    {% endif %}
 
-      <h4 style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary);">Thống kê dữ liệu chi tiết</h4>
-      <div class="data-table-grid" id="resDataTable" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-        <div class="data-item" style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
-          <span class="data-label" style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Môn học</span>
-          <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{ student.code_module }}</span>
-        </div>
-        <div class="data-item" style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
-          <span class="data-label" style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Học kỳ</span>
-          <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{ student.code_presentation }}</span>
-        </div>
-        <div class="data-item {{ 'at-risk' if student.avg_score < 40 else '' }}" style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
-          <span class="data-label" style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Điểm trung bình</span>
-          <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{ "%.2f"|format(student.avg_score) }}</span>
-          {% if student.avg_score < 40 %}<span class="risk-tag" style="background:var(--red); color:white; padding:2px 6px; border-radius:4px; font-size:0.6rem; margin-left:10px;">Cảnh báo</span>{% endif %}
-        </div>
-        <div class="data-item {{ 'at-risk' if student.total_clicks < 200 else '' }}" style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
-          <span class="data-label" style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Tổng số click (VLE)</span>
-          <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{ student.total_clicks|int }}</span>
-          {% if student.total_clicks < 200 %}<span class="risk-tag" style="background:var(--red); color:white; padding:2px 6px; border-radius:4px; font-size:0.6rem; margin-left:10px;">Cảnh báo</span>{% endif %}
-        </div>
-        <div class="data-item" style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
-          <span class="data-label" style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Số lần học lại</span>
-          <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{ student.num_of_prev_attempts }}</span>
-        </div>
-        <div class="data-item" style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
-          <span class="data-label" style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Số tín chỉ</span>
-          <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{ student.studied_credits }}</span>
-        </div>
+    <div id="studentDataPanel" class="student-data-panel" style="{% if student %}display: block;{% endif %}">
+      <div class="panel-header"
+        style="background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px 8px 0 0;">
+        <h3 style="color: white; margin: 0;">📋 Kết quả truy vấn sinh viên #<span id="resStudentId">{{
+            student.id_student if student else '' }}</span></h3>
+        <button onclick="closeStudentPanel()"
+          style="background: none; border: none; color: white; cursor: pointer; font-size: 1.5rem;">✕</button>
       </div>
-      {% endif %}
-    </div>
-  </div>
-</div>
+      <div class="panel-content"
+        style="padding: 30px; background: white; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; box-shadow: var(--shadow-lg);">
+        {% if student %}
+        <div style="display: flex; gap: 30px; margin-bottom: 40px; align-items: center; flex-wrap: wrap;">
+          <div id="resRiskBadge" class="badge badge-{{ prediction.risk_label.lower().replace(' ', '') }}"
+            style="font-size: 1.5rem; padding: 15px 30px; border-radius: 50px; font-weight: 800; text-transform: uppercase;">
+            {{ prediction.risk_label }} RISK</div>
+          <div>
+            <p style="margin: 0; font-weight: 700; font-size: 1.1rem; color: var(--secondary);">Độ tin cậy mô hình:
+              <span id="resConfidence">{{ prediction.confidence }}</span>%
+            </p>
+            <p id="resRecommendation"
+              style="margin: 5px 0 0; color: var(--text-dim); max-width: 600px; font-weight: 500;">{{
+              prediction.recommendation }}</p>
+          </div>
+        </div>
 
-<!-- ── DATASET OVERVIEW ────────────────────────────────────── -->
-<section class="section" id="dataset">
-  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-    <div class="section-header">
-      <h2 class="section-title">📊 Tổng Quan Dataset</h2>
-      <p class="section-sub">Phân tích từ bộ dữ liệu OULAD (Open University Learning Analytics Dataset)</p>
-    </div>
-    <div class="cards-grid">
-      <div class="card">
-        <span class="card-icon">👥</span>
-        <span class="card-value">32,593</span>
-        <span class="card-label">Tổng số sinh viên</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">📚</span>
-        <span class="card-value">7</span>
-        <span class="card-label">Môn học (Modules)</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">📉</span>
-        <span class="card-value">22.1%</span>
-        <span class="card-label">Tỷ lệ bỏ học (Withdrawn)</span>
-      </div>
-      <div class="card">
-        <span class="card-icon">⚡</span>
-        <span class="card-value">23</span>
-        <span class="card-label">Đặc trưng đầu vào</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── MODEL COMPARISON ─────────────────────────────────────── -->
-<section class="section section--dark" id="model">
-  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-    <div class="section-header">
-      <h2 class="section-title">🤖 So Sánh Hiệu Suất Mô Hình</h2>
-      <p class="section-sub">Chúng tôi đã thử nghiệm nhiều mô hình học máy để tìm ra thuật toán tối ưu nhất</p>
-    </div>
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr>
-            <th>Mô hình</th>
-            <th>F1 Macro</th>
-            <th>Balanced Acc.</th>
-            <th>AUC Score</th>
-            <th>Trạng thái</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="highlight-row">
-            <td><strong class="text-primary">LightGBM</strong></td>
-            <td>78.23%</td>
-            <td>78.91%</td>
-            <td>94.56%</td>
-            <td><span class="badge badge-low">Tối ưu nhất</span></td>
-          </tr>
-          <tr>
-            <td>Random Forest</td>
-            <td>75.02%</td>
-            <td>75.54%</td>
-            <td>92.12%</td>
-            <td><span class="badge badge-medium">Khá</span></td>
-          </tr>
-          <tr>
-            <td>XGBoost</td>
-            <td>74.05%</td>
-            <td>74.82%</td>
-            <td>91.48%</td>
-            <td><span class="badge badge-medium">Khá</span></td>
-          </tr>
-          <tr>
-            <td>Logistic Regression</td>
-            <td>58.12%</td>
-            <td>61.05%</td>
-            <td>83.45%</td>
-            <td><span class="badge badge-high">Cơ bản</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ── VISUALS ─────────────────────────────────────────────── -->
-<section class="section" id="visuals">
-  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-    <div class="section-header">
-      <h2 class="section-title">📈 Phân Tích Dữ Liệu & Mô Hình</h2>
-      <p class="section-sub">Trực quan hóa các yếu tố ảnh hưởng đến rủi ro học tập của sinh viên</p>
-    </div>
-    <div class="visuals-grid">
-      <div class="visual-card" onclick="openModal('/visuals/01_class_distribution.png', 'Phân phối các mức độ rủi ro')">
-        <img src="/visuals/01_class_distribution.png" alt="Distribution">
-        <div class="visual-caption">Phân phối các mức độ rủi ro</div>
-      </div>
-      <div class="visual-card" onclick="openModal('/visuals/02_04_vle_features.png', 'Tương tác hệ thống (VLE) theo nhóm rủi ro')">
-        <img src="/visuals/02_04_vle_features.png" alt="VLE">
-        <div class="visual-caption">Tương tác hệ thống (VLE)</div>
-      </div>
-      <div class="visual-card" onclick="openModal('/visuals/02_05_assessment_features.png', 'Kết quả kiểm tra theo nhóm rủi ro')">
-        <img src="/visuals/02_05_assessment_features.png" alt="Assessment">
-        <div class="visual-caption">Kết quả kiểm tra & đánh giá</div>
-      </div>
-      <div class="visual-card" onclick="openModal('/visuals/03_feature_importance_lightgbm.png', 'Các yếu tố quan trọng nhất trong mô hình')">
-        <img src="/visuals/03_feature_importance_lightgbm.png" alt="Importance">
-        <div class="visual-caption">Yếu tố quan trọng hàng đầu</div>
-      </div>
-      <div class="visual-card" onclick="openModal('/visuals/03_confusion_matrix_lightgbm.png', 'Ma trận nhầm lẫn (Confusion Matrix)')">
-        <img src="/visuals/03_confusion_matrix_lightgbm.png" alt="Confusion">
-        <div class="visual-caption">Ma trận nhầm lẫn LightGBM</div>
-      </div>
-      <div class="visual-card" onclick="openModal('/visuals/02_07_correlation.png', 'Ma trận tương quan giữa các đặc trưng')">
-        <img src="/visuals/02_07_correlation.png" alt="Correlation">
-        <div class="visual-caption">Ma trận tương quan đặc trưng</div>
+        <h4 style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary);">Thống kê
+          dữ liệu chi tiết</h4>
+        <div class="data-table-grid" id="resDataTable"
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+          <div class="data-item"
+            style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
+            <span class="data-label"
+              style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Môn
+              học</span>
+            <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{
+              student.code_module }}</span>
+          </div>
+          <div class="data-item"
+            style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
+            <span class="data-label"
+              style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Học
+              kỳ</span>
+            <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{
+              student.code_presentation }}</span>
+          </div>
+          <div class="data-item {{ 'at-risk' if student.avg_score < 40 else '' }}"
+            style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
+            <span class="data-label"
+              style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Điểm
+              trung bình</span>
+            <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{
+              "%.2f"|format(student.avg_score) }}</span>
+            {% if student.avg_score < 40 %}<span class="risk-tag"
+              style="background:var(--red); color:white; padding:2px 6px; border-radius:4px; font-size:0.6rem; margin-left:10px;">
+              Cảnh báo</span>{% endif %}
+          </div>
+          <div class="data-item {{ 'at-risk' if student.total_clicks < 200 else '' }}"
+            style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
+            <span class="data-label"
+              style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Tổng
+              số click (VLE)</span>
+            <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{
+              student.total_clicks|int }}</span>
+            {% if student.total_clicks < 200 %}<span class="risk-tag"
+              style="background:var(--red); color:white; padding:2px 6px; border-radius:4px; font-size:0.6rem; margin-left:10px;">
+              Cảnh báo</span>{% endif %}
+          </div>
+          <div class="data-item"
+            style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
+            <span class="data-label"
+              style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Số
+              lần học lại</span>
+            <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{
+              student.num_of_prev_attempts }}</span>
+          </div>
+          <div class="data-item"
+            style="padding: 15px; background: var(--bg-alt); border-radius: 8px; border-left: 4px solid var(--border);">
+            <span class="data-label"
+              style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; display: block; margin-bottom: 5px;">Số
+              tín chỉ</span>
+            <span class="data-value" style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">{{
+              student.studied_credits }}</span>
+          </div>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>
-</section>
 
-<!-- ── FOOTER ─────────────────────────────────────────────── -->
-<footer class="footer">
-  <div class="container">
-    <span class="footer-logo">RiskSight AI</span>
-    <p class="footer-text">Dự án được thực hiện bởi Nhóm 14 - Học viện Công nghệ Bưu chính Viễn thông. Sử dụng bộ dữ liệu OULAD và mô hình LightGBM để phân tầng rủi ro học tập.</p>
-    <div style="margin-top: 20px; font-size: 0.8rem; opacity: 0.5;">
-      &copy; 2024 Nhóm 14 · All rights reserved
+  <!-- ── DATASET OVERVIEW ────────────────────────────────────── -->
+  <section class="section" id="dataset">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+      <div class="section-header">
+        <h2 class="section-title">Tổng Quan Dataset</h2>
+        <p class="section-sub">Phân tích từ bộ dữ liệu OULAD (Open University Learning Analytics Dataset)</p>
+      </div>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="card-icon">👥</span>
+          <span class="card-value">32,593</span>
+          <span class="card-label">Tổng số sinh viên</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">📚</span>
+          <span class="card-value">7</span>
+          <span class="card-label">Môn học (Modules)</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">📉</span>
+          <span class="card-value">22.1%</span>
+          <span class="card-label">Tỷ lệ bỏ học (Withdrawn)</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">⚡</span>
+          <span class="card-value">23</span>
+          <span class="card-label">Đặc trưng đầu vào</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MODEL COMPARISON ─────────────────────────────────────── -->
+  <section class="section section--dark" id="model">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+      <div class="section-header">
+        <h2 class="section-title">So Sánh Hiệu Suất Mô Hình</h2>
+        <p class="section-sub">Chúng tôi đã thử nghiệm nhiều mô hình học máy để tìm ra thuật toán tối ưu nhất</p>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Mô hình</th>
+              <th>F1-Score</th>
+              <th>Accuracy</th>
+              <th>AUC Score</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: rgba(160, 27, 33, 0.03);">
+              <td><strong class="text-primary">XGBoost</strong></td>
+              <td>84.65%</td>
+              <td>92.71%</td>
+              <td>98.68%</td>
+              <td><span class="badge badge-low">TỐI ƯU NHẤT</span></td>
+            </tr>
+            <tr>
+              <td>LightGBM</td>
+              <td>84.05%</td>
+              <td>92.58%</td>
+              <td>98.66%</td>
+              <td><span class="badge badge-medium">HIỆU NĂNG CAO</span></td>
+            </tr>
+            <tr>
+              <td>Random Forest</td>
+              <td>83.20%</td>
+              <td>91.55%</td>
+              <td>98.39%</td>
+              <td><span class="badge badge-medium">ỔN ĐỊNH</span></td>
+            </tr>
+            <tr>
+              <td>Logistic Regression</td>
+              <td>69.38%</td>
+              <td>83.31%</td>
+              <td>95.85%</td>
+              <td><span class="badge badge-high">CƠ BẢN</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VISUALS ─────────────────────────────────────────────── -->
+  <section class="section" id="visuals">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+      <div class="section-header">
+        <h2 class="section-title">Phân Tích Dữ Liệu & Mô Hình</h2>
+        <p class="section-sub">Trực quan hóa các yếu tố ảnh hưởng đến rủi ro học tập của sinh viên</p>
+      </div>
+      <div class="visuals-grid">
+        <div class="visual-card"
+          onclick="openModal('/visuals/01_class_distribution.png', 'Phân phối các mức độ rủi ro')">
+          <img src="/visuals/01_class_distribution.png" alt="Distribution">
+          <div class="visual-caption">Phân phối các mức độ rủi ro</div>
+        </div>
+        <div class="visual-card"
+          onclick="openModal('/visuals/02_04_vle_features.png', 'Tương tác hệ thống (VLE) theo nhóm rủi ro')">
+          <img src="/visuals/02_04_vle_features.png" alt="VLE">
+          <div class="visual-caption">Tương tác hệ thống (VLE)</div>
+        </div>
+        <div class="visual-card"
+          onclick="openModal('/visuals/02_05_assessment_features.png', 'Kết quả kiểm tra theo nhóm rủi ro')">
+          <img src="/visuals/02_05_assessment_features.png" alt="Assessment">
+          <div class="visual-caption">Kết quả kiểm tra & đánh giá</div>
+        </div>
+        <div class="visual-card"
+          onclick="openModal('/visuals/03_feature_importance_best.png', 'Các yếu tố quan trọng nhất trong mô hình')">
+          <img src="/visuals/03_feature_importance_best.png" alt="Importance">
+          <div class="visual-caption">Yếu tố quan trọng hàng đầu</div>
+        </div>
+        <div class="visual-card"
+          onclick="openModal('/visuals/03_confusion_matrix_best.png', 'Ma trận nhầm lẫn (Confusion Matrix)')">
+          <img src="/visuals/03_confusion_matrix_best.png" alt="Confusion">
+          <div class="visual-caption">Ma trận nhầm lẫn XGBoost</div>
+        </div>
+        <div class="visual-card"
+          onclick="openModal('/visuals/02_07_correlation.png', 'Ma trận tương quan giữa các đặc trưng')">
+          <img src="/visuals/02_07_correlation.png" alt="Correlation">
+          <div class="visual-caption">Ma trận tương quan đặc trưng</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <span class="footer-logo">RiskSight</span>
+      <p class="footer-text">Được thực hiện bởi Nhóm 14 - Học viện Công nghệ Bưu chính Viễn thông. Sử dụng bộ dữ
+        liệu OULAD và mô hình XGBoost để phân tầng rủi ro học tập.</p>
+      <div style="margin-top: 20px; font-size: 0.8rem; opacity: 0.5;">
+        &copy; 2026 Nhóm 14 · All rights reserved
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── MODALS ────────────────────────────────────────────────── -->
+  <!-- Image Modal -->
+  <div class="modal-overlay" id="modalOverlay" style="display: none;" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <h3 id="modalTitle" class="modal-title"></h3>
+      <img id="modalImg" src="" style="width: 100%; height: auto;">
     </div>
   </div>
-</footer>
 
-<!-- ── MODALS ────────────────────────────────────────────────── -->
-<!-- Image Modal -->
-<div class="modal-overlay" id="modalOverlay" style="display: none;" onclick="closeModal()">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <h3 id="modalTitle" class="modal-title"></h3>
-    <img id="modalImg" src="" style="width: 100%; height: auto;">
-  </div>
-</div>
-
-<!-- Unified Login Modal -->
-<div class="modal-overlay" id="loginModal" style="display: {% if show_login %}flex{% else %}none{% endif %};" onclick="toggleLoginModal()">
-  <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 400px; padding: 40px;">
-    <button class="modal-close" onclick="toggleLoginModal()">✕</button>
-    <div style="text-align: center; margin-bottom: 30px;">
-      <h3 style="color: var(--primary); font-size: 1.5rem; text-transform: uppercase;">Đăng nhập hệ thống</h3>
-      <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Sử dụng Mã SV hoặc tài khoản Quản trị</p>
+  <!-- Unified Login Modal -->
+  <div class="modal-overlay" id="loginModal" style="display: {% if show_login %}flex{% else %}none{% endif %};"
+    onclick="toggleLoginModal()">
+    <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 400px; padding: 40px;">
+      <button class="modal-close" onclick="toggleLoginModal()">✕</button>
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h3 style="color: var(--primary); font-size: 1.5rem; text-transform: uppercase;">Đăng nhập hệ thống</h3>
+        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Sử dụng Mã SV hoặc tài khoản Quản trị
+        </p>
+      </div>
+      <form action="/login" method="POST">
+        <div style="margin-bottom: 15px;">
+          <label
+            style="display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">TÊN
+            ĐĂNG NHẬP / MÃ SV</label>
+          <input type="text" name="username" placeholder="VD: 11391 hoặc admin"
+            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 4px; font-weight: 600;"
+            required>
+        </div>
+        <div style="margin-bottom: 25px;">
+          <label
+            style="display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">MẬT
+            KHẨU</label>
+          <input type="password" name="password" placeholder="••••••••"
+            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 4px;" required>
+          <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 8px;">* Đối với sinh viên, mật khẩu mặc định
+            là Mã SV</p>
+        </div>
+        <button type="submit"
+          style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: 800; cursor: pointer; text-transform: uppercase;">Đăng
+          nhập</button>
+      </form>
     </div>
-    <form action="/login" method="POST">
-      <div style="margin-bottom: 15px;">
-        <label style="display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">TÊN ĐĂNG NHẬP / MÃ SV</label>
-        <input type="text" name="username" placeholder="VD: 11391 hoặc admin" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 4px; font-weight: 600;" required>
-      </div>
-      <div style="margin-bottom: 25px;">
-        <label style="display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">MẬT KHẨU</label>
-        <input type="password" name="password" placeholder="••••••••" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 4px;" required>
-        <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 8px;">* Đối với sinh viên, mật khẩu mặc định là Mã SV</p>
-      </div>
-      <button type="submit" style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: 800; cursor: pointer; text-transform: uppercase;">Đăng nhập</button>
-    </form>
   </div>
-</div>
 
-<script>
-  function toggleDropdown(event) {
-    event.stopPropagation();
-    const dropdown = event.currentTarget.nextElementSibling;
-    const allDropdowns = document.querySelectorAll('.dropdown-content');
-    allDropdowns.forEach(d => {
-      if (d !== dropdown) d.style.display = 'none';
-    });
-    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
-  }
-
-  // Close dropdown when clicking outside
-  window.onclick = function(event) {
-    if (!event.target.matches('.user-btn') && !event.target.matches('.user-name') && !event.target.matches('.user-avatar')) {
-      const dropdowns = document.querySelectorAll(".dropdown-content");
-      dropdowns.forEach(d => d.style.display = 'none');
+  <script>
+    function toggleDropdown(event) {
+      event.stopPropagation();
+      const dropdown = event.currentTarget.nextElementSibling;
+      const allDropdowns = document.querySelectorAll('.dropdown-content');
+      allDropdowns.forEach(d => {
+        if (d !== dropdown) d.style.display = 'none';
+      });
+      dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
     }
-  }
 
-  function toggleLoginModal() {
-    const modal = document.getElementById('loginModal');
-    modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-  }
-
-  // API Fetch for searching student
-  async function searchStudent() {
-    const studentId = document.getElementById('studentSearchInput').value;
-    if (!studentId) return alert('Vui lòng nhập mã sinh viên');
-    
-    document.querySelector('.search-btn').innerText = 'Đang truy vấn...';
-    
-    try {
-      const response = await fetch(`/api/query/${studentId}`);
-      if (!response.ok) throw new Error('Mã sinh viên không tồn tại trong hệ thống');
-      
-      const data = await response.json();
-      displayStudent(data);
-    } catch (err) {
-      alert('❌ Lỗi: ' + err.message);
-    } finally {
-      document.querySelector('.search-btn').innerText = '🔍 Tìm kiếm';
+    // Close dropdown when clicking outside
+    window.onclick = function (event) {
+      if (!event.target.matches('.user-btn') && !event.target.matches('.user-name') && !event.target.matches('.user-avatar')) {
+        const dropdowns = document.querySelectorAll(".dropdown-content");
+        dropdowns.forEach(d => d.style.display = 'none');
+      }
     }
-  }
 
-  function displayStudent(data) {
-    const panel = document.getElementById('studentDataPanel');
-    panel.style.display = 'block';
-    panel.scrollIntoView({ behavior: 'smooth' });
+    function toggleLoginModal() {
+      const modal = document.getElementById('loginModal');
+      modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    }
 
-    document.getElementById('resStudentId').innerText = data.student.id_student;
-    
-    const riskBadge = document.getElementById('resRiskBadge');
-    riskBadge.innerText = data.prediction.risk_label + ' RISK';
-    riskBadge.className = 'badge badge-' + data.prediction.risk_label.toLowerCase().replace(' ', '');
-    
-    document.getElementById('resConfidence').innerText = data.prediction.confidence;
-    document.getElementById('resRecommendation').innerText = data.prediction.recommendation;
+    // API Fetch for searching student
+    async function searchStudent() {
+      const studentId = document.getElementById('studentSearchInput').value;
+      if (!studentId) return alert('Vui lòng nhập mã sinh viên');
 
-    const grid = document.getElementById('resDataTable');
-    grid.innerHTML = '';
-    
-    // Define features to show and which ones are "risky"
-    const features = [
-      { label: 'Môn học', val: data.student.code_module },
-      { label: 'Học kỳ', val: data.student.code_presentation },
-      { label: 'Điểm trung bình', val: data.student.avg_score.toFixed(2), risky: data.student.avg_score < 40 },
-      { label: 'Tổng số click (VLE)', val: data.student.total_clicks, risky: data.student.total_clicks < 200 },
-      { label: 'Số ngày hoạt động', val: data.student.active_days, risky: data.student.active_days < 10 },
-      { label: 'Số bài nộp muộn', val: data.student.n_late, risky: data.student.n_late > 2 },
-      { label: 'Số lần học lại', val: data.student.num_of_prev_attempts, risky: data.student.num_of_prev_attempts > 0 },
-      { label: 'Số tín chỉ', val: data.student.studied_credits },
-      { label: 'Đăng ký muộn', val: data.student.reg_days_before < 0 ? 'Có' : 'Không', risky: data.student.reg_days_before < 0 }
-    ];
+      document.querySelector('.search-btn').innerText = 'Đang truy vấn...';
 
-    features.forEach(f => {
-      const item = document.createElement('div');
-      item.className = 'data-item' + (f.risky ? ' at-risk' : '');
-      item.innerHTML = `
+      try {
+        const response = await fetch(`/api/query/${studentId}`);
+        if (!response.ok) throw new Error('Mã sinh viên không tồn tại trong hệ thống');
+
+        const data = await response.json();
+        displayStudent(data);
+      } catch (err) {
+        alert('❌ Lỗi: ' + err.message);
+      } finally {
+        document.querySelector('.search-btn').innerText = '🔍 Tìm kiếm';
+      }
+    }
+
+    function displayStudent(data) {
+      const panel = document.getElementById('studentDataPanel');
+      panel.style.display = 'block';
+      panel.scrollIntoView({ behavior: 'smooth' });
+
+      document.getElementById('resStudentId').innerText = data.student.id_student;
+
+      const riskBadge = document.getElementById('resRiskBadge');
+      riskBadge.innerText = data.prediction.risk_label + ' RISK';
+      riskBadge.className = 'badge badge-' + data.prediction.risk_label.toLowerCase().replace(' ', '');
+
+      document.getElementById('resConfidence').innerText = data.prediction.confidence;
+      document.getElementById('resRecommendation').innerText = data.prediction.recommendation;
+
+      const grid = document.getElementById('resDataTable');
+      grid.innerHTML = '';
+
+      // Define features to show and which ones are "risky"
+      const features = [
+        { label: 'Môn học', val: data.student.code_module },
+        { label: 'Học kỳ', val: data.student.code_presentation },
+        { label: 'Điểm trung bình', val: data.student.avg_score.toFixed(2), risky: data.student.avg_score < 40 },
+        { label: 'Tổng số click (VLE)', val: data.student.total_clicks, risky: data.student.total_clicks < 200 },
+        { label: 'Số ngày hoạt động', val: data.student.active_days, risky: data.student.active_days < 10 },
+        { label: 'Số bài nộp muộn', val: data.student.n_late, risky: data.student.n_late > 2 },
+        { label: 'Số lần học lại', val: data.student.num_of_prev_attempts, risky: data.student.num_of_prev_attempts > 0 },
+        { label: 'Số tín chỉ', val: data.student.studied_credits },
+        { label: 'Đăng ký muộn', val: data.student.reg_days_before < 0 ? 'Có' : 'Không', risky: data.student.reg_days_before < 0 }
+      ];
+
+      features.forEach(f => {
+        const item = document.createElement('div');
+        item.className = 'data-item' + (f.risky ? ' at-risk' : '');
+        item.innerHTML = `
         <span class="data-label">${f.label}</span>
         <span class="data-value">${f.val}</span>
         ${f.risky ? '<span class="risk-tag">Cảnh báo</span>' : ''}
       `;
-      grid.appendChild(item);
-    });
-  }
+        grid.appendChild(item);
+      });
+    }
 
-  function closeStudentPanel() {
-    document.getElementById('studentDataPanel').style.display = 'none';
-  }
+    function closeStudentPanel() {
+      document.getElementById('studentDataPanel').style.display = 'none';
+    }
 
-  function openModal(src, title) {
-    document.getElementById('modalImg').src = src;
-    document.getElementById('modalTitle').innerText = title;
-    document.getElementById('modalOverlay').style.display = 'flex';
-  }
+    function openModal(src, title) {
+      document.getElementById('modalImg').src = src;
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalOverlay').style.display = 'flex';
+    }
 
-  function closeModal() {
-    document.getElementById('modalOverlay').style.display = 'none';
-  }
-</script>
+    function closeModal() {
+      document.getElementById('modalOverlay').style.display = 'none';
+    }
+  </script>
 </body>
+
 </html>

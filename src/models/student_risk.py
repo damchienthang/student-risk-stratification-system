@@ -1,5 +1,7 @@
 from typing import Optional
-from sqlmodel import Field, SQLModel, create_engine, Session, select, Index
+import os
+from sqlmodel import Field, SQLModel, create_engine
+from src.models.user import User  # Import to register table
 
 class StudentRisk(SQLModel, table=True):
     __tablename__ = "student_risk"
@@ -36,10 +38,11 @@ class StudentRisk(SQLModel, table=True):
     risk_label: str
     final_result: str
 
-# Database configuration
-sqlite_file_name = "data/processed/database.db"
+# Database configuration - Absolute path to avoid CWD-dependent crashes
+_BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sqlite_file_name = os.path.join(_BASE_DIR, "data", "processed", "database.db")
 sqlite_url = f"sqlite:///{sqlite_file_name}"
-engine = create_engine(sqlite_url)
+engine = create_engine(sqlite_url, connect_args={"check_same_thread": False})
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)

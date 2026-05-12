@@ -24,7 +24,7 @@ app = FastAPI(
     description="""
     ## 🎓 Hệ Thống Phân Tầng Rủi Ro Sinh Viên
     
-    API này sử dụng mô hình **LightGBM** được huấn luyện trên bộ dữ liệu OULAD 
+    API này sử dụng mô hình **XGBoost** được huấn luyện trên bộ dữ liệu OULAD 
     để dự đoán mức độ rủi ro học tập của sinh viên gồm 4 mức:
     
     - 🟢 **Low** - Rủi ro thấp
@@ -66,15 +66,11 @@ async def lifespan(app: FastAPI):
         from src.services.predictor import get_predictor
         predictor = get_predictor()
         status = "OK" if predictor.is_loaded() else "FAILED"
-        print(f"[MODEL] LightGBM load: {status}", flush=True)
-        
-        # Load data into memory (Legacy - can be removed later)
-        from src.services.data_manager import get_data_manager
-        data_path = os.path.join(BASE_DIR, 'data', 'processed', 'student_features_labeled.csv')
-        dm = get_data_manager()
-        dm.load_data(data_path)
+        print(f"[MODEL] XGBoost load: {status}", flush=True)
         
         # Initialize Database
+        data_path = os.path.join(BASE_DIR, 'data', 'processed', 'student_features_labeled.csv')
+        
         from src.services.db_manager import get_db_manager
         dbm = get_db_manager()
         dbm.initialize_db(data_path)

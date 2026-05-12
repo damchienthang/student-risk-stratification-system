@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import joblib
+import sys
+
+# Fix Windows console encoding
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -45,9 +50,9 @@ print(f"Kích thước tập Test: {X_test.shape}")
 
 # 3. Chuẩn hóa dữ liệu (StandardScaler)
 scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_val_scaled = scaler.transform(X_val)
-X_test_scaled = scaler.transform(X_test)
+X_train_scaled = pd.DataFrame(scaler.fit_transform(X_train), columns=X_train.columns)
+X_val_scaled = pd.DataFrame(scaler.transform(X_val), columns=X_val.columns)
+X_test_scaled = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
 joblib.dump(scaler, os.path.join(models_dir, 'scaler.pkl'))
 
 # 4. Xử lý mất cân bằng dữ liệu với SMOTE cho tập train
@@ -94,8 +99,8 @@ for name, model in models.items():
 
     joblib.dump(model, os.path.join(models_dir, f'{name.replace(" ", "_").lower()}.pkl'))
 
-# 6. Đánh giá chi tiết mô hình tốt nhất (LightGBM) trên tập Test
-best_model_name = 'LightGBM'
+# 6. Đánh giá chi tiết mô hình tốt nhất (XGBoost) trên tập Test
+best_model_name = 'XGBoost'
 best_model = results[best_model_name]['model']
 
 y_test_pred = best_model.predict(X_test_scaled)
@@ -117,7 +122,7 @@ plt.title(f'Confusion Matrix - {best_model_name}')
 plt.ylabel('True Label')
 plt.xlabel('Predicted Label')
 plt.tight_layout()
-plt.savefig(os.path.join(visuals_dir, '03_confusion_matrix_lightgbm.png'))
+plt.savefig(os.path.join(visuals_dir, '03_confusion_matrix_best.png'))
 plt.close()
 
 # ROC Curve (One-vs-Rest)
@@ -154,7 +159,7 @@ if hasattr(best_model, 'feature_importances_'):
     sns.barplot(x=importances[indices][:15], y=[features[i] for i in indices][:15])
     plt.title(f'Top 15 Feature Importances - {best_model_name}')
     plt.tight_layout()
-    plt.savefig(os.path.join(visuals_dir, '03_feature_importance_lightgbm.png'))
+    plt.savefig(os.path.join(visuals_dir, '03_feature_importance_best.png'))
     plt.close()
 
 import pandas as pd

@@ -5,7 +5,7 @@ import os
 import pandas as pd
 from src.api.auth_routes import get_current_user
 from src.services.predictor import get_predictor
-from src.services.data_manager import get_data_manager
+from src.services.db_manager import get_db_manager
 
 router = APIRouter(tags=["Student"])
 
@@ -18,28 +18,23 @@ async def student_dashboard(request: Request):
     if not user or user["role"] != "student":
         return RedirectResponse(url="/")
     
-    student_id = int(user["username"])
+    try:
+        student_id = int(user["username"])
+    except (ValueError, TypeError):
+        return RedirectResponse(url="/")
     
-    # Load data from memory
-    dm = get_data_manager()
-    df = dm.get_df()
+    # Load data from database
+    dbm = get_db_manager()
+    student = dbm.get_student_by_id(student_id)
     
-    if df is None:
-        return templates.TemplateResponse("index.html", {
-            "request": request,
-            "error": "Dữ liệu chưa được tải vào hệ thống."
-        })
-        
-    student_data = df[df['id_student'] == student_id]
-    
-    if student_data.empty:
+    if not student:
         return templates.TemplateResponse("index.html", {
             "request": request,
             "error": f"Student ID {student_id} not found."
         })
         
-    # Get the latest record
-    student_record = student_data.iloc[0].to_dict()
+    # Get the record as dict
+    student_record = student.model_dump()
     
     # Predict to get recommendations and confidence if not in CSV or for fresh result
     predictor = get_predictor()

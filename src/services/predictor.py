@@ -3,9 +3,8 @@ Services - Logic xử lý chính: Load model và thực hiện dự đoán từ 
 """
 import os
 import joblib
-import numpy as np
 import pandas as pd
-from typing import List, Optional
+from typing import Optional
 import logging
 
 logger = logging.getLogger(__name__)
@@ -45,23 +44,23 @@ FEATURE_COLUMNS = [
     'avg_tma_score', 'n_submitted', 'n_late', 'avg_submit_delay'
 ]
 
-# Model metrics (từ kết quả train)
+# Model metrics (Cập nhật theo XGBoost - mô hình tối ưu nhất)
 MODEL_METRICS = {
-    "LightGBM": {
-        "f1_macro": 0.7823,
-        "balanced_accuracy": 0.7891,
-        "auc": 0.9456,
-        "accuracy": 0.8102
+    "XGBoost": {
+        "f1_macro": 0.8465,
+        "balanced_accuracy": 0.8906,
+        "auc": 0.9868,
+        "accuracy": 0.9271
     }
 }
 
 
 class RiskPredictor:
     """
-    Service để load model LightGBM và thực hiện dự đoán mức độ rủi ro sinh viên
+    Service để load model XGBoost (hoặc LightGBM) và thực hiện dự đoán mức độ rủi ro sinh viên
     """
 
-    def __init__(self, model_name: str = "lightgbm"):
+    def __init__(self, model_name: str = "xgboost"):
         self.model_name = model_name
         self.model = None
         self.scaler = None
@@ -70,8 +69,14 @@ class RiskPredictor:
     def _load_model(self):
         """Load model và scaler từ file .pkl"""
         try:
-            model_path = os.path.join(MODELS_DIR, f"{self.model_name}.pkl")
-            scaler_path = os.path.join(MODELS_DIR, "scaler.pkl")
+            # Check notebooks/models first then root models/
+            model_path = os.path.join(BASE_DIR, "notebooks", "models", f"{self.model_name}.pkl")
+            scaler_path = os.path.join(BASE_DIR, "notebooks", "models", "scaler.pkl")
+            
+            if not os.path.exists(model_path):
+                model_path = os.path.join(MODELS_DIR, f"{self.model_name}.pkl")
+            if not os.path.exists(scaler_path):
+                scaler_path = os.path.join(MODELS_DIR, "scaler.pkl")
 
             if not os.path.exists(model_path):
                 raise FileNotFoundError(f"Model file không tìm thấy: {model_path}")
@@ -94,7 +99,7 @@ class RiskPredictor:
             # Chuẩn bị input data theo đúng thứ tự feature (23 tính năng)
             input_values = [student_data.get(col, 0) for col in FEATURE_COLUMNS]
             
-            # Chuyển thành DataFrame để có feature names (Tránh lỗi StandardScaler)
+            # Chuyển thành DataFrame để có feature names (Dùng cho cả XGBoost và LightGBM)
             X = pd.DataFrame([input_values], columns=FEATURE_COLUMNS)
 
             # Chuẩn hóa dữ liệu
@@ -116,7 +121,7 @@ class RiskPredictor:
                 "confidence": round(confidence, 2),
                 "probabilities": probabilities,
                 "recommendation": RECOMMENDATIONS[risk_level],
-                "model_used": "LightGBM",
+                "model_used": self.model_name.upper(),
                 "risk_color": RISK_COLORS[risk_level]
             }
 
@@ -129,11 +134,11 @@ class RiskPredictor:
 
     def get_feature_info(self) -> dict:
         return {
-            "model_name": "LightGBM",
+            "model_name": self.model_name.upper(),
             "features": FEATURE_COLUMNS,
             "num_features": len(FEATURE_COLUMNS),
             "classes": list(RISK_LABELS.values()),
-            "metrics": MODEL_METRICS["LightGBM"]
+            "metrics": MODEL_METRICS.get("XGBoost", {})
         }
 
 

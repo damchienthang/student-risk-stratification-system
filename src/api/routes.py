@@ -76,8 +76,21 @@ async def predict_risk(student: StudentInput):
 
 
 @router.get("/api/query/{student_id}", tags=["Query"])
-async def query_student_by_id(student_id: int):
+async def query_student_by_id(student_id: int, request: Request):
     """Truy vấn thông tin chi tiết và dự báo cho một sinh viên cụ thể"""
+    from src.api.auth_routes import get_current_user
+    user = get_current_user(request)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Yêu cầu đăng nhập")
+    
+    # Student can only query their own ID; lecturer can query any ID
+    if user["role"] == "student" and str(student_id) != user["username"]:
+        raise HTTPException(status_code=403, detail="Sinh viên chỉ có thể xem thông tin của mình")
+    
+    if user["role"] not in ("lecturer", "student"):
+        raise HTTPException(status_code=403, detail="Không có quyền truy cập")
+
     from src.services.db_manager import get_db_manager
     
     dbm = get_db_manager()
@@ -89,13 +102,30 @@ async def query_student_by_id(student_id: int):
     # Convert SQLModel object to dict
     student_dict = student.model_dump()
     
-    return {
-        "student": student_dict,
-        "prediction": {
+    # Run predictor to get confidence and probabilities
+    try:
+        predictor = get_predictor()
+        prediction_full = predictor.predict(student_dict)
+        prediction_resp = {
+            "risk_level": prediction_full["risk_level"],
+            "risk_label": prediction_full["risk_label"],
+            "confidence": prediction_full["confidence"],
+            "recommendation": prediction_full["recommendation"],
+            "risk_color": prediction_full["risk_color"]
+        }
+    except Exception:
+        # Fallback to stored label if predictor fails
+        prediction_resp = {
             "risk_level": student.risk_level,
             "risk_label": student.risk_label,
-            "recommendation": get_recommendation(student.risk_level)
+            "confidence": 0.0,
+            "recommendation": get_recommendation(student.risk_level),
+            "risk_color": "#64748b"
         }
+    
+    return {
+        "student": student_dict,
+        "prediction": prediction_resp
     }
 
 def get_recommendation(risk_level: int) -> str:

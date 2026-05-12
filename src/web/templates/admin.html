@@ -3,476 +3,509 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản trị hệ thống | RiskSight AI</title>
+    <title>Admin Dashboard — Student Risk System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/admin_style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .btn-page {
-            background: #eee;
-            border: 1px solid #ccc;
-            padding: 5px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .btn-page:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .btn-page:hover:not(:disabled) {
-            background: #ddd;
-        }
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="logo-area">
-                <span class="logo-text">RiskSight AI</span>
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">🎓</div>
+            <div>
+                <div class="sidebar-brand-text">RiskSight</div>
+                <div class="sidebar-brand-sub">Admin Dashboard</div>
             </div>
-            <ul>
-                <li class="active" onclick="showSection('dashboard', this)">📊 Tổng quan</li>
-                <li onclick="showSection('classList', this)">🏫 Danh sách lớp</li>
-                <li onclick="showSection('analytics', this)">📈 Phân tích sâu</li>
-                <li onclick="window.location.href='/'" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">🏠 Về trang chủ</li>
-                <li onclick="window.location.href='/logout'" style="color: var(--primary);">🚪 Đăng xuất</li>
-            </ul>
-            <div class="sidebar-footer">
-                Học viện Công nghệ BCVT<br>Nhóm 14 - HK6
-            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-label">BẢNG ĐIỀU KHIỂN</div>
+            <button class="nav-item active" onclick="showSection('overview',this)">
+                Tổng quan
+            </button>
+            <div class="sidebar-label">QUẢN LÝ SINH VIÊN</div>
+            <button class="nav-item" onclick="showSection('students',this)">
+                Danh sách sinh viên
+            </button>
+            <div class="sidebar-label">DỮ LIỆU & MÔ HÌNH</div>
+            <button class="nav-item" onclick="showSection('analytics',this)">
+                Chi tiết mô hình
+            </button>
+            <div class="sidebar-label">HỆ THỐNG</div>
+            <button class="nav-item" onclick="showSection('users',this)">
+                Quản lý tài khoản
+            </button>
         </nav>
+        <div class="sidebar-footer">
+            <a href="/" class="nav-item">Trang chủ</a>
+            <a href="/logout" class="nav-item danger">Đăng xuất</a>
+        </div>
+    </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header>
-                <div class="header-title">
-                    <h1 id="sectionTitle">Bảng Điều Khiển Quản Trị</h1>
-                </div>
-                <div class="user-info">
-                    <div class="avatar">{{ username[0]|upper }}</div>
-                    <div style="text-align: right;">
-                        <span style="font-weight: 800; display: block; color: var(--secondary);">{{ username }}</span>
-                        <span style="font-size: 0.7rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Giảng viên</span>
-                    </div>
-                </div>
-            </header>
+    <!-- MAIN -->
+    <div class="main-content">
+        <div class="topbar">
+            <div id="topbarTitle" class="topbar-title">Tổng quan hệ thống</div>
+            <div class="topbar-user">
+                <span>Xin chào, <strong>{{ user.username }}</strong></span>
+                <div class="avatar">AD</div>
+            </div>
+        </div>
 
-            <!-- Control Bar (Global Filters) -->
-            <section class="section-card" id="globalFilterBar" style="margin-bottom: 2rem;">
-                <div class="filter-bar">
-                    <div class="filter-item">
-                        <label>Học phần (Module)</label>
-                        <select id="moduleSelect">
-                            <option value="AAA">AAA - Khoa học xã hội</option>
-                            <option value="BBB" selected>BBB - Khoa học tự nhiên</option>
-                            <option value="CCC">CCC - Tin học</option>
-                            <option value="DDD">DDD - Công nghệ</option>
-                            <option value="EEE">EEE - Môi trường</option>
-                            <option value="FFF">FFF - Kỹ thuật</option>
-                            <option value="GGG">GGG - Kinh tế</option>
-                        </select>
+        <div class="page-content">
+
+            <!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
+            <section id="section-overview" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Tổng sinh viên</div>
+                        <div id="statTotal" class="stat-value">—</div>
+                        <div class="stat-trend">Bộ dữ liệu OULAD</div>
                     </div>
-                    <div class="filter-item">
-                        <label>Học kỳ (Presentation)</label>
-                        <select id="semesterSelect">
-                            <option value="2013J">2013J</option>
-                            <option value="2014J" selected>2014J</option>
-                            <option value="2014B">2014B</option>
-                            <option value="2013B">2013B</option>
-                        </select>
+                    <div class="stat-card">
+                        <div class="stat-label">Độ chính xác XGBoost</div>
+                        <div class="stat-value">92.71%</div>
+                        <div class="stat-trend up">↑ Mô hình tối ưu nhất</div>
                     </div>
-                    <button class="btn-action btn-generate" onclick="updateDashboard()" style="background: var(--primary); padding: 0.85rem 2rem; color: white; border-radius: 6px; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase;">🔍 Truy vấn dữ liệu</button>
+                    <div class="stat-card">
+                        <div class="stat-label">Điểm TB (Toàn bộ)</div>
+                        <div id="statAvgScore" class="stat-value">—</div>
+                        <div class="stat-trend">Trên tất cả môn học</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Click TB / sinh viên</div>
+                        <div id="statAvgClicks" class="stat-value">—</div>
+                        <div class="stat-trend">Tương tác hệ thống</div>
+                    </div>
+                </div>
+
+                <!-- Quick Search -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">🔍 Tra cứu sinh viên</span>
+                    </div>
+                    <div class="card-body">
+                        <div style="display:flex;gap:10px;align-items:center;">
+                            <input type="text" id="adminSearchInput" class="form-input" style="flex:1;"
+                                placeholder="Nhập mã sinh viên (VD: 11391)..."
+                                onkeydown="if(event.key==='Enter') adminSearchStudent()">
+                            <button onclick="adminSearchStudent()" class="btn btn-primary">Truy vấn</button>
+                        </div>
+                        <div id="adminSearchResult" class="result-panel"></div>
+                    </div>
+                </div>
+
+                <!-- Top At-Risk List -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">⚠️ Top 10 sinh viên rủi ro cao nhất</span>
+                        <button class="btn btn-outline btn-sm" onclick="showSection('students',document.querySelectorAll('.nav-item')[1])">Xem tất cả →</button>
+                    </div>
+                    <div class="card-body" id="overviewRiskList">
+                        <p style="color:var(--text-dim);font-size:0.85rem;">Đang tải...</p>
+                    </div>
                 </div>
             </section>
 
-            <!-- SECTION: DASHBOARD -->
-            <div id="section-dashboard">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-label">Tổng số sinh viên</div>
-                        <div class="stat-value" id="stat-total-students">-</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">Tương tác TB</div>
-                        <div class="stat-value" id="stat-avg-clicks">-</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">Điểm TB Lớp</div>
-                        <div class="stat-value" id="stat-avg-score">-</div>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
-                    <div class="section-card">
-                        <div class="section-header">
-                            <h2>Phân bổ rủi ro</h2>
+            <!-- ═══════════════════════ STUDENTS ═══════════════════════ -->
+            <section id="section-students" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">👥 Danh sách sinh viên rủi ro cao</span>
+                        <div style="display:flex; gap:8px;">
+                            <select id="riskSelect" class="form-select" onchange="updateDashboard()">
+                                <option value="all">Tất cả mức rủi ro</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Very High">Very High</option>
+                            </select>
+                            <select id="moduleSelect" class="form-select" onchange="updateDashboard()">
+                                <option value="all">Tất cả môn học</option>
+                                <option value="AAA">AAA</option>
+                                <option value="BBB">BBB</option>
+                                <option value="CCC">CCC</option>
+                                <option value="DDD">DDD</option>
+                                <option value="EEE">EEE</option>
+                                <option value="FFF">FFF</option>
+                                <option value="GGG">GGG</option>
+                            </select>
+                            <select id="semesterSelect" class="form-select" onchange="updateDashboard()">
+                                <option value="all">Tất cả học kỳ</option>
+                                <option value="2013J">2013J</option>
+                                <option value="2013B">2013B</option>
+                                <option value="2014J">2014J</option>
+                                <option value="2014B">2014B</option>
+                            </select>
                         </div>
-                        <div style="height: 320px;">
-                            <canvas id="riskDoughnutChart"></canvas>
-                        </div>
                     </div>
-                    <div class="section-card">
-                        <div class="section-header">
-                            <h2>Sinh viên cần hỗ trợ khẩn cấp</h2>
-                        </div>
+                    <!-- TOP PAGINATION -->
+                    <div id="paginationContainerTop" class="pagination-container" style="padding: 10px 20px; border-bottom: 1px solid var(--border); border-top: none;"></div>
+                    <div class="table-wrap">
                         <table>
                             <thead>
                                 <tr>
                                     <th>Mã SV</th>
+                                    <th>Môn học</th>
+                                    <th>Học kỳ</th>
                                     <th>Điểm TB</th>
-                                    <th>Trạng thái rủi ro</th>
+                                    <th>Tổng Click</th>
+                                    <th>Mức rủi ro</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody id="topRiskTable">
-                                <!-- Data injected -->
+                            <tbody id="riskTableBody">
+                                <tr class="loading-row"><td colspan="7">Đang tải dữ liệu...</td></tr>
                             </tbody>
                         </table>
                     </div>
+                    <!-- PAGINATION -->
+                    <div id="paginationContainer" class="pagination-container"></div>
                 </div>
-            </div>
+            </section>
 
-            <!-- SECTION: CLASS LIST -->
-            <div id="section-classList" class="hidden">
-                <div class="section-card">
-                    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h2 style="margin: 0;">Toàn bộ danh sách lớp học</h2>
-                        <div class="search-box">
-                            <input type="text" id="studentSearch" placeholder="Tìm mã sinh viên..." onkeyup="handleSearch(event)" style="padding: 0.6rem 1rem; border-radius: 6px; border: 1px solid var(--border); width: 280px; font-family: 'Inter', sans-serif;">
-                        </div>
+            <!-- ═══════════════════════ ANALYTICS ══════════════════════ -->
+            <section id="section-analytics" class="content-section">
+                <div class="card" style="margin-bottom:20px;">
+                    <div class="card-header">
+                        <span class="card-title">🏆 So sánh hiệu năng các mô hình</span>
                     </div>
-                    <div style="overflow-x: auto; max-height: 600px;">
-                        <table id="fullClassTable">
+                    <div class="table-wrap">
+                        <table class="model-table">
                             <thead>
                                 <tr>
-                                    <th>Mã SV</th>
-                                    <th>Điểm TB</th>
-                                    <th>Tương tác</th>
-                                    <th>Mức rủi ro</th>
-                                    <th>Chi tiết</th>
+                                    <th>Mô hình</th>
+                                    <th>F1-Score (Macro)</th>
+                                    <th>Accuracy</th>
+                                    <th>Balanced Acc.</th>
+                                    <th>AUC</th>
+                                    <th>Trạng thái</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Data injected -->
+                                <tr class="best-model">
+                                    <td>XGBoost</td>
+                                    <td>84.65%</td><td>92.71%</td><td>89.06%</td><td>98.68%</td>
+                                    <td><span class="badge badge-optimal">✦ Tối ưu nhất</span></td>
+                                </tr>
+                                <tr>
+                                    <td>LightGBM</td>
+                                    <td>84.05%</td><td>92.58%</td><td>87.18%</td><td>98.66%</td>
+                                    <td><span class="badge badge-low">Hiệu năng cao</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Random Forest</td>
+                                    <td>83.20%</td><td>91.55%</td><td>88.95%</td><td>98.39%</td>
+                                    <td><span class="badge badge-medium">Ổn định</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Logistic Regression</td>
+                                    <td>69.38%</td><td>83.31%</td><td>81.52%</td><td>95.85%</td>
+                                    <td><span class="badge badge-high">Cơ bản</span></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                    <!-- Pagination Controls -->
-                    <div class="pagination-container" style="margin-top: 25px; display: flex; justify-content: center; gap: 15px; align-items: center;">
-                        <button id="prevPage" onclick="changePage(-1)" class="btn-page">❮ Trước</button>
-                        <span id="pageInfo" style="font-weight: 700; color: var(--secondary);">Trang 1 / 1</span>
-                        <button id="nextPage" onclick="changePage(1)" class="btn-page">Sau ❯</button>
-                    </div>
                 </div>
-            </div>
 
-            <!-- SECTION: ANALYTICS -->
-            <div id="section-analytics" class="hidden">
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2>1. Hiệu năng mô hình & Các yếu tố ảnh hưởng</h2>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">📉 Biểu đồ phân tích</span>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div style="text-align: center; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
-                            <p style="font-weight: 700; margin-bottom: 15px; color: var(--secondary);">Top đặc trưng quan trọng nhất (Feature Importance)</p>
-                            <img src="/visuals/03_feature_importance_lightgbm.png" style="width: 100%; border-radius: 4px; cursor: pointer;" onclick="openDetailImage('/visuals/03_feature_importance_lightgbm.png', 'Feature Importance')">
-                            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 15px; text-align: left; padding: 0 10px;">
-                                Biểu đồ cho thấy các yếu tố có tác động lớn nhất đến dự đoán của mô hình. <b>Tổng số click (total_clicks)</b> và <b>Điểm trung bình (avg_score)</b> là hai biến quyết định hàng đầu trong việc phân loại mức độ rủi ro.
-                            </p>
-                        </div>
-                        <div style="text-align: center; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
-                            <p style="font-weight: 700; margin-bottom: 15px; color: var(--secondary);">Ma trận nhầm lẫn (Confusion Matrix)</p>
-                            <img src="/visuals/03_confusion_matrix_lightgbm.png" style="width: 100%; border-radius: 4px; cursor: pointer;" onclick="openDetailImage('/visuals/03_confusion_matrix_lightgbm.png', 'Confusion Matrix')">
-                            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 15px; text-align: left; padding: 0 10px;">
-                                Ma trận đánh giá độ chính xác của mô hình trên từng lớp rủi ro. Mô hình LightGBM cho thấy khả năng phân biệt rất tốt giữa nhóm <b>Low Risk</b> và <b>Very High Risk</b>, giúp giảng viên can thiệp đúng đối tượng.
-                            </p>
+                    <div class="card-body">
+                        <div class="analytics-img-grid">
+                            <div class="analytics-img-card" onclick="openModal('/visuals/03_feature_importance_best.png','Feature Importance — XGBoost')">
+                                <img src="/visuals/03_feature_importance_best.png" alt="Feature Importance">
+                                <p>Top đặc trưng quan trọng (Feature Importance)</p>
+                            </div>
+                            <div class="analytics-img-card" onclick="openModal('/visuals/03_confusion_matrix_best.png','Confusion Matrix — XGBoost')">
+                                <img src="/visuals/03_confusion_matrix_best.png" alt="Confusion Matrix">
+                                <p>Ma trận nhầm lẫn (Confusion Matrix)</p>
+                            </div>
+                            <div class="analytics-img-card" onclick="openModal('/visuals/01_class_distribution.png','Phân phối nhãn rủi ro')">
+                                <img src="/visuals/01_class_distribution.png" alt="Class Distribution">
+                                <p>Phân phối nhãn rủi ro trong tập dữ liệu</p>
+                            </div>
+                            <div class="analytics-img-card" onclick="openModal('/visuals/02_04_vle_features.png','Tương tác VLE')">
+                                <img src="/visuals/02_04_vle_features.png" alt="VLE Features">
+                                <p>Tương tác hệ thống VLE theo nhóm rủi ro</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2>2. Phân tích tương quan & Phân phối</h2>
+            <!-- ═══════════════════════ USERS ══════════════════════════ -->
+            <section id="section-users" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">🔐 Quản lý tài khoản</span>
+                        <button class="btn btn-primary btn-sm" onclick="showAddUserForm()">+ Thêm tài khoản</button>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div style="text-align: center; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
-                            <p style="font-weight: 700; margin-bottom: 15px; color: var(--secondary);">Ma trận tương quan đặc trưng</p>
-                            <img src="/visuals/02_07_correlation.png" style="width: 100%; border-radius: 4px; cursor: pointer;" onclick="openDetailImage('/visuals/02_07_correlation.png', 'Correlation Matrix')">
-                            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 15px; text-align: left; padding: 0 10px;">
-                                Thể hiện mối liên hệ giữa các biến số. Sự tương quan thuận mạnh giữa số ngày hoạt động và tổng số click cho thấy hành vi tương tác liên tục là dấu hiệu của sinh viên tích cực.
-                            </p>
+                    <div id="addUserForm" style="display:none;padding:16px 20px;border-bottom:1px solid var(--border);background:#fafbfc;">
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+                            <div>
+                                <label style="font-size:0.72rem;font-weight:600;color:var(--text-dim);display:block;margin-bottom:4px;">TÊN ĐĂNG NHẬP</label>
+                                <input type="text" id="newUsername" class="form-input" placeholder="VD: giangvien2">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem;font-weight:600;color:var(--text-dim);display:block;margin-bottom:4px;">MẬT KHẨU</label>
+                                <input type="password" id="newPassword" class="form-input" placeholder="Mật khẩu">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem;font-weight:600;color:var(--text-dim);display:block;margin-bottom:4px;">HỌ TÊN</label>
+                                <input type="text" id="newFullname" class="form-input" placeholder="Họ và tên">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem;font-weight:600;color:var(--text-dim);display:block;margin-bottom:4px;">VAI TRÒ</label>
+                                <select id="newRole" class="form-select">
+                                    <option value="lecturer">Giảng viên</option>
+                                    <option value="student">Sinh viên</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="createUser()">Tạo tài khoản</button>
+                            <button class="btn btn-outline" onclick="hideAddUserForm()">Hủy</button>
                         </div>
-                        <div style="text-align: center; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
-                            <p style="font-weight: 700; margin-bottom: 15px; color: var(--secondary);">Phân phối rủi ro theo Học phần/Học kỳ</p>
-                            <img src="/visuals/02_02_risk_by_module_presentation.png" style="width: 100%; border-radius: 4px; cursor: pointer;" onclick="openDetailImage('/visuals/02_02_risk_by_module_presentation.png', 'Risk Distribution')">
-                            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 15px; text-align: left; padding: 0 10px;">
-                                So sánh tỷ lệ rủi ro giữa các khóa học khác nhau. Giúp nhà quản lý giáo dục nhận biết những học phần có tỷ lệ sinh viên gặp khó khăn cao để điều chỉnh nội dung giảng dạy.
-                            </p>
-                        </div>
+                        <div id="userFormMsg" style="margin-top:8px;font-size:0.82rem;"></div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr><th>Tên đăng nhập</th><th>Họ tên</th><th>Vai trò</th></tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr class="loading-row"><td colspan="3">Đang tải...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </section>
 
-                <div class="section-card">
-                    <div class="section-header">
-                        <h2>3. So sánh mô hình & ROC Curve</h2>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div style="text-align: center; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
-                            <p style="font-weight: 700; margin-bottom: 15px; color: var(--secondary);">Biểu đồ so sánh các thuật toán</p>
-                            <img src="/visuals/03_model_comparison.png" style="width: 100%; border-radius: 4px; cursor: pointer;" onclick="openDetailImage('/visuals/03_model_comparison.png', 'Model Comparison')">
-                            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 15px; text-align: left; padding: 0 10px;">
-                                So sánh hiệu năng giữa LightGBM, Random Forest, XGBoost và Logistic Regression. LightGBM vượt trội hơn hẳn về cả độ chính xác (Accuracy) và F1-Score.
-                            </p>
-                        </div>
-                        <div style="text-align: center; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
-                            <p style="font-weight: 700; margin-bottom: 15px; color: var(--secondary);">Đường cong ROC (One-vs-Rest)</p>
-                            <img src="/visuals/03_roc_curve_ovr.png" style="width: 100%; border-radius: 4px; cursor: pointer;" onclick="openDetailImage('/visuals/03_roc_curve_ovr.png', 'ROC Curve')">
-                            <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 15px; text-align: left; padding: 0 10px;">
-                                Thể hiện khả năng phân loại của mô hình trên các ngưỡng khác nhau. Chỉ số AUC đạt trên 0.94 khẳng định độ tin cậy cực cao của hệ thống.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div><!-- /page-content -->
+    </div><!-- /main-content -->
+</div><!-- /app-layout -->
 
-        </main>
+<!-- IMAGE MODAL -->
+<div id="imgModal" class="modal-overlay" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <h3 id="modalTitle" style="font-size:0.95rem;font-weight:700;margin-bottom:16px;color:var(--secondary);"></h3>
+        <img id="modalImg" src="" style="width:100%;border-radius:6px;">
     </div>
+</div>
 
-    <!-- ── IMAGE DETAIL MODAL (for Analytics) ──────────────── -->
-    <div class="modal-overlay" id="imageDetailModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center;" onclick="closeImageModal()">
-        <div style="max-width: 90%; max-height: 90%; position: relative;" onclick="event.stopPropagation()">
-            <h3 id="imageModalTitle" style="color: white; margin-bottom: 10px; text-align: center; font-family: 'Inter', sans-serif;"></h3>
-            <img id="imageModalImg" src="" style="width: 100%; max-height: 80vh; border-radius: 8px; box-shadow: 0 0 30px rgba(0,0,0,0.5);">
-            <button onclick="closeImageModal()" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 2rem; cursor: pointer;">✕</button>
-        </div>
-    </div>
+<script>
+const TITLES = {
+    overview:'Tổng quan hệ thống', students:'Quản lý sinh viên',
+    analytics:'Chi tiết mô hình',  users:'Quản lý tài khoản'
+};
+const RISK_BADGE = {
+    'Low'      :'<span class="badge badge-low">Low</span>',
+    'Medium'   :'<span class="badge badge-medium">Medium</span>',
+    'High'     :'<span class="badge badge-high">High</span>',
+    'Very High':'<span class="badge badge-veryhigh">Very High</span>'
+};
+const BADGE_BG    = {'Low':'#d1fae5','Medium':'#fef3c7','High':'#ffedd5','Very High':'#fee2e2'};
+const BADGE_COLOR = {'Low':'#065f46','Medium':'#92400e','High':'#9a3412','Very High':'#991b1b'};
 
-    <!-- ── STUDENT DETAIL MODAL ────────────────────────────── -->
-    <div class="modal-overlay" id="studentModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
-        <div class="section-card" style="max-width: 700px; width: 90%; background: white;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--bg-alt); padding-bottom: 10px;">
-                <h3 id="modalStudentTitle" style="margin: 0; color: var(--secondary);">Hồ sơ chi tiết sinh viên</h3>
-                <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">✕</button>
+/* ── SECTIONS ─────────────────────────────────────────────── */
+function showSection(id, el) {
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (el) el.classList.add('active');
+    document.getElementById('topbarTitle').textContent = TITLES[id] || id;
+    if (id === 'students') updateDashboard();
+    if (id === 'users')    loadUsers();
+}
+
+/* ── OVERVIEW LOAD ────────────────────────────────────────── */
+async function loadOverview() {
+    try {
+        const r = await fetch('/api/analytics?module=all&semester=all');
+        const d = await r.json();
+        if (d.summary) {
+            document.getElementById('statTotal').textContent      = (d.summary.total_students||0).toLocaleString('vi-VN');
+            document.getElementById('statAvgScore').textContent   = (d.summary.avg_score||0).toFixed(1);
+            document.getElementById('statAvgClicks').textContent  = (d.summary.avg_clicks||0).toLocaleString('vi-VN');
+        }
+        const el = document.getElementById('overviewRiskList');
+        if (el && d.top_at_risk && d.top_at_risk.length) {
+            el.innerHTML = d.top_at_risk.slice(0,10).map(s => `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);">
+                    <div>
+                        <strong>#${s.id}</strong>
+                        <span style="color:var(--text-dim);font-size:0.8rem;margin-left:8px;">${s.code_module||''} ${s.code_presentation||''}</span>
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <span style="font-size:0.8rem;color:var(--text-dim);">Điểm: ${(s.score||0).toFixed(1)}</span>
+                        ${RISK_BADGE[s.risk]||''}
+                        <button class="btn btn-outline btn-sm" onclick="quickView(${s.id})">Xem</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch(e) { console.warn('Overview load error:', e.message); }
+}
+
+/* ── STUDENTS TABLE ───────────────────────────────────────── */
+async function updateDashboard(page = 1) {
+    const module   = document.getElementById('moduleSelect').value;
+    const semester = document.getElementById('semesterSelect').value;
+    const risk     = document.getElementById('riskSelect').value;
+    const tbody    = document.getElementById('riskTableBody');
+    const pagContTop = document.getElementById('paginationContainerTop');
+    const pagContBot = document.getElementById('paginationContainer');
+    
+    tbody.innerHTML = '<tr class="loading-row"><td colspan="7">Đang tải dữ liệu...</td></tr>';
+    pagContTop.innerHTML = '';
+    pagContBot.innerHTML = '';
+
+    try {
+        const r = await fetch(`/api/analytics?module=${module}&semester=${semester}&risk=${risk}&page=${page}&limit=20`);
+        const d = await r.json();
+        
+        if (d.error || !d.all_students || !d.all_students.length) {
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="7">Không có dữ liệu cho lựa chọn này.</td></tr>';
+            return;
+        }
+
+        // Render table rows using all_students for full list
+        tbody.innerHTML = d.all_students.map(s => `
+            <tr>
+                <td><strong>#${s.id}</strong></td>
+                <td>${s.code_module||'—'}</td>
+                <td>${s.code_presentation||'—'}</td>
+                <td>${(s.score??0).toFixed(1)}</td>
+                <td>${s.clicks??'—'}</td>
+                <td>${RISK_BADGE[s.risk]||`<span class="badge">${s.risk||'—'}</span>`}</td>
+                <td><button class="btn btn-outline btn-sm" onclick="quickView(${s.id})">Chi tiết</button></td>
+            </tr>
+        `).join('');
+
+        // Render Pagination
+        if (d.pagination && d.pagination.total_pages > 1) {
+            const p = d.pagination;
+            const html = `
+                <button class="page-btn" ${p.page <= 1 ? 'disabled' : ''} onclick="updateDashboard(${p.page - 1})">← Trước</button>
+                <div class="page-info">Trang ${p.page} / ${p.total_pages} (Tổng: ${p.total_records})</div>
+                <button class="page-btn" ${p.page >= p.total_pages ? 'disabled' : ''} onclick="updateDashboard(${p.page + 1})">Sau →</button>
+            `;
+            pagContTop.innerHTML = html;
+            pagContBot.innerHTML = html;
+        }
+    } catch(e) {
+        tbody.innerHTML = `<tr class="loading-row"><td colspan="7">Lỗi: ${e.message}</td></tr>`;
+    }
+}
+
+/* ── QUICK VIEW ───────────────────────────────────────────── */
+function quickView(id) {
+    showSection('overview', document.querySelector('.nav-item'));
+    document.getElementById('adminSearchInput').value = id;
+    adminSearchStudent();
+}
+
+/* ── STUDENT SEARCH ───────────────────────────────────────── */
+async function adminSearchStudent() {
+    const id    = document.getElementById('adminSearchInput').value.trim();
+    const panel = document.getElementById('adminSearchResult');
+    if (!id) return;
+    panel.className = 'result-panel active';
+    panel.innerHTML = '<em style="color:var(--text-dim)">Đang tra cứu...</em>';
+    try {
+        const r = await fetch(`/api/query/${id}`);
+        if (!r.ok) throw new Error('Không tìm thấy sinh viên #' + id);
+        const d = await r.json();
+        const s = d.student, p = d.prediction;
+        const bg  = BADGE_BG[p.risk_label]    || '#f3f4f6';
+        const clr = BADGE_COLOR[p.risk_label] || '#374151';
+        const conf = p.confidence ? `(${(p.confidence*100).toFixed(1)}%)` : '';
+        panel.innerHTML = `
+            <div class="result-header">
+                <div>
+                    <div style="font-weight:700;font-size:1rem;">Sinh viên #${s.id_student}</div>
+                    <div style="color:var(--text-dim);font-size:0.82rem;margin-top:2px;">${s.code_module} — ${s.code_presentation}</div>
+                </div>
+                <span class="badge" style="background:${bg};color:${clr};font-size:0.8rem;padding:6px 14px;">
+                    ${p.risk_label||'—'} RISK &nbsp;${conf}
+                </span>
             </div>
-            <div id="modalRiskAlert" style="padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: 800; text-align: center;"></div>
-            
-            <div class="detail-grid" id="studentDetailGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
-                <!-- Data injected -->
+            <div class="result-row">
+                <div class="result-item"><span class="rl">Điểm TB</span><span class="rv">${(s.avg_score||0).toFixed(1)}</span></div>
+                <div class="result-item"><span class="rl">Tổng Click</span><span class="rv">${s.total_clicks||0}</span></div>
+                <div class="result-item"><span class="rl">Ngày học tích cực</span><span class="rv">${s.active_days||0}</span></div>
+                <div class="result-item"><span class="rl">Bài nộp muộn</span><span class="rv">${s.n_late||0}</span></div>
+                <div class="result-item"><span class="rl">Tín chỉ đã học</span><span class="rv">${s.studied_credits||0}</span></div>
+                <div class="result-item"><span class="rl">Số lần thử lại</span><span class="rv">${s.num_of_prev_attempts||0}</span></div>
             </div>
-            
-            <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 5px solid var(--primary);">
-                <h4 style="color: var(--primary); margin-bottom: 10px; font-size: 0.8rem; text-transform: uppercase;">💡 Khuyến nghị can thiệp</h4>
-                <p id="modalRecommendation" style="font-weight: 600; color: var(--secondary); margin: 0;"></p>
-            </div>
-        </div>
-    </div>
+            <div style="margin-top:12px;padding:10px 14px;background:#fffbf2;border-left:3px solid #f59e0b;border-radius:4px;font-size:0.83rem;">
+                <strong>💡 Khuyến nghị:</strong> ${p.recommendation||'—'}
+            </div>`;
+    } catch(e) {
+        panel.innerHTML = `<span style="color:#dc2626;font-size:0.85rem;">⚠ ${e.message}</span>`;
+    }
+}
 
-    <script>
-        let riskChart;
-        let currentPage = 1;
-        let totalPages = 1;
-        const pageSize = 50;
-
-        function showSection(id, element) {
-            ['dashboard', 'classList', 'analytics'].forEach(s => {
-                const el = document.getElementById('section-' + s);
-                if (el) el.classList.add('hidden');
-            });
-            document.getElementById('section-' + id).classList.remove('hidden');
-            
-            // Toggle global filter bar
-            const filterBar = document.getElementById('globalFilterBar');
-            if (id === 'analytics') {
-                filterBar.classList.add('hidden');
-            } else {
-                filterBar.classList.remove('hidden');
-            }
-
-            document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
-            element.classList.add('active');
-            
-            const titles = { 
-                'dashboard': 'Tổng Quan Hệ Thống', 
-                'classList': 'Danh Sách Sinh Viên', 
-                'analytics': 'Phân Tích Dữ Liệu' 
-            };
-            document.getElementById('sectionTitle').innerText = titles[id];
+/* ── USER MANAGEMENT ──────────────────────────────────────── */
+async function loadUsers() {
+    const tbody = document.getElementById('usersTableBody');
+    tbody.innerHTML = '<tr class="loading-row"><td colspan="3">Đang tải...</td></tr>';
+    try {
+        const r = await fetch('/api/admin/users');
+        if (!r.ok) throw new Error('Không tải được danh sách');
+        const d = await r.json();
+        if (!d.users || !d.users.length) {
+            tbody.innerHTML = '<tr class="loading-row"><td colspan="3">Chưa có tài khoản nào.</td></tr>';
+            return;
         }
+        tbody.innerHTML = d.users.map(u => `
+            <tr>
+                <td><strong>${u.username}</strong></td>
+                <td>${u.full_name||'—'}</td>
+                <td><span class="badge ${u.role==='lecturer'?'badge-optimal':'badge-low'}">${u.role}</span></td>
+            </tr>`).join('');
+    } catch(e) {
+        tbody.innerHTML = `<tr class="loading-row"><td colspan="3">${e.message}</td></tr>`;
+    }
+}
+function showAddUserForm() { document.getElementById('addUserForm').style.display = 'block'; }
+function hideAddUserForm() { document.getElementById('addUserForm').style.display = 'none'; }
+async function createUser() {
+    const msg  = document.getElementById('userFormMsg');
+    const body = {
+        username:  document.getElementById('newUsername').value.trim(),
+        password:  document.getElementById('newPassword').value,
+        full_name: document.getElementById('newFullname').value.trim(),
+        role:      document.getElementById('newRole').value
+    };
+    if (!body.username || !body.password) {
+        msg.innerHTML = '<span style="color:#dc2626">Vui lòng nhập đủ thông tin.</span>'; return;
+    }
+    try {
+        const r = await fetch('/api/admin/users', {
+            method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.detail||'Lỗi tạo tài khoản');
+        msg.innerHTML = '<span style="color:#059669">✓ Tạo thành công!</span>';
+        loadUsers(); setTimeout(hideAddUserForm, 1500);
+    } catch(e) { msg.innerHTML = `<span style="color:#dc2626">⚠ ${e.message}</span>`; }
+}
 
-        async function updateDashboard(resetPage = true) {
-            if (resetPage) currentPage = 1;
-            
-            const mod = document.getElementById('moduleSelect').value;
-            const sem = document.getElementById('semesterSelect').value;
-            const search = document.getElementById('studentSearch').value;
-            const btn = document.querySelector('.btn-generate');
-            
-            document.body.classList.add('loading');
-            btn.innerText = 'Đang xử lý...';
-            btn.disabled = true;
+/* ── MODAL ────────────────────────────────────────────────── */
+function openModal(src, title) {
+    document.getElementById('modalImg').src = src;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('imgModal').classList.add('open');
+}
+function closeModal() { document.getElementById('imgModal').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
 
-            try {
-                let url = `/api/analytics/${mod}/${sem}?page=${currentPage}&limit=${pageSize}`;
-                if (search) url += `&search=${search}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                if (data.error) {
-                    alert("Không tìm thấy dữ liệu cho học phần này");
-                    return;
-                }
-
-                // Update Stats
-                document.getElementById('stat-total-students').innerText = data.summary.total_students;
-                document.getElementById('stat-avg-clicks').innerText = data.summary.avg_clicks.toLocaleString() + ' click';
-                document.getElementById('stat-avg-score').innerText = data.summary.avg_score + ' / 100';
-
-                // Update Pagination Metadata
-                totalPages = data.pagination.total_pages;
-                document.getElementById('pageInfo').innerText = `Trang ${currentPage} / ${totalPages}`;
-                document.getElementById('prevPage').disabled = (currentPage <= 1);
-                document.getElementById('nextPage').disabled = (currentPage >= totalPages);
-
-                // Render Tables
-                renderTables(data);
-                
-                // Render Chart
-                renderChart(data.risk_distribution);
-
-            } catch (e) {
-                console.error(e);
-                alert("Đã xảy ra lỗi khi tải dữ liệu");
-            } finally {
-                document.body.classList.remove('loading');
-                btn.innerText = '🔍 Truy vấn dữ liệu';
-                btn.disabled = false;
-            }
-        }
-
-        function changePage(delta) {
-            const next = currentPage + delta;
-            if (next >= 1 && next <= totalPages) {
-                currentPage = next;
-                updateDashboard(false);
-            }
-        }
-
-        let searchTimeout;
-        function handleSearch(event) {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                updateDashboard(true);
-            }, 500);
-        }
-
-        function renderTables(data) {
-            // Dashboard Table
-            const topTable = document.getElementById('topRiskTable');
-            topTable.innerHTML = '';
-            data.top_at_risk.forEach(s => {
-                const riskClass = s.risk.toLowerCase().replace(' ', '');
-                topTable.innerHTML += `
-                    <tr>
-                        <td><strong>#${s.id}</strong></td>
-                        <td>${s.score}</td>
-                        <td><span class="badge badge-${riskClass}">${s.risk}</span></td>
-                        <td><button onclick="viewStudentDetail(${s.id})" style="background: var(--secondary); color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Hồ sơ</button></td>
-                    </tr>
-                `;
-            });
-
-            // Full Class Table
-            const fullTable = document.querySelector('#fullClassTable tbody');
-            fullTable.innerHTML = '';
-            data.all_students.forEach(s => {
-                const riskClass = s.risk.toLowerCase().replace(' ', '');
-                fullTable.innerHTML += `
-                    <tr>
-                        <td><strong>${s.id}</strong></td>
-                        <td>${s.score}</td>
-                        <td>${s.clicks}</td>
-                        <td><span class="risk-dot risk-${riskClass}"></span>${s.risk}</td>
-                        <td onclick="viewStudentDetail(${s.id})" style="color: var(--primary); cursor: pointer;">🔍 Chi tiết</td>
-                    </tr>
-                `;
-            });
-        }
-
-        function renderChart(distribution) {
-            if (riskChart) riskChart.destroy();
-            const ctx = document.getElementById('riskDoughnutChart').getContext('2d');
-            riskChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Thấp', 'TB', 'Cao', 'Rất cao'],
-                    datasets: [{
-                        data: distribution,
-                        backgroundColor: ['#27ae60', '#f39c12', '#e67e22', '#c0392b'],
-                        hoverOffset: 15,
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '75%',
-                    plugins: { 
-                        legend: { 
-                            position: 'bottom',
-                            labels: { font: { family: 'Inter', weight: '700' }, padding: 20 }
-                        } 
-                    }
-                }
-            });
-        }
-
-        async function viewStudentDetail(id) {
-            try {
-                const res = await fetch(`/api/query/${id}`);
-                const data = await res.json();
-                
-                document.getElementById('modalStudentTitle').innerText = `Sinh viên #${data.student.id_student}`;
-                
-                const riskLabel = data.prediction.risk_label;
-                const riskClass = riskLabel.toLowerCase().replace(' ', '');
-                const alertBox = document.getElementById('modalRiskAlert');
-                alertBox.innerText = `MỨC ĐỘ RỦI RO: ${riskLabel.toUpperCase()}`;
-                alertBox.className = `badge-${riskClass}`;
-
-                document.getElementById('modalRecommendation').innerText = data.prediction.recommendation;
-
-                const grid = document.getElementById('studentDetailGrid');
-                grid.innerHTML = '';
-                const items = [
-                    { label: 'Môn học', val: data.student.code_module },
-                    { label: 'Học kỳ', val: data.student.code_presentation },
-                    { label: 'Điểm TB', val: data.student.avg_score.toFixed(2) },
-                    { label: 'Tương tác', val: data.student.total_clicks },
-                    { label: 'Ngày online', val: data.student.active_days },
-                    { label: 'Nộp muộn', val: data.student.n_late }
-                ];
-
-                items.forEach(i => {
-                    grid.innerHTML += `<div class="detail-item"><span class="detail-label">${i.label}</span><span class="detail-value">${i.val}</span></div>`;
-                });
-
-                document.getElementById('studentModal').style.display = 'flex';
-            } catch (err) {
-                alert("Lỗi tải chi tiết sinh viên");
-            }
-        }
-
-        function closeModal() { document.getElementById('studentModal').style.display = 'none'; }
-
-        window.onload = updateDashboard;
-    </script>
+/* ── INIT ─────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', loadOverview);
+</script>
 </body>
 </html>

@@ -6,11 +6,14 @@ import warnings
 # Suppress warnings
 warnings.filterwarnings('ignore')
 
+# Absolute base dir regardless of CWD
+_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 def generate_admin_report(module_code, presentation_code):
-    # 1. File paths
-    data_path = 'data/processed/student_features_labeled.csv'
-    model_path = 'notebooks/models/lightgbm.pkl'
-    scaler_path = 'notebooks/models/scaler.pkl'
+    # 1. File paths (absolute)
+    data_path = os.path.join(_BASE_DIR, 'data', 'processed', 'student_features_labeled.csv')
+    model_path = os.path.join(_BASE_DIR, 'notebooks', 'models', 'xgboost.pkl')  # Use XGBoost
+    scaler_path = os.path.join(_BASE_DIR, 'notebooks', 'models', 'scaler.pkl')
 
     if not os.path.exists(data_path):
         print("Error: Processed data file not found.")

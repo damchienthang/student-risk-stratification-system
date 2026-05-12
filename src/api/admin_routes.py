@@ -13,7 +13,7 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "src", "web", "temp
 @router.get("/admin", response_class=HTMLResponse)
 async def admin_dashboard(request: Request):
     user = get_current_user(request)
-    if not user or user["role"] != "admin":
+    if not user or user["role"] != "lecturer":
         from fastapi.responses import RedirectResponse
         return RedirectResponse(url="/")
         
@@ -21,32 +21,36 @@ async def admin_dashboard(request: Request):
         "request": request, 
         "module": "BBB", 
         "presentation": "2014J",
-        "username": user["username"]
+        "user": user  # FIX: Pass full user dict, not just username
     })
 
-@router.get("/api/analytics/{module}/{presentation}")
+@router.get("/api/analytics")
 async def get_analytics(
-    module: str, 
-    presentation: str, 
     request: Request,
+    module: str = Query("BBB"),
+    semester: str = Query("2014J"),
     page: int = Query(1, ge=1),
     limit: int = Query(50, ge=1, le=100),
-    search: str = Query(None)
+    search: str = Query(None),
+    risk: str = Query("all")
 ):
     user = get_current_user(request)
-    if not user or user["role"] != "admin":
+    if not user or user["role"] != "lecturer":
         raise HTTPException(status_code=403, detail="Unauthorized")
 
     dbm = get_db_manager()
     
+    # Use semester param as presentation
+    presentation = semester
+    
     # Get stats for the dashboard summary
     stats, risk_dist = dbm.get_summary_stats(module, presentation)
     if not stats or stats.total == 0:
-        return {"error": "Data not found"}
+        return {"error": "Data not found", "all_students": [], "top_at_risk": []}
 
     # Get paginated students for the class list
     students, total_count = dbm.get_students_paginated(
-        module, presentation, page=page, limit=limit, search_id=search
+        module, presentation, page=page, limit=limit, search_id=search, risk_level=risk
     )
     
     # Format student list for frontend
@@ -57,7 +61,9 @@ async def get_analytics(
             "score": round(s.avg_score, 2),
             "clicks": s.total_clicks,
             "risk": s.risk_label,
-            "risk_level": s.risk_level
+            "risk_level": s.risk_level,
+            "code_module": s.code_module,
+            "code_presentation": s.code_presentation
         })
 
     # Get top 10 at risk for dashboard summary (fixed, not paginated)
@@ -65,8 +71,11 @@ async def get_analytics(
     top_at_risk = [{
         "id": s.id_student,
         "score": round(s.avg_score, 2),
+        "clicks": s.total_clicks,
         "risk": s.risk_label,
-        "risk_level": s.risk_level
+        "risk_level": s.risk_level,
+        "code_module": s.code_module,
+        "code_presentation": s.code_presentation
     } for s in top_at_risk_list]
 
     return {
@@ -85,3 +94,57 @@ async def get_analytics(
             "total_pages": (total_count + limit - 1) // limit
         }
     }
+
+@router.get("/api/admin/users")
+async def list_users(request: Request):
+    user = get_current_user(request)
+    if not user or user["role"] != "lecturer":
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    
+    from sqlmodel import Session, select
+    from src.models.user import User
+    from src.models.student_risk import engine
+    
+    with Session(engine) as session:
+        users = session.exec(select(User)).all()
+        return {
+            "users": [
+                {"username": u.username, "full_name": u.full_name, "role": u.role}
+                for u in users
+            ]
+        }
+
+@router.post("/api/admin/users")
+async def create_user(request: Request):
+    user = get_current_user(request)
+    if not user or user["role"] != "lecturer":
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    
+    from sqlmodel import Session, select
+    from src.models.user import User
+    from src.models.student_risk import engine
+    from src.services.db_manager import hash_password
+    
+    body = await request.json()
+    username  = body.get("username", "").strip()
+    password  = body.get("password", "")
+    full_name = body.get("full_name", "")
+    role      = body.get("role", "student")
+    
+    if not username or not password:
+        raise HTTPException(status_code=400, detail="Tên đăng nhập và mật khẩu không được để trống")
+    
+    with Session(engine) as session:
+        existing = session.exec(select(User).where(User.username == username)).first()
+        if existing:
+            raise HTTPException(status_code=409, detail=f"Tài khoản '{username}' đã tồn tại")
+        
+        new_user = User(
+            username=username,
+            password_hash=hash_password(password),
+            full_name=full_name,
+            role=role
+        )
+        session.add(new_user)
+        session.commit()
+        return {"message": "Tạo tài khoản thành công", "username": username}
