@@ -6,7 +6,7 @@ import warnings
 # Suppress warnings
 warnings.filterwarnings('ignore')
 
-# Absolute base dir regardless of CWD
+# Absolute base dir: src/admin_analytics.py → src/ → Dataset/
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def generate_admin_report(module_code, presentation_code):

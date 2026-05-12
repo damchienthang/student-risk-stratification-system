@@ -9,3 +9,46 @@ addopts = "-v --tb=short -q"
 unit = "Kiểm thử từng thành phần riêng lẻ"
 integration = "Kiểm thử luồng dữ liệu xuyên suốt"
 e2e = "Kiểm thử kịch bản người dùng thực tế"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "PL"]
+ignore = ["PLR0913"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+# ── Pyright (Microsoft) ───────────────────────────────────────────────────────
+[tool.pyright]
+include = ["src", "main.py"]
+exclude = ["**/__pycache__", ".git", "notebooks", "data"]
+# Import root = Dataset/ (thư mục gốc chứa main.py)
+# Pyright sẽ tìm "src.services.predictor" tại Dataset/src/services/predictor.py
+venvPath = "."
+pythonVersion = "3.11"
+pythonPlatform = "Windows"
+typeCheckingMode = "basic"
+# Tắt lỗi false-positive từ SQLModel metaclass & dynamic attributes
+reportMissingImports = true
+reportMissingModuleSource = false
+reportAttributeAccessIssue = false
+reportGeneralTypeIssues = false
+# sys.stdout.reconfigure tồn tại ở runtime (TextIOWrapper), không phải TextIO stub
+reportAttributeAccessIssue = false
+
+# ── Pyrefly (Meta) ────────────────────────────────────────────────────────────
+[tool.pyrefly]
+# Đặt project_root = thư mục Dataset/ để import "src.*" được resolve đúng
+project_root = "."
+# Import root: Python tìm module từ Dataset/, không phải Dataset/src/
+python_interpreter = "python"
+search_path = ["."]
+# Bỏ qua lỗi false-positive từ SQLModel metaclass và type stubs không đầy đủ
+ignore_missing_source = true
+# Chỉ kiểm tra src/ và main.py, bỏ qua notebooks/, data/, __pycache__
+include = ["src", "main.py"]
+exclude = ["**/__pycache__", "**/.git", "notebooks", "data", "scratch"]
+

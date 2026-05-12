@@ -5,6 +5,18 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 
+class GuestStudentInput(BaseModel):
+    """Dữ liệu tối thiểu để sinh viên tự đánh giá rủi ro (Guest Trial)"""
+    gender_num: int = Field(0, description="Giới tính: 0=M, 1=F")
+    imd_band_num: int = Field(5, description="Chỉ số kinh tế")
+    education_num: int = Field(2, description="Học vấn")
+    age_num: int = Field(1, description="Tuổi")
+    num_of_prev_attempts: int = Field(0, description="Số lần thi lại")
+    studied_credits: int = Field(60, description="Số tín chỉ")
+    total_clicks: int = Field(500, description="Số click")
+    avg_score: float = Field(70.0, description="Điểm trung bình")
+
+
 class StudentInput(BaseModel):
     """Format dữ liệu sinh viên cần truyền vào để dự đoán rủi ro học tập (23 features)"""
 
@@ -49,6 +61,7 @@ class RiskPrediction(BaseModel):
     probabilities: dict = Field(..., description="Xác suất cho từng mức rủi ro")
     recommendation: str = Field(..., description="Khuyến nghị hành động")
     model_used: str = Field(default="XGBoost", description="Mô hình được sử dụng")
+    risk_color: Optional[str] = Field(default=None, description="Mã màu hex tương ứng mức rủi ro")
 
 
 class HealthResponse(BaseModel):

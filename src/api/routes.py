@@ -7,8 +7,10 @@ from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 import os
 
-from src.schemas.student import StudentInput, RiskPrediction, HealthResponse, ModelInfoResponse
+from src.schemas.student import StudentInput, GuestStudentInput, RiskPrediction, HealthResponse, ModelInfoResponse
 from src.services.predictor import get_predictor
+from src.services.db_manager import get_db_manager
+from src.api.auth_routes import get_current_user
 
 # Khởi tạo router
 router = APIRouter()
@@ -23,9 +25,7 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "src", "web", "temp
 @router.get("/", response_class=HTMLResponse, tags=["Web"])
 async def dashboard(request: Request):
     """Trang chủ - Hiển thị Landing Page"""
-    from src.api.auth_routes import get_current_user
     user = get_current_user(request)
-    
     return templates.TemplateResponse("index.html", {
         "request": request,
         "user": user
@@ -35,9 +35,7 @@ async def dashboard(request: Request):
 @router.get("/about", response_class=HTMLResponse, tags=["Web"])
 async def about_page(request: Request):
     """Trang Giới thiệu - Về chúng tôi"""
-    from src.api.auth_routes import get_current_user
     user = get_current_user(request)
-    
     return templates.TemplateResponse("about.html", {
         "request": request,
         "user": user
@@ -54,7 +52,7 @@ async def health_check():
         return HealthResponse(
             status="healthy",
             model_loaded=predictor.is_loaded(),
-            model_name="LightGBM",
+            model_name="XGBoost",
             version="1.0.0"
         )
     except Exception as e:
@@ -75,7 +73,7 @@ async def get_model_info():
 @router.post("/api/predict", response_model=RiskPrediction, tags=["Prediction"])
 async def predict_risk(student: StudentInput):
     """
-    Dự đoán mức độ rủi ro học tập của sinh viên.
+    Dự đoán mức độ rủi ro học tập của sinh viên chính thức.
     """
     try:
         predictor = get_predictor()
@@ -87,64 +85,126 @@ async def predict_risk(student: StudentInput):
         raise HTTPException(status_code=500, detail=f"Lỗi dự đoán: {str(e)}")
 
 
-@router.get("/api/query/{student_id}", tags=["Query"])
-async def query_student_by_id(student_id: int, request: Request):
-    """Truy vấn thông tin chi tiết và dự báo cho một sinh viên cụ thể"""
-    from src.api.auth_routes import get_current_user
-    user = get_current_user(request)
-    
-    if not user:
-        raise HTTPException(status_code=401, detail="Yêu cầu đăng nhập")
-    
-    # Student can only query their own ID; lecturer can query any ID
-    if user["role"] == "student" and str(student_id) != user["username"]:
-        raise HTTPException(status_code=403, detail="Sinh viên chỉ có thể xem thông tin của mình")
-    
-    if user["role"] not in ("lecturer", "student"):
-        raise HTTPException(status_code=403, detail="Không có quyền truy cập")
-
-    from src.services.db_manager import get_db_manager
-    
-    dbm = get_db_manager()
-    student = dbm.get_student_by_id(student_id)
-
-    if not student:
-        raise HTTPException(status_code=404, detail=f"Student ID {student_id} not found")
-
-    # Convert SQLModel object to dict
-    student_dict = student.model_dump()
-    
-    # Run predictor to get confidence and probabilities
+@router.post("/api/predict/guest", response_model=RiskPrediction, tags=["Prediction"])
+async def predict_risk_guest(guest: GuestStudentInput):
+    """
+    Dự đoán mức độ rủi ro học tập cho sinh viên tự do (Guest).
+    Kết quả sẽ được lưu vào bảng inference_logs.
+    """
     try:
         predictor = get_predictor()
-        prediction_full = predictor.predict(student_dict)
-        prediction_resp = {
-            "risk_level": prediction_full["risk_level"],
-            "risk_label": prediction_full["risk_label"],
-            "confidence": prediction_full["confidence"],
-            "recommendation": prediction_full["recommendation"],
-            "risk_color": prediction_full["risk_color"]
-        }
-    except Exception:
-        # Fallback to stored label if predictor fails
-        prediction_resp = {
-            "risk_level": student.risk_level,
-            "risk_label": student.risk_label,
-            "confidence": 0.0,
-            "recommendation": get_recommendation(student.risk_level),
-            "risk_color": "#64748b"
-        }
-    
-    return {
-        "student": student_dict,
-        "prediction": prediction_resp
-    }
+        # Chuyển đổi từ GuestInput (8 fields) sang FullInput (23 fields) bằng cách điền giá trị mặc định
+        full_data = {
+            # User provided
+            "gender_num": guest.gender_num,
+            "imd_band_num": guest.imd_band_num,
+            "education_num": guest.education_num,
+            "age_num": guest.age_num,
+            "disability_num": 0,  # Mặc định không khuyết tật
+            "num_of_prev_attempts": guest.num_of_prev_attempts,
+            "studied_credits": guest.studied_credits,
+            "total_clicks": guest.total_clicks,
+            "avg_score": guest.avg_score,
 
-def get_recommendation(risk_level: int) -> str:
-    recs = [
-        "Sinh viên đang có tiến độ học tập tốt. Tiếp tục duy trì và tham gia đầy đủ các hoạt động học tập.",
-        "Sinh viên cần chú ý hơn đến việc học. Nên tăng cường tương tác với hệ thống VLE.",
-        "Sinh viên có nguy cơ cao cần được hỗ trợ ngay. Giảng viên nên liên hệ trực tiếp.",
-        "Sinh viên có nguy cơ rất cao bỏ học. Cần can thiệp khẩn cấp từ cố vấn học thuật."
-    ]
-    return recs[risk_level] if 0 <= risk_level < len(recs) else "Không có khuyến nghị."
+            # Default values for missing features (based on dataset averages/medians)
+            "early_registration": 1,
+            "reg_days_before": -30,
+            "unregistered": 0,
+            "active_days": 50,
+            "avg_clicks_day": guest.total_clicks / 50 if guest.total_clicks > 0 else 0,
+            "max_clicks_day": 100,
+            "n_resources": 15,
+            "click_density": 2.5,
+            "min_score": guest.avg_score - 10 if guest.avg_score > 10 else 0,
+            "std_score": 5.0,
+            "avg_tma_score": guest.avg_score,
+            "n_submitted": 5,
+            "n_late": 0,
+            "avg_submit_delay": 0.5
+        }
+
+        result = predictor.predict(full_data)
+
+        # Lưu vào InferenceLogs
+        dbm = get_db_manager()
+        dbm.save_inference_log({
+            "gender_num": guest.gender_num,
+            "imd_band_num": guest.imd_band_num,
+            "education_num": guest.education_num,
+            "age_num": guest.age_num,
+            "disability_num": 0,
+            "num_of_prev_attempts": guest.num_of_prev_attempts,
+            "studied_credits": guest.studied_credits,
+            "total_clicks": guest.total_clicks,
+            "avg_score": guest.avg_score,
+            "risk_level": result["risk_level"],
+            "risk_label": result["risk_label"],
+            "confidence": result["confidence"]
+        })
+
+        return RiskPrediction(**result)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi dự đoán khách: {str(e)}")
+
+
+@router.get("/api/query/{student_id}", tags=["Query"])
+async def query_student_by_id(student_id: str, request: Request):
+    """Truy vấn thông tin chi tiết và dự báo cho một sinh viên cụ thể (Hỗ trợ cả Guest ID)"""
+    user = get_current_user(request)
+
+    predictor = get_predictor()
+    dbm = get_db_manager()
+    if student_id.startswith("GUEST_"):
+        try:
+            log_id = int(student_id.split("_")[1])
+            from sqlmodel import Session, select
+            from src.models.student_risk import InferenceLog
+            from src.database import engine
+            with Session(engine) as session:
+                log = session.exec(select(InferenceLog).where(InferenceLog.id == log_id)).first()
+                if not log:
+                    raise HTTPException(status_code=404, detail="Không tìm thấy lịch sử dự báo khách")
+
+                student_data = {
+                    "id_student": f"GUEST_{log.id}",
+                    "code_module": "Guest",
+                    "code_presentation": log.timestamp,
+                    "avg_score": log.avg_score,
+                    "total_clicks": log.total_clicks,
+                    "active_days": 0,
+                    "n_late": 0,
+                    "studied_credits": log.studied_credits,
+                    "num_of_prev_attempts": log.num_of_prev_attempts,
+                    "reg_days_before": 0
+                }
+                prediction = {
+                    "risk_level": log.risk_level,
+                    "risk_label": log.risk_label,
+                    "confidence": log.confidence,
+                    "recommendation": predictor.get_recommendation(log.risk_label)
+                }
+                return {"student": student_data, "prediction": prediction}
+        except HTTPException:
+            raise
+        except Exception:
+            raise HTTPException(status_code=400, detail="Mã Guest không hợp lệ")
+
+    # Case 2: Standard Student ID
+    try:
+        sid_int = int(student_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Mã sinh viên phải là số hoặc mã Guest (GUEST_x)")
+
+    student = dbm.get_student_by_id(sid_int)
+    if not student:
+        raise HTTPException(status_code=404, detail=f"Không tìm thấy sinh viên #{student_id}")
+
+    features = dbm.get_student_features(sid_int)
+    if features is None:
+        # Fallback to stored data if feature method not available
+        features = student.model_dump()
+
+    result = predictor.predict(features)
+    return {"student": student.model_dump(), "prediction": result}
+
+

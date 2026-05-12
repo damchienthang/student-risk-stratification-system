@@ -84,7 +84,7 @@ for name, model in models.items():
     acc = accuracy_score(y_val, y_val_pred)
     b_acc = balanced_accuracy_score(y_val, y_val_pred)
 
-    # THÊM AUC
+    # AUC_SCORE
     auc_score = roc_auc_score(y_val, y_val_proba, multi_class='ovr')
 
     print(f"F1: {macro_f1:.4f} | AUC: {auc_score:.4f}")
@@ -99,7 +99,7 @@ for name, model in models.items():
 
     joblib.dump(model, os.path.join(models_dir, f'{name.replace(" ", "_").lower()}.pkl'))
 
-# 6. Đánh giá chi tiết mô hình tốt nhất (XGBoost) trên tập Test
+# 6. Đánh giá chi tiết mô hình XGBoost trên tập Test
 best_model_name = 'XGBoost'
 best_model = results[best_model_name]['model']
 
@@ -176,4 +176,4 @@ plt.tight_layout()
 plt.savefig(os.path.join(visuals_dir, '03_model_comparison.png'))
 plt.close()
 
-print("\nĐã lưu các biểu đồ vào thư mục visuals/ và mô hình vào notebooks/models/.")
+print("\nLưu các biểu đồ vào thư mục visuals/ và mô hình vào notebooks/models/.")

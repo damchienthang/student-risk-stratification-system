@@ -125,7 +125,7 @@ p { margin-bottom: 1rem; }
 .card-label { font-size: 0.85rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; }
 
 /* ── STUDENT DETAILS TABLE ────────────────────────────────── */
-.student-data-panel { margin-top: 40px; background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-lg); display: none; }
+.student-data-panel { margin-top: 40px; background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-lg); }
 .panel-header { background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
 .panel-content { padding: 30px; }
 

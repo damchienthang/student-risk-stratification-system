@@ -1,0 +1,45 @@
+{
+  // ── Python Interpreter ────────────────────────────────────────────────────
+  "python.defaultInterpreterPath": "python",
+
+  // ── Import Resolution ─────────────────────────────────────────────────────
+  // Thêm thư mục Dataset/ vào sys.path của IDE để import "src.*" hoạt động đúng
+  "python.analysis.extraPaths": [
+    "c:\\Nam 3 ki 2\\Thực tập cơ sở\\Dataset"
+  ],
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace",
+
+  // ── Type Checking (Pylance / Pyright) ─────────────────────────────────────
+  // Dùng "basic" để vẫn bắt lỗi thực nhưng bỏ qua false-positive
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.useLibraryCodeForTypes": true,
+
+  // Tắt các báo lỗi false-positive phổ biến với FastAPI + SQLModel
+  "python.analysis.diagnosticSeverityOverrides": {
+    // SQLModel metaclass — __tablename__ được xử lý bởi metaclass, không phải ClassVar thông thường
+    "reportIncompatibleVariableOverride": "none",
+    // sys.stdout.reconfigure — tồn tại ở runtime (TextIOWrapper), Pyright dùng stub TextIO
+    "reportAttributeAccessIssue": "none",
+    // Dynamic attributes của SQLModel (field access trên ORM objects)
+    "reportUnknownMemberType": "none",
+    "reportUnknownVariableType": "none",
+    "reportUnknownArgumentType": "none",
+    // Missing source không ảnh hưởng đến runtime
+    "reportMissingModuleSource": "none"
+  },
+
+  // ── Pyrefly ───────────────────────────────────────────────────────────────
+  // Nếu đang dùng Pyrefly extension, đặt project root đúng
+  "pyrefly.projectRoot": "c:\\Nam 3 ki 2\\Thực tập cơ sở\\Dataset",
+
+  // ── Editor ────────────────────────────────────────────────────────────────
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true
+  },
+  // Tắt CSS linter trong file HTML (tránh lỗi "at-rule expected" trong style="{{ jinja2 }}")
+  "html.validate.styles": false,
+  "css.validate": false
+}

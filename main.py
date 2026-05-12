@@ -18,6 +18,30 @@ if sys.platform == 'win32':
 # Load biến môi trường
 load_dotenv()
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Startup/shutdown lifecycle"""
+    print("[START] Student Risk Stratification System...", flush=True)
+    try:
+        from src.services.predictor import get_predictor
+        predictor = get_predictor()
+        status = "OK" if predictor.is_loaded() else "FAILED"
+        print(f"[MODEL] XGBoost load: {status}", flush=True)
+
+        # Initialize Database
+        BASE_DIR_INNER = os.path.dirname(os.path.abspath(__file__))
+        data_path = os.path.join(BASE_DIR_INNER, 'data', 'processed', 'student_features_labeled.csv')
+
+        from src.services.db_manager import get_db_manager
+        dbm = get_db_manager()
+        dbm.initialize_db(data_path)
+    except Exception as e:
+        print(f"[ERROR] {e}", flush=True)
+    yield
+    print("[STOP] Server shutting down.", flush=True)
+
+
 # Khởi tạo FastAPI app
 app = FastAPI(
     title="Student Risk Stratification System",
@@ -36,7 +60,8 @@ app = FastAPI(
     """,
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 # CORS Middleware
@@ -58,30 +83,6 @@ visuals_dir = os.path.join(BASE_DIR, "visuals")
 if os.path.exists(visuals_dir):
     app.mount("/visuals", StaticFiles(directory=visuals_dir), name="visuals")
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Startup/shutdown lifecycle"""
-    print("[START] Student Risk Stratification System...", flush=True)
-    try:
-        from src.services.predictor import get_predictor
-        predictor = get_predictor()
-        status = "OK" if predictor.is_loaded() else "FAILED"
-        print(f"[MODEL] XGBoost load: {status}", flush=True)
-        
-        # Initialize Database
-        data_path = os.path.join(BASE_DIR, 'data', 'processed', 'student_features_labeled.csv')
-        
-        from src.services.db_manager import get_db_manager
-        dbm = get_db_manager()
-        dbm.initialize_db(data_path)
-    except Exception as e:
-        print(f"[ERROR] {e}", flush=True)
-    yield
-    print("[STOP] Server shutting down.", flush=True)
-
-
-# Rebuild app with lifespan
-app.router.lifespan_context = lifespan
 
 # Include routers
 from src.api.routes import router as general_router

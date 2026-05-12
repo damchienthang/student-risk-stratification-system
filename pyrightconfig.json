@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/pyright/main/packages/pyright/schemas/pyrightconfig.schema.json",
+  "include": ["src", "main.py"],
+  "exclude": ["**/__pycache__", ".git", "notebooks", "data", "scratch"],
+  "pythonVersion": "3.11",
+  "pythonPlatform": "Windows",
+  "typeCheckingMode": "basic",
+
+  "extraPaths": ["."],
+
+  "reportMissingImports": true,
+  "reportMissingModuleSource": false,
+
+  "reportAttributeAccessIssue": false,
+  "reportGeneralTypeIssues": false,
+  "reportOperatorIssue": false,
+  "reportReturnType": false,
+
+  "reportCallIssue": false,
+  "reportIndexIssue": false,
+
+  "reportUnknownMemberType": false,
+  "reportUnknownVariableType": false,
+  "reportUnknownArgumentType": false
+}

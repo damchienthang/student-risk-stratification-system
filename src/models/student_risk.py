@@ -1,16 +1,15 @@
-from typing import Optional
-import os
-from sqlmodel import Field, SQLModel, create_engine
-from src.models.user import User  # Import to register table
+from typing import ClassVar, Optional
+from datetime import datetime
+from sqlmodel import Field, SQLModel
 
 class StudentRisk(SQLModel, table=True):
-    __tablename__ = "student_risk"
-    
+    __tablename__: ClassVar[str] = "student_risk"
+
     id: Optional[int] = Field(default=None, primary_key=True)
     id_student: int = Field(index=True)
     code_module: str = Field(index=True)
     code_presentation: str = Field(index=True)
-    
+
     gender_num: int
     imd_band_num: int
     education_num: int
@@ -38,11 +37,26 @@ class StudentRisk(SQLModel, table=True):
     risk_label: str
     final_result: str
 
-# Database configuration - Absolute path to avoid CWD-dependent crashes
-_BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sqlite_file_name = os.path.join(_BASE_DIR, "data", "processed", "database.db")
-sqlite_url = f"sqlite:///{sqlite_file_name}"
-engine = create_engine(sqlite_url, connect_args={"check_same_thread": False})
+class InferenceLog(SQLModel, table=True):
+    __tablename__: ClassVar[str] = "inference_logs"
 
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
+    id: Optional[int] = Field(default=None, primary_key=True)
+    timestamp: str = Field(default_factory=lambda: datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+    # Input features
+    code_module: str = Field(default="Guest")
+    code_presentation: str = Field(default="Guest")
+    gender_num: int
+    imd_band_num: int
+    education_num: int
+    age_num: int
+    disability_num: int
+    num_of_prev_attempts: int
+    studied_credits: int
+    total_clicks: int
+    avg_score: float
+
+    # Result
+    risk_level: int
+    risk_label: str
+    confidence: float

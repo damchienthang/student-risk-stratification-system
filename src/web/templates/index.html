@@ -65,7 +65,7 @@
             </button>
             <div class="dropdown-content"
               style="display: none; position: absolute; right: 0; background: white; min-width: 220px; box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15); border-radius: 12px; padding: 12px 0; z-index: 9999; border: 1px solid var(--border); margin-top: 10px;">
-              {% if user.role == 'admin' %}
+              {% if user.role == 'lecturer' %}
               <a href="/admin"
                 style="color: var(--text); padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 600;">⚙️
                 Bảng quản trị</a>
@@ -183,6 +183,62 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(160, 27, 33, 0.3);
     }
+
+    /* Guest Trial Form Styling */
+    .form-group label {
+      transition: color 0.2s;
+    }
+
+    .form-group:focus-within label {
+      color: var(--primary);
+    }
+
+    .form-group input,
+    .form-group select {
+      transition: all 0.3s;
+      background: #fdfdfd;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.05);
+    }
+
+    /* Auth Step Animations */
+    .auth-step {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      z-index: 10;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: var(--primary);
+    }
   </style>
 
   <!-- ── HERO ──────────────────────────────────────────────── -->
@@ -192,8 +248,11 @@
       <p class="hero-desc">Ứng dụng trí tuệ nhân tạo (XGBoost) giúp nhận diện sớm các sinh viên có nguy cơ bỏ học hoặc
         trượt môn dựa trên tương tác hệ thống và kết quả đánh giá.</p>
 
-      <!-- Student Search -->
-      <div class="search-container" style="max-width: 850px; margin: 0 auto 50px; position: relative; padding: 0 20px;">
+      <!-- Student Search (Official) -->
+      <div class="search-container" style="max-width: 850px; margin: 0 auto 30px; position: relative; padding: 0 20px;">
+        <h3
+          style="text-align: center; margin-bottom: 20px; color: var(--secondary); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+          Phần 1: Tra cứu chính thức</h3>
         <div class="search-box"
           style="display: flex; background: white; padding: 6px; border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid var(--border); transition: all 0.3s; overflow: hidden;">
           <input type="text" id="studentSearchInput" class="search-input"
@@ -203,15 +262,113 @@
           {% if user %}
           <button class="search-btn" onclick="searchStudent()"
             style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase;">🔍
-            Truy vấn ngay</button>
+            Tra cứu ngay</button>
           {% else %}
           <button class="search-btn" onclick="toggleLoginModal()"
             style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase;">🔍
-            Đăng nhập để truy vấn</button>
+            Tra cứu</button>
           {% endif %}
         </div>
-        <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px; text-align: center;">* Chỉ dành cho sinh
-          viên tham gia khóa học trong bộ dữ liệu OULAD</p>
+      </div>
+
+      <div style="text-align: center; margin: 40px 0;">
+        <span
+          style="background: var(--border); height: 1px; width: 100px; display: inline-block; vertical-align: middle;"></span>
+        <span style="margin: 0 15px; color: var(--text-dim); font-weight: 700; font-size: 0.9rem;">HOẶC</span>
+        <span
+          style="background: var(--border); height: 1px; width: 100px; display: inline-block; vertical-align: middle;"></span>
+      </div>
+
+      <!-- Guest Trial Section -->
+      <div id="guest-trial"
+        style="max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-lg);">
+        <h3
+          style="text-align: center; margin-bottom: 30px; color: var(--primary); font-size: 1.4rem; font-weight: 800;">
+          Phần 2: Thử nghiệm dự báo rủi ro (Guest)</h3>
+        <p style="text-align: center; color: var(--text-dim); margin-bottom: 30px; font-size: 0.95rem;">Bạn không có tài
+          khoản? Hãy tự nhập các thông số của mình để AI đánh giá mức độ rủi ro học tập.</p>
+
+        <form id="guestForm"
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">GIỚI
+              TÍNH</label>
+            <select name="gender_num"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+              <option value="0">Nam (M)</option>
+              <option value="1">Nữ (F)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">ĐỘ
+              TUỔI</label>
+            <select name="age_num"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+              <option value="0">0-35</option>
+              <option value="1">35-55</option>
+              <option value="2">55+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">TRÌNH
+              ĐỘ HỌC VẤN</label>
+            <select name="education_num"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+              <option value="0">No Formal Quals</option>
+              <option value="1">Lower Than A Level</option>
+              <option value="2">A Level or Equivalent</option>
+              <option value="3">HE Qualification</option>
+              <option value="4">Post Graduate Quals</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">KINH
+              TẾ (IMD BAND)</label>
+            <select name="imd_band_num"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+              <option value="0">0-10% (Nghèo)</option>
+              <option value="5">40-50% (Trung bình)</option>
+              <option value="9">90-100% (Giàu)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">SỐ
+              LẦN HỌC LẠI</label>
+            <input type="number" name="num_of_prev_attempts" value="0" min="0"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">SỐ
+              TÍN CHỈ ĐĂNG KÝ</label>
+            <input type="number" name="studied_credits" value="60" min="0"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">TỔNG
+              SỐ CLICK (VLE)</label>
+            <input type="number" name="total_clicks" value="500" min="0"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">ĐIỂM
+              TRUNG BÌNH (0-100)</label>
+            <input type="number" name="avg_score" value="70" min="0" max="100"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div style="grid-column: 1 / -1; margin-top: 10px;">
+            <button type="button" onclick="submitGuestPrediction(event)"
+              style="width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 1rem;">PHÂN
+              TÍCH RỦI RO NGAY ➜</button>
+          </div>
+        </form>
       </div>
     </div>
   </section>
@@ -225,7 +382,14 @@
     </div>
     {% endif %}
 
-    <div id="studentDataPanel" class="student-data-panel" style="{% if student %}display: block;{% endif %}">
+    {% if success_msg %}
+    <div id="successMessage"
+      style="background: rgba(39, 174, 96, 0.1); border: 1px solid #27ae60; color: #27ae60; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 700;">
+      ✅ {{ success_msg }}
+    </div>
+    {% endif %}
+
+    <div id="studentDataPanel" class="student-data-panel {{ '' if student else 'hidden' }}">
       <div class="panel-header"
         style="background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px 8px 0 0;">
         <h3 style="color: white; margin: 0;">📋 Kết quả truy vấn sinh viên #<span id="resStudentId">{{
@@ -432,39 +596,194 @@
     </div>
   </div>
 
-  <!-- Unified Login Modal -->
-  <div class="modal-overlay" id="loginModal" style="display: {% if show_login %}flex{% else %}none{% endif %};"
-    onclick="toggleLoginModal()">
-    <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 400px; padding: 40px;">
-      <button class="modal-close" onclick="toggleLoginModal()">✕</button>
+  <!-- Unified Auth Modals -->
+  <div class="modal-overlay" id="loginModal"
+    style="{{ 'display: flex;' if (show_login or show_register or show_forgot) else 'display: none;' }}"
+    onclick="closeAllModals()">
+
+    <!-- STEP 1: SELECT TYPE -->
+    <div class="modal-box auth-step {{ 'hidden' if (show_register or show_forgot or show_login) else '' }}"
+      id="step-select-type" onclick="event.stopPropagation()"
+      style="max-width: 450px; padding: 40px; {{ 'display: none;' if (show_register or show_forgot or show_login) else 'display: block;' }}">
+      <button class="modal-close" onclick="closeAllModals()">✕</button>
       <div style="text-align: center; margin-bottom: 30px;">
-        <h3 style="color: var(--primary); font-size: 1.5rem; text-transform: uppercase;">Đăng nhập hệ thống</h3>
-        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Sử dụng Mã SV hoặc tài khoản Quản trị
-        </p>
+        <h3 style="color: var(--primary); font-size: 1.5rem; text-transform: uppercase; font-weight: 800;">Xác nhận đối
+          tượng</h3>
+        <p style="font-size: 0.95rem; color: var(--text-dim); margin-top: 10px;">Bạn có phải sinh viên thuộc bộ dữ liệu
+          OULAD không?</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 15px;">
+        <button onclick="showAuthStep('step-login-oulad')"
+          style="padding: 18px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+          <span>CÓ, TÔI LÀ SINH VIÊN OULAD</span>
+          <span style="font-size: 1.2rem;">➜</span>
+        </button>
+        <button onclick="showAuthStep('step-external-choice')"
+          style="padding: 18px; background: var(--bg-alt); color: var(--secondary); border: 2px solid var(--border); border-radius: 12px; font-weight: 800; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+          <span>KHÔNG, TÔI LÀ SINH VIÊN KHÁC</span>
+          <span style="font-size: 1.2rem;">➜</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP: OULAD LOGIN -->
+    <div class="modal-box auth-step {{ '' if show_login else 'hidden' }}" id="step-login-oulad"
+      onclick="event.stopPropagation()"
+      style="max-width: 400px; padding: 40px; {{ 'display: block;' if show_login else 'display: none;' }}">
+      <button class="modal-close" onclick="showAuthStep('step-select-type')">←</button>
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h3 style="color: var(--primary); font-size: 1.4rem; font-weight: 800;">ĐĂNG NHẬP OULAD</h3>
+        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Sử dụng Mã SV được cấp sẵn</p>
       </div>
       <form action="/login" method="POST">
         <div style="margin-bottom: 15px;">
           <label
-            style="display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">TÊN
-            ĐĂNG NHẬP / MÃ SV</label>
-          <input type="text" name="username" placeholder="VD: 11391 hoặc admin"
-            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 4px; font-weight: 600;"
+            style="display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">MÃ
+            SINH VIÊN</label>
+          <input type="text" name="username" placeholder="VD: 11391"
+            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-weight: 600;"
             required>
         </div>
         <div style="margin-bottom: 25px;">
           <label
             style="display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">MẬT
-            KHẨU</label>
+            KHẨU (MẶC ĐỊNH LÀ MÃ SV)</label>
           <input type="password" name="password" placeholder="••••••••"
-            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 4px;" required>
-          <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 8px;">* Đối với sinh viên, mật khẩu mặc định
-            là Mã SV</p>
+            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px;" required>
+          <a href="javascript:void(0)" onclick="showAuthStep('step-forgot-password')"
+            style="display: block; margin-top: 10px; font-size: 0.75rem; color: var(--primary); font-weight: 700; text-decoration: none;">Quên
+            mật khẩu?</a>
         </div>
         <button type="submit"
-          style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 4px; font-weight: 800; cursor: pointer; text-transform: uppercase;">Đăng
-          nhập</button>
+          style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase;">ĐĂNG
+          NHẬP</button>
       </form>
     </div>
+
+    <!-- STEP: EXTERNAL CHOICE (LOGIN/REG) -->
+    <div class="modal-box auth-step" id="step-external-choice" onclick="event.stopPropagation()"
+      style="max-width: 400px; padding: 40px; display: none;">
+      <button class="modal-close" onclick="showAuthStep('step-select-type')">←</button>
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h3 style="color: var(--secondary); font-size: 1.4rem; font-weight: 800;">SINH VIÊN NGOÀI</h3>
+        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Chọn hành động để tiếp tục</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 15px;">
+        <button onclick="showAuthStep('step-login-external')"
+          style="padding: 15px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer;">ĐĂNG
+          NHẬP</button>
+        <button onclick="showAuthStep('step-register-external')"
+          style="padding: 15px; background: white; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 8px; font-weight: 700; cursor: pointer;">ĐĂNG
+          KÝ TÀI KHOẢN MỚI</button>
+      </div>
+    </div>
+
+    <!-- STEP: EXTERNAL LOGIN -->
+    <div class="modal-box auth-step" id="step-login-external" onclick="event.stopPropagation()"
+      style="max-width: 400px; padding: 40px; display: none;">
+      <button class="modal-close" onclick="showAuthStep('step-external-choice')">←</button>
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h3 style="color: var(--secondary); font-size: 1.4rem; font-weight: 800;">ĐĂNG NHẬP</h3>
+      </div>
+      <form action="/login" method="POST">
+        <div style="margin-bottom: 15px;">
+          <label
+            style="display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">TÊN
+            ĐĂNG NHẬP</label>
+          <input type="text" name="username" placeholder="Nhập tên đăng nhập"
+            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px;" required>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label
+            style="display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">MẬT
+            KHẨU</label>
+          <input type="password" name="password" placeholder="••••••••"
+            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px;" required>
+          <a href="javascript:void(0)" onclick="showAuthStep('step-forgot-password')"
+            style="display: block; margin-top: 10px; font-size: 0.75rem; color: var(--primary); font-weight: 700; text-decoration: none;">Quên
+            mật khẩu?</a>
+        </div>
+        <button type="submit"
+          style="width: 100%; padding: 14px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase;">ĐĂNG
+          NHẬP</button>
+      </form>
+    </div>
+
+    <!-- STEP: REGISTER EXTERNAL -->
+    <div class="modal-box auth-step {{ '' if show_register else 'hidden' }}" id="step-register-external"
+      onclick="event.stopPropagation()"
+      style="max-width: 450px; padding: 40px; {{ 'display: block;' if show_register else 'display: none;' }}">
+      <button class="modal-close" onclick="showAuthStep('step-external-choice')">←</button>
+      <div style="text-align: center; margin-bottom: 25px;">
+        <h3 style="color: var(--primary); font-size: 1.4rem; font-weight: 800;">ĐĂNG KÝ TÀI KHOẢN MỚI</h3>
+      </div>
+      <form action="/register" method="POST">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+          <div>
+            <label
+              style="display: block; font-size: 0.7rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">TÊN
+              ĐĂNG NHẬP</label>
+            <input type="text" name="username" placeholder="VD: sv_tu_do"
+              style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;" required>
+          </div>
+          <div>
+            <label
+              style="display: block; font-size: 0.7rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">HỌ
+              VÀ TÊN</label>
+            <input type="text" name="full_name" placeholder="Nguyễn Văn A"
+              style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;" required>
+          </div>
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label
+            style="display: block; font-size: 0.7rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">EMAIL
+            XÁC NHẬN</label>
+          <input type="email" name="email" placeholder="example@email.com"
+            style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;" required>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label
+            style="display: block; font-size: 0.7rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">MẬT
+            KHẨU</label>
+          <input type="password" name="password" placeholder="Nhập mật khẩu"
+            style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px;" required>
+        </div>
+        <button type="submit"
+          style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">ĐĂNG
+          KÝ NGAY</button>
+      </form>
+    </div>
+
+    <!-- STEP: FORGOT PASSWORD -->
+    <div class="modal-box auth-step {{ '' if show_forgot else 'hidden' }}" id="step-forgot-password"
+      onclick="event.stopPropagation()"
+      style="max-width: 400px; padding: 40px; {{ 'display: block;' if show_forgot else 'display: none;' }}">
+      <button class="modal-close" onclick="closeAllModals()">✕</button>
+      <div style="text-align: center; margin-bottom: 25px;">
+        <h3 style="color: var(--primary); font-size: 1.4rem; font-weight: 800;">QUÊN MẬT KHẨU</h3>
+        <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Xác nhận email để đặt lại mật khẩu</p>
+      </div>
+      <form action="/forgot-password" method="POST">
+        <div style="margin-bottom: 15px;">
+          <label
+            style="display: block; font-size: 0.7rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">EMAIL
+            ĐÃ ĐĂNG KÝ</label>
+          <input type="email" name="email" placeholder="example@email.com"
+            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px;" required>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label
+            style="display: block; font-size: 0.7rem; font-weight: 800; margin-bottom: 5px; color: var(--text-dim);">MẬT
+            KHẨU MỚI</label>
+          <input type="password" name="new_password" placeholder="Nhập mật khẩu mới"
+            style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px;" required>
+        </div>
+        <button type="submit"
+          style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">XÁC
+          NHẬN ĐỔI MẬT KHẨU</button>
+      </form>
+    </div>
+
   </div>
 
   <script>
@@ -488,7 +807,29 @@
 
     function toggleLoginModal() {
       const modal = document.getElementById('loginModal');
-      modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+      if (modal.style.display === 'flex') {
+        closeAllModals();
+      } else {
+        showAuthStep('step-select-type');
+        modal.style.display = 'flex';
+      }
+    }
+
+    function showAuthStep(stepId) {
+      document.querySelectorAll('.auth-step').forEach(step => {
+        step.style.display = 'none';
+        step.classList.add('hidden');
+      });
+      const target = document.getElementById(stepId);
+      target.style.display = 'block';
+      target.classList.remove('hidden');
+      document.getElementById('loginModal').style.display = 'flex';
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    function closeAllModals() {
+      document.getElementById('loginModal').style.display = 'none';
+      document.getElementById('modalOverlay').style.display = 'none';
     }
 
     // API Fetch for searching student
@@ -513,6 +854,7 @@
 
     function displayStudent(data) {
       const panel = document.getElementById('studentDataPanel');
+      panel.classList.remove('hidden');
       panel.style.display = 'block';
       panel.scrollIntoView({ behavior: 'smooth' });
 
@@ -551,6 +893,24 @@
       `;
         grid.appendChild(item);
       });
+
+      // Add login invitation if not logged in
+      const isGuest = !document.querySelector('.user-dropdown');
+      let footer = panel.querySelector('.panel-footer-guest');
+      if (isGuest) {
+        if (!footer) {
+          footer = document.createElement('div');
+          footer.className = 'panel-footer-guest';
+          footer.style = "padding: 20px 30px; background: #fff5f5; border-top: 1px dashed var(--primary); display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 8px 8px;";
+          panel.querySelector('.panel-content').appendChild(footer);
+        }
+        footer.innerHTML = `
+          <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">✨ Bạn muốn lưu lại kết quả này và theo dõi tiến trình học tập?</span>
+          <button onclick="toggleLoginModal()" class="btn-primary" style="padding: 8px 20px; border-radius: 50px; font-size: 0.85rem; border:none; cursor:pointer;">Đăng nhập ngay</button>
+        `;
+      } else if (footer) {
+        footer.remove();
+      }
     }
 
     function closeStudentPanel() {
@@ -566,6 +926,112 @@
     function closeModal() {
       document.getElementById('modalOverlay').style.display = 'none';
     }
+
+    // GUEST PREDICTION
+    async function submitGuestPrediction(event) {
+      const form = document.getElementById('guestForm');
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      // Convert numeric strings and handle empty/invalid values
+      const numericFields = ['gender_num', 'age_num', 'education_num', 'imd_band_num', 'num_of_prev_attempts', 'studied_credits', 'total_clicks', 'avg_score'];
+      numericFields.forEach(field => {
+        const val = parseFloat(data[field]);
+        data[field] = isNaN(val) ? 0 : val;
+      });
+
+      const btn = event.target;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = "Đang phân tích...";
+      btn.disabled = true;
+
+      try {
+        const resp = await fetch('/api/predict/guest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await resp.json();
+        if (resp.ok) {
+          showGuestResult(result, data);
+        } else {
+          alert("Lỗi: " + (result.detail || "Không thể thực hiện dự báo"));
+        }
+      } catch (err) {
+        alert("Lỗi kết nối server");
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    function showGuestResult(result, inputData) {
+      const panel = document.getElementById('studentDataPanel');
+      if (!panel) return;
+
+      panel.classList.remove('hidden');
+      panel.style.setProperty('display', 'block', 'important');
+
+      const header = panel.querySelector('h3');
+      header.innerHTML = `📋 Kết quả dự báo tự do (Guest Trial)`;
+
+      document.getElementById('resRiskBadge').className = `badge badge-${result.risk_label.toLowerCase().replace(' ', '')}`;
+      document.getElementById('resRiskBadge').innerHTML = `${result.risk_label} RISK`;
+      document.getElementById('resConfidence').innerHTML = result.confidence.toFixed(1);
+      document.getElementById('resRecommendation').innerHTML = result.recommendation;
+
+      const grid = document.getElementById('resDataTable');
+      grid.innerHTML = `
+        <div class="data-item">
+          <span class="data-label">Điểm trung bình</span>
+          <span class="data-value" style="color: var(--primary); font-weight: 800;">${inputData.avg_score}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Tổng click (VLE)</span>
+          <span class="data-value">${inputData.total_clicks}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Số lần học lại</span>
+          <span class="data-value">${inputData.num_of_prev_attempts}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Số tín chỉ</span>
+          <span class="data-value">${inputData.studied_credits}</span>
+        </div>
+      `;
+
+      // Add login invitation if not logged in
+      const isGuest = !document.querySelector('.user-dropdown');
+      let footer = panel.querySelector('.panel-footer-guest');
+      if (isGuest) {
+        if (!footer) {
+          footer = document.createElement('div');
+          footer.className = 'panel-footer-guest';
+          footer.style = "padding: 20px 30px; background: #fff5f5; border-top: 1px dashed var(--primary); display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 8px 8px;";
+          panel.querySelector('.panel-content').appendChild(footer);
+        }
+        footer.innerHTML = `
+          <span style="color: var(--primary); font-weight: 600; font-size: 0.9rem;">✨ Bạn muốn lưu lại kết quả này và theo dõi tiến trình học tập?</span>
+          <button onclick="toggleLoginModal()" class="btn-primary" style="padding: 8px 20px; border-radius: 50px; font-size: 0.85rem; border:none; cursor:pointer;">Đăng nhập ngay</button>
+        `;
+      } else if (footer) {
+        footer.remove();
+      }
+
+      panel.style.display = 'block';
+      panel.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Auto-scroll to results if present on page load (for server-side render /student)
+    document.addEventListener('DOMContentLoaded', () => {
+      const panel = document.getElementById('studentDataPanel');
+      if (panel && !panel.classList.contains('hidden')) {
+        setTimeout(() => {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
+      }
+    });
   </script>
 </body>
 
