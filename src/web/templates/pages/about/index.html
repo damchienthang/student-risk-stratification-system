@@ -1,0 +1,233 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Về chúng tôi — RiskSight{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Bổ sung một số style đặc thù cho trang About */
+  .arch-box {
+    margin-top: 40px;
+    padding: 40px;
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: var(--shadow);
+  }
+
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .flow-node {
+    padding: 15px 25px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-weight: 600;
+    color: var(--secondary);
+  }
+
+  .flow-node.highlight {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  .flow-arrow {
+    color: var(--text-dim);
+    font-weight: 800;
+  }
+
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  .tech-tag {
+    padding: 8px 18px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    transition: all 0.2s;
+  }
+
+  .tech-tag:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .dataset-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    text-align: left;
+  }
+
+  @media (max-width: 768px) {
+    .dataset-info-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .team-avatar {
+    width: 80px;
+    height: 80px;
+    background: rgba(200, 16, 46, 0.05);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 auto 20px;
+    border: 2px solid var(--primary);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ── HERO ───────────────────────────────────────────────── -->
+<section class="hero" style="padding: 60px 0; text-align: center; background: var(--bg-alt);">
+  <div class="container">
+    <h1 style="font-weight: 900; color: var(--secondary); margin-bottom: 20px;">Về Dự Án <span
+        class="text-primary">RiskSight</span></h1>
+    <p class="hero-desc" style="max-width: 800px; margin: 0 auto; color: var(--text-dim);">
+      Dự án RiskSight được xây dựng nhằm hỗ trợ giảng viên và sinh viên trong việc nhận diện sớm các rủi ro học tập
+      thông qua phân tích dữ liệu và học máy.
+    </p>
+  </div>
+</section>
+
+<!-- ── TEAM ───────────────────────────────────────────────── -->
+<section class="section" style="padding: 80px 0;">
+  <div class="container">
+    <div class="section-header" style="text-align: center; margin-bottom: 50px;">
+      <h2 class="section-title">Nhóm thực hiện</h2>
+      <p class="section-sub">Nhóm 14 — Học viện Công nghệ Bưu chính Viễn thông</p>
+    </div>
+
+    <div class="cards-grid"
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+      <div class="card"
+        style="text-align: center; padding: 40px; background: white; border: 1px solid var(--border); border-radius: 12px;">
+        <div class="team-avatar">ĐT</div>
+        <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary); margin-bottom: 5px;">Đàm Chiến Thắng
+        </div>
+        <div
+          style="font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
+          Phát triển Hệ thống, Dữ liệu & Giao diện</div>
+      </div>
+      <div class="card"
+        style="text-align: center; padding: 40px; background: white; border: 1px solid var(--border); border-radius: 12px;">
+        <div class="team-avatar">QT</div>
+        <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary); margin-bottom: 5px;">Đỗ Quốc Tấn
+        </div>
+        <div
+          style="font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
+          Phát triển AI & Huấn luyện</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DATASET ────────────────────────────────────────────── -->
+<section class="section" style="background: var(--bg-alt); padding: 80px 0;">
+  <div class="container">
+    <div class="section-header" style="text-align: center; margin-bottom: 50px;">
+      <h2 class="section-title">Bộ dữ liệu OULAD</h2>
+      <p class="section-sub">Nền tảng tri thức cho mô hình dự báo rủi ro</p>
+    </div>
+
+    <div class="dataset-info-grid">
+      <div style="font-size: 1.05rem; color: var(--text-dim); line-height: 1.8;">
+        <p>Hệ thống sử dụng bộ dữ liệu chuẩn quốc tế <strong>Open University Learning Analytics Dataset
+            (OULAD)</strong> để huấn luyện và đánh giá mô hình dự báo rủi ro học tập.</p>
+        <ul style="padding-left: 0; list-style: none; margin-top: 20px;">
+          <li>• <strong>Quy mô:</strong> 32,593 sinh viên và 22 môn học khác nhau.</li>
+          <li>• <strong>Dữ liệu:</strong> Thông tin nhân khẩu, bài kiểm tra và tương tác VLE.</li>
+          <li>• <strong>Mục tiêu:</strong> Dự đoán khả năng sinh viên không hoàn thành khóa học.</li>
+        </ul>
+      </div>
+      <div class="cards-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="card"
+          style="background: white; padding: 30px; border-radius: 12px; border: 1px solid var(--border); text-align: center;">
+          <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">32K+</div>
+          <div style="font-weight: 700; color: var(--text-dim); font-size: 0.9rem; text-transform: uppercase;">Sinh viên
+          </div>
+        </div>
+        <div class="card"
+          style="background: white; padding: 30px; border-radius: 12px; border: 1px solid var(--border); text-align: center;">
+          <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">10M+</div>
+          <div style="font-weight: 700; color: var(--text-dim); font-size: 0.9rem; text-transform: uppercase;">Tương tác
+            VLE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARCHITECTURE ───────────────────────────────────────── -->
+<section class="section" style="padding: 80px 0;">
+  <div class="container">
+    <div class="section-header" style="text-align: center; margin-bottom: 50px;">
+      <h2 class="section-title">Kiến trúc hệ thống</h2>
+      <p class="section-sub">Cách thức RiskSight vận hành và xử lý dữ liệu</p>
+    </div>
+
+    <div class="arch-box">
+      <div class="arch-flow">
+        <div class="flow-node">Browser (HTML/JS)</div>
+        <div class="flow-arrow">➜</div>
+        <div class="flow-node highlight">FastAPI (Backend)</div>
+        <div class="flow-arrow">➜</div>
+        <div class="flow-node highlight">XGBoost (AI Model)</div>
+        <div class="flow-arrow">➜</div>
+        <div class="flow-node">SQLite Database</div>
+      </div>
+      <div
+        style="margin-top: 30px; color: var(--text-dim); font-size: 1rem; max-width: 800px; text-align: center; line-height: 1.6;">
+        Hệ thống được thiết kế theo kiến trúc <strong>Client-Server</strong>. Frontend gửi yêu cầu đến API Python. Tại
+        đây, mô hình XGBoost sẽ phân tích dữ liệu sinh viên từ SQLite và trả về kết quả dự đoán rủi ro theo thời gian
+        thực.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TECH STACK ─────────────────────────────────────────── -->
+<section class="section" style="background: var(--bg-alt); padding: 80px 0;">
+  <div class="container">
+    <div class="section-header" style="text-align: center; margin-bottom: 50px;">
+      <h2 class="section-title">Công nghệ sử dụng</h2>
+      <p class="section-sub">Các công cụ và môi trường phát triển hệ thống</p>
+    </div>
+
+    <div class="tech-list">
+      <span class="tech-tag">Python 3.10+</span>
+      <span class="tech-tag">FastAPI</span>
+      <span class="tech-tag">XGBoost</span>
+      <span class="tech-tag">Scikit-Learn</span>
+      <span class="tech-tag">SQLModel</span>
+      <span class="tech-tag">SQLite</span>
+      <span class="tech-tag">Jinja2</span>
+      <span class="tech-tag">Vanilla JS / CSS3</span>
+    </div>
+  </div>
+</section>
+{% endblock %}

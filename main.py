@@ -1,70 +1,48 @@
 # -*- coding: utf-8 -*-
 """
-main.py - File chay chinh cua server
-Student Risk Stratification System - FastAPI Backend
+main.py - Entry point for Student Risk Stratification System v2
 """
-import os
 import sys
-from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
+from contextlib import asynccontextmanager
+
+from src.core.config import settings
+from src.services.auth_service import auth_service
+from src.services.predictor import get_predictor
 
 # Fix Windows console encoding
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-# Load biến môi trường
-load_dotenv()
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Startup/shutdown lifecycle"""
-    print("[START] Student Risk Stratification System...", flush=True)
+    print(f"[START] {settings.PROJECT_NAME} v{settings.VERSION}...", flush=True)
     try:
-        from src.services.predictor import get_predictor
+        # Initialize ML Model
         predictor = get_predictor()
-        status = "OK" if predictor.is_loaded() else "FAILED"
-        print(f"[MODEL] XGBoost load: {status}", flush=True)
-
-        # Initialize Database
-        BASE_DIR_INNER = os.path.dirname(os.path.abspath(__file__))
-        data_path = os.path.join(BASE_DIR_INNER, 'data', 'processed', 'student_features_labeled.csv')
-
-        from src.services.db_manager import get_db_manager
-        dbm = get_db_manager()
-        dbm.initialize_db(data_path)
+        print(f"[MODEL] Status: {'READY' if predictor.is_loaded() else 'FAILED'}", flush=True)
+        
+        # Initialize Database & Seeding
+        auth_service.initialize_system()
+        print("[DB] Initialized and Seeded.", flush=True)
     except Exception as e:
-        print(f"[ERROR] {e}", flush=True)
+        print(f"[CRITICAL ERROR] {e}", flush=True)
+    host = settings.HOST if hasattr(settings, 'HOST') else "0.0.0.0"
+    port = settings.PORT if hasattr(settings, 'PORT') else 8000
+    print(f"[SERVER] Đang chạy tại: http://localhost:{port}", flush=True)
+    print(f"[DOCS]   API Docs    : http://localhost:{port}/docs", flush=True)
     yield
     print("[STOP] Server shutting down.", flush=True)
 
-
-# Khởi tạo FastAPI app
 app = FastAPI(
-    title="Student Risk Stratification System",
-    description="""
-    ## 🎓 Hệ Thống Phân Tầng Rủi Ro Sinh Viên
-    
-    API này sử dụng mô hình **XGBoost** được huấn luyện trên bộ dữ liệu OULAD 
-    để dự đoán mức độ rủi ro học tập của sinh viên gồm 4 mức:
-    
-    - 🟢 **Low** - Rủi ro thấp
-    - 🟡 **Medium** - Rủi ro trung bình  
-    - 🟠 **High** - Rủi ro cao
-    - 🔴 **Very High** - Rủi ro rất cao
-    
-    ### Nhóm phát triển: Nhóm 14 - Học kỳ 6
-    """,
-    version="1.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc",
+    title=settings.PROJECT_NAME,
+    version=settings.VERSION,
     lifespan=lifespan
 )
 
-# CORS Middleware
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -73,42 +51,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static files (CSS, JS, Images)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-static_dir = os.path.join(BASE_DIR, "src", "web", "static")
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
+# Static files
+app.mount("/static", StaticFiles(directory=str(settings.BASE_DIR / "src" / "web" / "static")), name="static")
+app.mount("/visuals", StaticFiles(directory=str(settings.BASE_DIR / "visuals")), name="visuals")
 
-# Mount visuals directory
-visuals_dir = os.path.join(BASE_DIR, "visuals")
-if os.path.exists(visuals_dir):
-    app.mount("/visuals", StaticFiles(directory=visuals_dir), name="visuals")
+# Import Routers
+from src.api.v1.auth import router as auth_api
+from src.api.v1.student import router as student_api
+from src.api.v1.admin import router as admin_api
+from src.api.v1.general import router as general_api
+from src.web.routes import router as web_router
 
-
-# Include routers
-from src.api.routes import router as general_router
-from src.api.auth_routes import router as auth_router
-from src.api.admin_routes import router as admin_router
-from src.api.student_routes import router as student_router
-
-app.include_router(auth_router)
-app.include_router(admin_router)
-app.include_router(student_router)
-app.include_router(general_router)
-
+# Include Routers
+app.include_router(auth_api, prefix=f"{settings.API_V1_STR}/auth", tags=["API Auth"])
+app.include_router(student_api, prefix=f"{settings.API_V1_STR}/student", tags=["API Student"])
+app.include_router(admin_api, prefix=f"{settings.API_V1_STR}/admin", tags=["API Admin"])
+app.include_router(general_api, prefix=f"{settings.API_V1_STR}/general", tags=["API General"])
+app.include_router(web_router, tags=["Web"])
 
 if __name__ == "__main__":
     import uvicorn
-    host = os.getenv("HOST", "0.0.0.0")
-    port = int(os.getenv("PORT", "8000"))
-    debug = os.getenv("DEBUG", "true").lower() == "true"
-
-    print(f"Server running at: http://localhost:{port}", flush=True)
-    print(f"API Docs: http://localhost:{port}/docs", flush=True)
-
-    uvicorn.run(
-        "main:app",
-        host=host,
-        port=port,
-        reload=debug,
-        log_level="info"
-    )
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

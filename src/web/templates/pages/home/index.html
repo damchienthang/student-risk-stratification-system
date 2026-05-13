@@ -1,0 +1,397 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Hệ thống Phân tầng Rủi ro Sinh viên{% endblock %}
+{% block extra_css %}
+<style>
+  /* Hero specific styles */
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+
+  .hero-desc {
+    font-size: 1.2rem;
+    color: var(--text-dim);
+    max-width: 800px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section class="hero" id="about" style="padding: 100px 0 60px; background: var(--bg-alt); text-align: center;">
+  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <h1 class="hero-title">Phân Tầng Rủi Ro <span class="gradient-text text-primary">Học Tập Sinh Viên</span></h1>
+    <p class="hero-desc">Ứng dụng trí tuệ nhân tạo giúp nhận diện sớm các sinh viên có nguy cơ bỏ học hoặc
+      trượt môn dựa trên tương tác hệ thống và kết quả đánh giá.</p>
+
+    {% if user and user.role != UserRole.GUEST %}
+    <!-- Student Search (Official) -->
+    <div class="search-container" style="max-width: 850px; margin: 0 auto 30px; position: relative; padding: 0 20px;">
+      <h3
+        style="text-align: center; margin-bottom: 20px; color: var(--secondary); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+        Tra cứu rủi ro học tập chính thức</h3>
+      <div class="search-box"
+        style="display: flex; background: white; padding: 6px; border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 2px solid var(--border); transition: all 0.3s; overflow: hidden;">
+        <input type="text" id="studentSearchInput" class="search-input"
+          placeholder="Nhập mã sinh viên để truy vấn thông tin rủi ro (VD: 11391)..."
+          style="flex: 1; border: none; padding: 15px 30px; font-size: 1.05rem; outline: none; font-weight: 500; background: transparent; {{ 'color: var(--text-dim); cursor: not-allowed; background: #f9f9f9;' if user.role == UserRole.STUDENT else '' }}"
+          value="{{ user.username if user.role == UserRole.STUDENT else '' }}" {{ 'disabled' if
+          user.role==UserRole.STUDENT else '' }}>
+
+        {% if user.role == UserRole.STUDENT %}
+        <a href="/student" class="search-btn"
+          style="background: var(--primary); color: white; border: none; padding: 15px 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; text-decoration: none; display: flex; align-items: center;">XEM
+          KẾT QUẢ CỦA TÔI</a>
+        {% elif user.role == UserRole.ADMIN %}
+        <button class="search-btn" onclick="searchStudent()"
+          style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase;">Tra
+          cứu ngay</button>
+        {% endif %}
+      </div>
+      {% if user.role == UserRole.STUDENT %}
+      <p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-dim);">* Bạn đang đăng nhập với tư cách sinh
+        viên. Kết quả rủi ro học tập của bạn được hiển thị bên dưới.</p>
+      {% endif %}
+    </div>
+
+    <div style="text-align: center; margin: 40px 0;">
+      <span
+        style="background: var(--border); height: 1px; width: 100px; display: inline-block; vertical-align: middle;"></span>
+      <span style="margin: 0 15px; color: var(--text-dim); font-weight: 700; font-size: 0.9rem;">HOẶC</span>
+      <span
+        style="background: var(--border); height: 1px; width: 100px; display: inline-block; vertical-align: middle;"></span>
+    </div>
+    {% endif %}
+
+    <!-- Guest Trial Section (Available for everyone NOT lecturer) -->
+    {% if not user or user.role != UserRole.ADMIN %}
+    <div id="guest-trial"
+      style="max-width: 1000px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-lg);">
+      <h3 style="text-align: center; margin-bottom: 10px; color: var(--primary); font-size: 2.3rem; font-weight: 800;">
+        Thử nghiệm dự báo rủi ro</h3>
+      <p style="text-align: center; color: var(--text-dim); margin-bottom: 40px; font-size: 16px;">Hãy cung cấp các
+        thông số dưới đây để AI phân tích mức độ rủi ro học tập của bạn.</p>
+
+      <form id="guestForm">
+        <!-- Group 1: Demographic -->
+        <h4
+          style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:10px; font-weight:800;">
+          I. Thông tin cá nhân & Nhân khẩu học</h4>
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">GIỚI
+              TÍNH</label>
+            <select name="gender_num" class="form-control"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+              <option value="0">Nam (M)</option>
+              <option value="1">Nữ (F)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">ĐỘ
+              TUỔI</label>
+            <select name="age_num" class="form-control"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+              <option value="0">0-35 tuổi</option>
+              <option value="1">35-55 tuổi</option>
+              <option value="2">Trên 55 tuổi</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">TRÌNH
+              ĐỘ HỌC VẤN</label>
+            <select name="education_num" class="form-control"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+              <option value="0">Không bằng cấp chính thức</option>
+              <option value="1">Dưới A Level</option>
+              <option value="2" selected>A Level hoặc tương đương</option>
+              <option value="3">Bằng cấp HE</option>
+              <option value="4">Sau đại học</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">ĐIỀU
+              KIỆN KINH TẾ (IMD)</label>
+            <select name="imd_band_num" class="form-control"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+              <option value="0">0-10% (Rất khó khăn)</option>
+              <option value="5" selected>40-50% (Trung bình)</option>
+              <option value="9">90-100% (Rất tốt)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">TÌNH
+              TRẠNG KHUYẾT TẬT</label>
+            <select name="disability_num" class="form-control"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+              <option value="0">Không</option>
+              <option value="1">Có</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Group 2: History & Registration -->
+        <h4
+          style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:10px; font-weight:800;">
+          II. Lịch sử & Lộ trình học tập</h4>
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">SỐ
+              LẦN ĐÃ THI LẠI</label>
+            <input type="number" name="num_of_prev_attempts" class="form-control" value="0" min="0"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">SỐ
+              TÍN CHỈ ĐANG HỌC</label>
+            <input type="number" name="studied_credits" class="form-control" value="60" min="0"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">SỐ
+              NGÀY ĐĂNG KÝ TRƯỚC (REG DAYS)</label>
+            <input type="number" name="reg_days_before" class="form-control" value="-90"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+            <small style="color:var(--text-dim); font-size:0.7rem;">* Giá trị âm biểu thị đăng ký trước ngày khai
+              giảng</small>
+          </div>
+        </div>
+
+        <!-- Group 3: Assessment Behavior -->
+        <h4
+          style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:10px; font-weight:800;">
+          III. Kỷ luật & Kết quả học tập hiện tại</h4>
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">ĐIỂM
+              TRUNG BÌNH (0-100)</label>
+            <input type="number" name="avg_score" class="form-control" value="70" min="0" max="100"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">ĐIỂM
+              THẤP NHẤT</label>
+            <input type="number" name="min_score" class="form-control" value="50" min="0" max="100"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">SỐ
+              BÀI ĐÃ NỘP</label>
+            <input type="number" name="n_submitted" class="form-control" value="4" min="0"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">SỐ
+              BÀI NỘP MUỘN</label>
+            <input type="number" name="n_late" class="form-control" value="0" min="0"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">ĐỘ
+              TRỄ NỘP BÀI TB</label>
+            <input type="number" name="avg_submit_delay" class="form-control" value="0"
+              style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); outline: none;">
+          </div>
+        </div>
+
+        <!-- Group 4: VLE (Final) -->
+        <h4
+          style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:10px; font-weight:800;">
+          IV. Tương tác hệ thống (VLE Feature)</h4>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 30px;">
+          <div class="form-group">
+            <label
+              style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px;">MỨC
+              ĐỘ TƯƠNG TÁC HỌC TẬP TRỰC TUYẾN</label>
+            <input type="range" name="total_clicks" class="form-control" value="600" min="150" max="3500" step="10"
+              style="width: 100%; padding: 12px 0; border-radius: 8px; border: 1px solid var(--border); outline: none; background: transparent;">
+            <div
+              style="display: flex; justify-content: space-between; font-size: 1rem; color: var(--text-dim); margin-top: 5px;">
+              <span>Rất ít</span>
+              <span>Trung bình</span>
+              <span>Tích cực</span>
+              <span>Rất tích cực</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <button type="button" onclick="submitGuestPrediction(event)"
+            style="width: 100%; background: var(--primary); color: white; border: none; padding: 18px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(200, 16, 46, 0.2);">
+            PHÂN TÍCH RỦI RO TOÀN DIỆN
+          </button>
+        </div>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ── SEARCH RESULT PANEL ────────────────────────────────── -->
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+  <div id="studentDataPanel" class="student-data-panel hidden">
+    <div class="panel-header"
+      style="background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px 8px 0 0;">
+      <h3 style="color: white; margin: 0;">Kết quả dự đoán sinh viên #<span id="resStudentId"></span></h3>
+      <button onclick="closeStudentPanel()"
+        style="background: none; border: none; color: white; cursor: pointer; font-size: 1.5rem;">✕</button>
+    </div>
+    <div class="panel-content"
+      style="padding: 30px; background: white; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; box-shadow: var(--shadow-lg);">
+
+      <div style="display: flex; gap: 30px; margin-bottom: 40px; align-items: center; flex-wrap: wrap;">
+        <div id="resRiskBadge" class="badge"
+          style="font-size: 1.5rem; padding: 15px 30px; border-radius: 50px; font-weight: 800; text-transform: uppercase;">
+          UNKNOWN RISK</div>
+        <div>
+          <p style="margin: 0; font-weight: 700; font-size: 1.1rem; color: var(--secondary);">Độ tin cậy mô hình:
+            <span id="resConfidence">0</span>%
+          </p>
+          <p id="resRecommendation"
+            style="margin: 5px 0 0; color: var(--text-dim); max-width: 600px; font-weight: 500;">Dữ liệu chưa sẵn sàng.
+          </p>
+        </div>
+      </div>
+
+      <h4 style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary);">Thống kê
+        dữ liệu chi tiết</h4>
+      <div class="data-table-grid" id="resDataTable"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        <!-- Content injected by JS -->
+      </div>
+
+      <!-- Analysis Area -->
+      <div id="resAnalysisArea" class="hidden"
+        style="margin-top: 40px; padding-top: 30px; border-top: 2px dashed var(--border);">
+        <h4
+          style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary); font-weight: 800;">
+          Phân tích các yếu tố ảnh hưởng
+        </h4>
+        <div id="resAnalysisContent" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+          <!-- Explanations injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── MODEL COMPARISON ─────────────────────────────────────── -->
+<section class="section section--dark" id="model">
+  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <div class="section-header">
+      <h2 class="section-title">So Sánh Hiệu Suất Mô Hình</h2>
+      <p class="section-sub">Chúng tôi đã thử nghiệm nhiều mô hình học máy để tìm ra thuật toán tối ưu nhất</p>
+    </div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Mô hình</th>
+            <th>F1-Score</th>
+            <th>Accuracy</th>
+            <th>AUC Score</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background: rgba(160, 27, 33, 0.03);">
+            <td><strong class="text-primary">XGBoost</strong></td>
+            <td>84.65%</td>
+            <td>92.71%</td>
+            <td>98.68%</td>
+            <td><span class="badge badge-low">TỐI ƯU NHẤT</span></td>
+          </tr>
+          <tr>
+            <td>LightGBM</td>
+            <td>84.05%</td>
+            <td>92.58%</td>
+            <td>98.66%</td>
+            <td><span class="badge badge-medium">HIỆU NĂNG CAO</span></td>
+          </tr>
+          <tr>
+            <td>Random Forest</td>
+            <td>83.20%</td>
+            <td>91.55%</td>
+            <td>98.39%</td>
+            <td><span class="badge badge-medium">ỔN ĐỊNH</span></td>
+          </tr>
+          <tr>
+            <td>Logistic Regression</td>
+            <td>69.38%</td>
+            <td>83.31%</td>
+            <td>95.85%</td>
+            <td><span class="badge badge-high">CƠ BẢN</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── VISUALS ─────────────────────────────────────────────── -->
+<section class="section" id="visuals">
+  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <div class="section-header">
+      <h2 class="section-title">Phân Tích Dữ Liệu & Mô Hình</h2>
+      <p class="section-sub">Trực quan hóa các yếu tố ảnh hưởng đến rủi ro học tập của sinh viên</p>
+    </div>
+    <div class="visuals-grid">
+      <div class="visual-card" onclick="openModal('/visuals/01_class_distribution.png', 'Phân phối các mức độ rủi ro')">
+        <img src="/visuals/01_class_distribution.png" alt="Distribution">
+        <div class="visual-caption">Phân phối các mức độ rủi ro</div>
+      </div>
+      <div class="visual-card"
+        onclick="openModal('/visuals/02_04_vle_features.png', 'Tương tác hệ thống (VLE) theo nhóm rủi ro')">
+        <img src="/visuals/02_04_vle_features.png" alt="VLE">
+        <div class="visual-caption">Tương tác hệ thống (VLE)</div>
+      </div>
+      <div class="visual-card"
+        onclick="openModal('/visuals/02_05_assessment_features.png', 'Kết quả kiểm tra theo nhóm rủi ro')">
+        <img src="/visuals/02_05_assessment_features.png" alt="Assessment">
+        <div class="visual-caption">Kết quả kiểm tra & đánh giá</div>
+      </div>
+      <div class="visual-card"
+        onclick="openModal('/visuals/03_feature_importance_best.png', 'Các yếu tố quan trọng nhất trong mô hình')">
+        <img src="/visuals/03_feature_importance_best.png" alt="Importance">
+        <div class="visual-caption">Yếu tố quan trọng hàng đầu</div>
+      </div>
+      <div class="visual-card"
+        onclick="openModal('/visuals/03_confusion_matrix_best.png', 'Ma trận nhầm lẫn (Confusion Matrix)')">
+        <img src="/visuals/03_confusion_matrix_best.png" alt="Confusion">
+        <div class="visual-caption">Ma trận nhầm lẫn XGBoost</div>
+      </div>
+      <div class="visual-card"
+        onclick="openModal('/visuals/02_07_correlation.png', 'Ma trận tương quan giữa các đặc trưng')">
+        <img src="/visuals/02_07_correlation.png" alt="Correlation">
+        <div class="visual-caption">Ma trận tương quan đặc trưng</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Logic handles in /static/app.js -->
+{% endblock %}

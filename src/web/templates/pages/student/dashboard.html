@@ -1,0 +1,327 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Bảng điều khiển sinh viên — RiskSight{% endblock %}
+
+{% block extra_css %}
+<style>
+  .tab-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0;
+  }
+
+  .tab-btn {
+    padding: 12px 25px;
+    border: none;
+    background: none;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-dim);
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .tab-btn.active {
+    color: var(--primary);
+  }
+
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary);
+  }
+
+  .profile-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .form-control:disabled {
+    background: var(--bg-alt);
+    cursor: not-allowed;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1000px; margin: 40px auto; padding: 0 20px;">
+  <div class="section-header" style="text-align: left; margin-bottom: 40px;">
+    <h1 style="font-size: 2rem; color: var(--secondary); font-weight: 800;">Thông tin <span class="text-primary">Cá
+        nhân</span></h1>
+    <p style="color: var(--text-dim); font-size: 1.1rem;">Quản lý kết quả học tập và thông tin tài khoản của bạn.</p>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchDashboardTab('results', this)">KẾT QUẢ RỦI RO</button>
+    <button class="tab-btn" onclick="switchDashboardTab('history', this); loadHistory()">LỊCH SỬ DỰ BÁO</button>
+    <button class="tab-btn" onclick="switchDashboardTab('profile', this)">THÔNG TIN CÁ NHÂN</button>
+  </div>
+
+
+  <!-- TAB: RESULTS -->
+  <div id="tab-results" class="dashboard-tab">
+    <div id="studentDataPanel" class="student-data-panel">
+      <div class="panel-header"
+        style="background: var(--primary); color: white; padding: 25px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="color: white; margin: 0; font-size: 1.3rem;">Kết quả phân tích học tập</h3>
+
+        {% if student %}
+        <span
+          style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Mã
+          SV: {{ student.id_student }}</span>
+        {% endif %}
+      </div>
+
+      <div class="panel-content"
+        style="padding: 40px; background: white; border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px; box-shadow: var(--shadow-lg);">
+
+        {% if not student %}
+        <div style="text-align: center; padding: 40px;">
+          <p style="font-size: 1.2rem; color: var(--text-dim);">Tài khoản của bạn chưa được liên kết với dữ liệu học tập
+            chính thức.</p>
+          <p style="margin-top: 10px;">Hãy sử dụng chức năng <strong>Thử nghiệm dự báo</strong> tại trang chủ.</p>
+          <a href="/"
+            style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-weight: 700;">VỀ
+            TRANG CHỦ</a>
+        </div>
+        {% else %}
+        <!-- Risk Summary Card -->
+        <div
+          style="background: var(--bg-alt); padding: 30px; border-radius: 16px; margin-bottom: 40px; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; border: 1px solid var(--border);">
+          <div class="badge badge-{{ prediction.risk_label.lower().replace(' ', '') }}"
+            style="font-size: 2rem; padding: 25px 45px; border-radius: 100px; font-weight: 900; text-transform: uppercase; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+            {{ prediction.risk_label }}
+          </div>
+          <div style="flex: 1; min-width: 300px;">
+            <h4 style="margin: 0 0 10px; font-size: 1.4rem; color: var(--secondary);">Mức độ rủi ro: <span
+                class="text-primary">{{ prediction.risk_label }}</span></h4>
+            <p style="margin: 0; font-weight: 600; color: var(--text-dim);">Độ tin cậy dự báo: {{ prediction.confidence
+              }}%</p>
+            <div
+              style="margin-top: 15px; padding: 15px; background: white; border-left: 5px solid var(--primary); border-radius: 4px; font-style: italic; color: var(--text);">
+              "{{ prediction.recommendation }}"
+            </div>
+          </div>
+        </div>
+
+        <h4
+          style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary); letter-spacing: 1px; font-weight: 800;">
+          Chỉ số học tập hiện tại</h4>
+
+        <div class="data-table-grid"
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+          <div class="data-item"
+            style="padding: 20px; background: white; border: 1px solid var(--border); border-radius: 12px;">
+            <span class="data-label">Điểm trung bình</span>
+            <div style="display: flex; align-items: baseline; gap: 10px;">
+              <span class="data-value" style="font-size: 1.8rem; font-weight: 800; color: var(--secondary);">{{
+                "%.2f"|format(student.avg_score) }}</span>
+              <span style="color: var(--text-dim); font-weight: 600;">/ 100</span>
+            </div>
+          </div>
+          <div class="data-item"
+            style="padding: 20px; background: white; border: 1px solid var(--border); border-radius: 12px;">
+            <span class="data-label">Tương tác hệ thống (VLE)</span>
+            <div style="display: flex; align-items: baseline; gap: 10px;">
+              <span class="data-value" style="font-size: 1.8rem; font-weight: 800; color: var(--secondary);">{{
+                student.total_clicks|int }}</span>
+              <span style="color: var(--text-dim); font-weight: 600;">clicks</span>
+            </div>
+          </div>
+          <div class="data-item"
+            style="padding: 20px; background: white; border: 1px solid var(--border); border-radius: 12px;">
+            <span class="data-label">Thông tin khóa học</span>
+            <div style="font-weight: 700; color: var(--secondary); font-size: 1.1rem; margin-top: 5px;">{{
+              student.code_module }} — {{ student.code_presentation }}</div>
+            <div style="margin-top: 5px; color: var(--text-dim); font-size: 0.9rem;">Số tín chỉ: {{
+              student.studied_credits }}</div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: HISTORY -->
+  <div id="tab-history" class="dashboard-tab hidden">
+    <div class="profile-card">
+      <h3 style="margin-bottom: 20px;">Lịch sử</h3>
+      <div class="table-responsive">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="text-align: left; border-bottom: 2px solid var(--border);">
+              <th style="padding: 12px;">Thời gian</th>
+              <th style="padding: 12px;">Mức rủi ro</th>
+              <th style="padding: 12px;">Độ tin cậy</th>
+              <th style="padding: 12px;">Điểm TB</th>
+              <th style="padding: 12px;">Tương tác</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- Data injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: PROFILE -->
+  <div id="tab-profile" class="dashboard-tab hidden">
+    <div class="profile-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+        <h3 style="margin:0;">Thông tin tài khoản</h3>
+        <span class="badge badge-low">{{ user.role.upper() }}</span>
+      </div>
+
+      <form id="profileForm">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="form-group">
+            <label>Tên đăng nhập</label>
+            <input type="text" class="form-control" value="{{ user.username }}" disabled>
+          </div>
+          <div class="form-group">
+            <label>Họ và tên</label>
+            <input type="text" name="full_name" id="profFullName" class="form-control"
+              value="{{ user.full_name or '' }}" placeholder="Chưa cập nhật">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="form-group">
+            <label>Email liên hệ</label>
+            <input type="email" name="email" id="profEmail" class="form-control" value="{{ user.email or '' }}"
+              placeholder="example@email.com">
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại</label>
+            <input type="text" name="phone_number" id="profPhone" class="form-control"
+              value="{{ user.phone_number or '' }}" placeholder="09xx xxx xxx">
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+          <button type="button" onclick="updateProfile()" id="updateProfileBtn"
+            style="padding: 12px 40px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; transition: all 0.2s;">
+            LƯU THAY ĐỔI
+          </button>
+          <span id="profileMsg" style="margin-left: 20px; font-weight: 600; font-size: 0.9rem;"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function switchDashboardTab(tabId, btn) {
+    document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.add('hidden'));
+    document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  async function loadHistory() {
+    const tbody = document.getElementById('historyTableBody');
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-dim);">Đang tải lịch sử...</td></tr>';
+
+    try {
+      const res = await fetch('/api/v1/student/history');
+      if (!res.ok) throw new Error('Không thể tải lịch sử');
+      const data = await res.json();
+
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-dim);">Bạn chưa có lịch sử dự báo nào.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = data.map(log => {
+        const riskClass = 'badge-' + log.risk_label.toLowerCase().replace(' ', '');
+        return `
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 12px; font-size: 0.85rem;">${log.timestamp}</td>
+            <td style="padding: 12px;"><span class="badge ${riskClass}" style="font-size:0.7rem;">${log.risk_label}</span></td>
+            <td style="padding: 12px; font-weight:700;">${log.confidence}%</td>
+            <td style="padding: 12px;">${log.avg_score.toFixed(1)}</td>
+            <td style="padding: 12px;">${log.total_clicks} clicks</td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--red);">⚠ Lỗi: ${err.message}</td></tr>`;
+    }
+  }
+
+  async function updateProfile() {
+    const btn = document.getElementById('updateProfileBtn');
+    const msg = document.getElementById('profileMsg');
+
+    const payload = {
+      full_name: document.getElementById('profFullName').value,
+      email: document.getElementById('profEmail').value,
+      phone_number: document.getElementById('profPhone').value
+    };
+
+    btn.disabled = true;
+    btn.innerText = 'ĐANG LƯU...';
+    msg.innerText = '';
+
+    try {
+      const res = await fetch('/api/v1/auth/me/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('Không thể cập nhật thông tin');
+
+      msg.style.color = '#059669';
+      msg.innerText = '✓ Đã cập nhật thành công!';
+    } catch (err) {
+      msg.style.color = 'var(--red)';
+      msg.innerText = '⚠ Lỗi: ' + err.message;
+    } finally {
+      btn.disabled = false;
+      btn.innerText = 'LƯU THAY ĐỔI';
+    }
+  }
+</script>
+{% endblock %}

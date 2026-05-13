@@ -395,6 +395,8 @@ tbody tr:last-child td {
     border-bottom: none;
 }
 
+.hidden { display: none !important; }
+
 /* ── BADGE ───────────────────────────────────────────────── */
 .badge {
     display: inline-flex;

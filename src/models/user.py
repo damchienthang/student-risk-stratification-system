@@ -10,4 +10,6 @@ class User(SQLModel, table=True):
     password_hash: str
     role: str = Field(default="student") # Roles: 'lecturer', 'student'
     is_external: bool = Field(default=False)
+    is_active: bool = Field(default=True)
     full_name: Optional[str] = None
+    phone_number: Optional[str] = None

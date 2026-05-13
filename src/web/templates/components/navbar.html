@@ -1,0 +1,103 @@
+<!-- ── HEADER ──────────────────────────────────────────── -->
+<header class="header"
+  style="background: white; border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100vw; left: 0; right: 0;">
+  <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 4%;">
+    <!-- LOGO CĂN TRÁI -->
+    <a href="/" class="logo"
+      style="display: flex; align-items: center; gap: 15px; text-decoration: none; flex-shrink: 0;">
+      <div
+        style="height: 55px; display: flex; align-items: center; justify-content: center; background: white; border-radius: 4px;">
+        <img src="https://daotao.ptit.edu.vn/wp-content/uploads/sites/3/2024/08/Slide-16_9-1.png" alt="PTIT Logo"
+          referrerpolicy="no-referrer" style="height: 55px; width: auto; object-fit: contain;"
+          onerror="this.src='https://daotao.ptit.edu.vn/wp-content/uploads/sites/3/2024/08/Slide-16_9-1.png'; this.onerror=function(){this.style.display='none'; document.getElementById('logo-text-fallback').style.display='block';}">
+        <div id="logo-text-fallback" style="display: none; font-weight: 900; color: var(--primary); font-size: 1.8rem;">
+          PTIT</div>
+      </div>
+      <div style="border-left: 2px solid var(--primary); padding-left: 15px;">
+        <span style="font-size: 1.15rem; line-height: 1.2; display: block; font-weight: 800; color: var(--primary);">HỌC
+          VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG</span>
+        <span
+          style="font-size: 0.75rem; letter-spacing: 0.5px; color: var(--text-dim); font-weight: 600; display: block; text-transform: uppercase;">Posts
+          and Telecommunications Institute of Technology</span>
+      </div>
+    </a>
+
+    <!-- NAVIGATE CĂN PHẢI -->
+    <nav class="nav" style="display: flex; gap: 30px; align-items: center; margin-left: auto;">
+      <a href="/" class="nav-link"
+        style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">TRANG
+        CHỦ</a>
+      <a href="/#model" class="nav-link"
+        style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">MÔ
+        HÌNH</a>
+      <a href="/#visuals" class="nav-link"
+        style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">PHÂN
+        TÍCH</a>
+      <a href="/about" class="nav-link"
+        style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">VỀ
+        CHÚNG TÔI</a>
+      <div id="authNavArea" style="display: flex; align-items: center; gap: 15px; margin-left: 10px;">
+        {% if user %}
+        <div class="user-dropdown">
+          <button class="user-btn" onclick="toggleDropdown(event)"
+            style="background: var(--bg-alt); border: 1px solid var(--border); padding: 10px 25px; border-radius: 50px; display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 700; transition: all 0.2s;">
+            <span class="user-name">{{ user.full_name or user.username }}</span>
+            <span class="dropdown-arrow" style="font-size: 0.6rem; opacity: 0.5;">▼</span>
+          </button>
+          <div class="dropdown-content"
+            style="display: none; position: absolute; right: 0; background: white; min-width: 220px; box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15); border-radius: 12px; padding: 12px 0; z-index: 9999; border: 1px solid var(--border); margin-top: 10px;">
+            {% if user.role == 'lecturer' %}
+            <a href="/admin"
+              style="color: var(--text); padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 600;">Bảng
+              quản trị</a>
+            {% else %}
+            <a href="/student"
+              style="color: var(--text); padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 600;">Khu
+              vực cá nhân</a>
+            {% endif %}
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 8px 0;">
+            <a href="/api/v1/auth/logout"
+              style="color: var(--primary) !important; padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 800;">Đăng
+              xuất</a>
+          </div>
+
+        </div>
+        {% else %}
+        <button onclick="toggleLoginModal()" class="login-trigger-btn"
+          style="background: var(--primary); color: white; border: none; padding: 12px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 20px rgba(200, 16, 46, 0.25); font-size: 0.9rem; letter-spacing: 0.5px;">ĐĂNG
+          NHẬP</button>
+        {% endif %}
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Dropdown Styles - Integrated for portability */
+  .user-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .user-btn:hover {
+    background: var(--border) !important;
+    transform: translateY(-1px);
+  }
+
+  .dropdown-content a:hover {
+    background: #f8f9fa;
+    color: var(--primary);
+  }
+</style>
+
+<script>
+  function toggleDropdown(e) {
+    e.stopPropagation();
+    const dropdown = document.querySelector('.dropdown-content');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+  document.addEventListener('click', () => {
+    const dropdown = document.querySelector('.dropdown-content');
+    if (dropdown) dropdown.style.display = 'none';
+  });
+</script>

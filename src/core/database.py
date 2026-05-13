@@ -1,19 +1,9 @@
-import os
 from sqlmodel import SQLModel, create_engine, Session
-
-# Base directory relative to this file
-_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_db_dir = os.path.join(_BASE_DIR, "data", "processed")
-
-# Ensure the directory exists
-os.makedirs(_db_dir, exist_ok=True)
-
-sqlite_file_name = os.path.join(_db_dir, "database.db")
-sqlite_url = f"sqlite:///{sqlite_file_name}"
+from src.core.config import settings
 
 # create_engine configuration
 connect_args = {"check_same_thread": False}
-engine = create_engine(sqlite_url, connect_args=connect_args)
+engine = create_engine(settings.DATABASE_URL, connect_args=connect_args)
 
 def create_db_and_tables():
     """Create all tables defined in SQLModel metadata."""

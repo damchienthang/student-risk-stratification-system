@@ -21,7 +21,58 @@ try:
     if "is_external" not in columns:
         print("Adding 'is_external' column...")
         cursor.execute("ALTER TABLE users ADD COLUMN is_external BOOLEAN DEFAULT 0")
-        
+
+    if "phone_number" not in columns:
+        print("Adding 'phone_number' column...")
+        cursor.execute("ALTER TABLE users ADD COLUMN phone_number TEXT")
+
+    if "is_active" not in columns:
+        print("Adding 'is_active' column...")
+        cursor.execute("ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT 1")
+
+    # 2. Check inference_logs table
+    cursor.execute("PRAGMA table_info(inference_logs)")
+    inf_cols = [row[1] for row in cursor.fetchall()]
+    
+    if not inf_cols:
+        print("Creating 'inference_logs' table...")
+        cursor.execute("""
+            CREATE TABLE inference_logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT,
+                user_id INTEGER,
+                code_module TEXT,
+                code_presentation TEXT,
+                gender_num INTEGER,
+                imd_band_num INTEGER,
+                education_num INTEGER,
+                age_num INTEGER,
+                disability_num INTEGER,
+                num_of_prev_attempts INTEGER,
+                studied_credits INTEGER,
+                total_clicks INTEGER,
+                avg_score REAL,
+                min_score REAL,
+                n_submitted INTEGER,
+                n_late INTEGER,
+                avg_submit_delay REAL,
+                reg_days_before INTEGER,
+                risk_level INTEGER,
+                risk_label TEXT,
+                confidence REAL
+            )
+        """)
+    else:
+        # Add new columns if table exists but is old
+        new_inf_cols = [
+            ("user_id", "INTEGER"), ("min_score", "REAL"), ("n_submitted", "INTEGER"),
+            ("n_late", "INTEGER"), ("avg_submit_delay", "REAL"), ("reg_days_before", "INTEGER")
+        ]
+        for col_name, col_type in new_inf_cols:
+            if col_name not in inf_cols:
+                print(f"Adding '{col_name}' column to inference_logs...")
+                cursor.execute(f"ALTER TABLE inference_logs ADD COLUMN {col_name} {col_type}")
+
     conn.commit()
     conn.close()
     print("Database migration completed successfully.")

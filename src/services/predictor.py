@@ -4,20 +4,16 @@ import pandas as pd
 from typing import Optional, Any, Dict, List
 import logging
 
-# Configure logging
+# Cấu hình logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Directory resolution
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# Priority: notebooks/models/ (where training scripts save) > models/ (deployment dir)
-SEARCH_DIRS = [
-    os.path.join(BASE_DIR, "notebooks", "models"),
-    os.path.join(BASE_DIR, "models"),
-    os.path.join(BASE_DIR, "data", "models")
-]
+# Giải quyết đường dẫn thư mục
+from src.core.config import settings
 
-# Risk level labels
+SEARCH_DIRS = settings.MODEL_SEARCH_DIRS
+
+# Nhãn các mức độ rủi ro
 RISK_LABELS: Dict[int, str] = {
     0: "Low",
     1: "Medium",
@@ -25,15 +21,15 @@ RISK_LABELS: Dict[int, str] = {
     3: "Very High"
 }
 
-# Color codes for visualization
+# Mã màu cho việc trực quan hóa
 RISK_COLORS: Dict[int, str] = {
-    0: "#22c55e",   # green
-    1: "#f59e0b",   # amber
-    2: "#f97316",   # orange
-    3: "#ef4444"    # red
+    0: "#22c55e",   # xanh lá
+    1: "#f59e0b",   # hổ phách
+    2: "#f97316",   # cam
+    3: "#ef4444"    # đỏ
 }
 
-# Human-readable recommendations
+# Các khuyến nghị hành động thân thiện với người dùng
 RECOMMENDATIONS: Dict[int, str] = {
     0: "Sinh viên đang có tiến độ học tập tốt. Tiếp tục duy trì và tham gia đầy đủ các hoạt động học tập.",
     1: "Sinh viên cần chú ý hơn đến việc học. Nên tăng cường tương tác với hệ thống VLE và ôn tập bài thường xuyên hơn.",
@@ -41,7 +37,7 @@ RECOMMENDATIONS: Dict[int, str] = {
     3: "Sinh viên có nguy cơ rất cao bỏ học hoặc trượt môn. Cần can thiệp khẩn cấp từ cố vấn học thuật và gia đình."
 }
 
-# Feature columns in exact training order
+# Các cột thuộc tính (features) theo đúng thứ tự huấn luyện mô hình
 FEATURE_COLUMNS: List[str] = [
     'gender_num', 'imd_band_num', 'education_num', 'age_num', 'disability_num', 
     'num_of_prev_attempts', 'studied_credits', 'early_registration', 'reg_days_before', 
@@ -50,7 +46,19 @@ FEATURE_COLUMNS: List[str] = [
     'avg_tma_score', 'n_submitted', 'n_late', 'avg_submit_delay'
 ]
 
-# Model benchmarks
+# Giá trị mặc định "trung tính" cho các đặc trưng (dựa trên trung bình cộng của quần thể OULAD)
+# Điều này giúp tránh thiên kiến khi chỉ cung cấp dữ liệu một phần (ví dụ: Thử nghiệm Guest)
+FEATURE_DEFAULTS: Dict[str, Any] = {
+    'gender_num': 0, 'imd_band_num': 5, 'education_num': 2, 'age_num': 0, 'disability_num': 0,
+    'num_of_prev_attempts': 0, 'studied_credits': 60,
+    'early_registration': 1, 'reg_days_before': -90, 'unregistered': 0,
+    'total_clicks': 500, 'active_days': 50, 'avg_clicks_day': 10.0, 'max_clicks_day': 100,
+    'n_resources': 15, 'click_density': 2.0,
+    'avg_score': 65.0, 'min_score': 45.0, 'std_score': 12.0, 'avg_tma_score': 68.0,
+    'n_submitted': 4, 'n_late': 0, 'avg_submit_delay': -2.0
+}
+
+# Chỉ số hiệu năng của mô hình
 MODEL_METRICS = {
     "XGBoost": {
         "f1_macro": 0.8465,
@@ -63,7 +71,7 @@ MODEL_METRICS = {
 
 class RiskPredictor:
     """
-    RiskPredictor handles loading ML models and scalers to perform student risk stratification.
+    RiskPredictor xử lý việc nạp mô hình ML và bộ chuẩn hóa (scaler) để thực hiện phân tầng rủi ro sinh viên.
     """
 
     def __init__(self, model_name: str = "xgboost"):
@@ -73,6 +81,7 @@ class RiskPredictor:
         self._load_model()
 
     def _find_file(self, filename: str) -> Optional[str]:
+        """Tìm kiếm file trong các thư mục ưu tiên."""
         for directory in SEARCH_DIRS:
             path = os.path.join(directory, filename)
             if os.path.exists(path):
@@ -80,7 +89,7 @@ class RiskPredictor:
         return None
 
     def _load_model(self):
-        """Load the model and scaler using prioritized search paths."""
+        """Nạp mô hình và bộ chuẩn hóa sử dụng các đường dẫn tìm kiếm ưu tiên."""
         try:
             model_file = f"{self.model_name}.pkl"
             scaler_file = "scaler.pkl"
@@ -89,41 +98,46 @@ class RiskPredictor:
             scaler_path = self._find_file(scaler_file)
 
             if not model_path:
-                raise FileNotFoundError(f"Model file '{model_file}' not found in any search directories: {SEARCH_DIRS}")
+                raise FileNotFoundError(f"Không tìm thấy file mô hình '{model_file}' trong các thư mục: {SEARCH_DIRS}")
             if not scaler_path:
-                raise FileNotFoundError(f"Scaler file '{scaler_file}' not found in any search directories: {SEARCH_DIRS}")
+                raise FileNotFoundError(f"Không tìm thấy file chuẩn hóa '{scaler_file}' trong các thư mục: {SEARCH_DIRS}")
 
             self.model = joblib.load(model_path)
             self.scaler = joblib.load(scaler_path)
-            logger.info(f"✅ Successfully loaded model: {self.model_name} from {model_path}")
+            logger.info(f"✅ Nạp mô hình thành công: {self.model_name} từ {model_path}")
 
         except Exception as e:
-            logger.error(f"❌ Failed to load model {self.model_name}: {e}")
-            # Don't raise here to allow application to start even if model load fails (graceful degradation)
+            logger.error(f"❌ Lỗi khi nạp mô hình {self.model_name}: {e}")
+            # Không raise lỗi ở đây để ứng dụng vẫn khởi động được ngay cả khi nạp mô hình thất bại (giảm cấp nhẹ nhàng)
             self.model = None
             self.scaler = None
 
     def predict(self, student_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Perform risk prediction from student feature dictionary."""
+        """Thực hiện dự báo rủi ro từ từ điển các đặc trưng sinh viên."""
         if not self.is_loaded():
-            raise RuntimeError("Model or Scaler not loaded. Check logs for initialization errors.")
+            raise RuntimeError("Mô hình hoặc Bộ chuẩn hóa chưa được nạp. Kiểm tra nhật ký để biết lỗi khởi tạo.")
 
         try:
-            # Prepare input array in exact feature order
-            input_values = [student_data.get(col, 0) for col in FEATURE_COLUMNS]
+            # Chuẩn bị mảng đầu vào theo đúng thứ tự đặc trưng với các giá trị mặc định thông minh
+            input_values = []
+            for col in FEATURE_COLUMNS:
+                val = student_data.get(col)
+                if val is None:
+                    val = FEATURE_DEFAULTS.get(col, 0)
+                input_values.append(val)
             
-            # Wrap in DataFrame to maintain feature names
+            # Đưa vào DataFrame để giữ tên đặc trưng
             X = pd.DataFrame([input_values], columns=FEATURE_COLUMNS)
 
-            # Standardize features
+            # Chuẩn hóa các đặc trưng
             X_scaled = self.scaler.transform(X)
 
-            # Perform inference
+            # Thực hiện dự báo
             risk_level = int(self.model.predict(X_scaled)[0])
             probabilities_raw = self.model.predict_proba(X_scaled)[0]
             confidence = float(probabilities_raw[risk_level] * 100)
 
-            # Format class probabilities
+            # Định dạng xác suất các lớp rủi ro
             probabilities = {
                 RISK_LABELS[i]: round(float(p) * 100, 2)
                 for i, p in enumerate(probabilities_raw)
@@ -140,15 +154,15 @@ class RiskPredictor:
             }
 
         except Exception as e:
-            logger.error(f"❌ Prediction error: {e}")
+            logger.error(f"❌ Lỗi dự báo: {e}")
             raise
 
     def is_loaded(self) -> bool:
-        """Check if both model and scaler are initialized."""
+        """Kiểm tra xem cả mô hình và bộ chuẩn hóa đã được khởi tạo hay chưa."""
         return self.model is not None and self.scaler is not None
 
     def get_recommendation(self, risk: Any) -> str:
-        """Retrieve action recommendation based on risk level or label."""
+        """Lấy khuyến nghị hành động dựa trên mức độ rủi ro hoặc nhãn."""
         if isinstance(risk, int):
             return RECOMMENDATIONS.get(risk, "Không có khuyến nghị.")
         
@@ -160,7 +174,7 @@ class RiskPredictor:
         return "Không có khuyến nghị."
 
     def get_feature_info(self) -> Dict[str, Any]:
-        """Expose model metadata for API info endpoints."""
+        """Cung cấp metadata của mô hình cho các endpoint API thông tin."""
         return {
             "model_name": self.model_name.upper(),
             "features": FEATURE_COLUMNS,
@@ -170,12 +184,12 @@ class RiskPredictor:
         }
 
 
-# Singleton pattern
+# Mẫu thiết kế Singleton
 _predictor: Optional[RiskPredictor] = None
 
 
 def get_predictor() -> RiskPredictor:
-    """Access the RiskPredictor singleton instance."""
+    """Truy cập thực thể RiskPredictor duy nhất (singleton)."""
     global _predictor
     if _predictor is None:
         _predictor = RiskPredictor()
