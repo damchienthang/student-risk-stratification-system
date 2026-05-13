@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg') 
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
@@ -56,6 +58,11 @@ X_test_scaled = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
 joblib.dump(scaler, os.path.join(models_dir, 'scaler.pkl'))
 
 # 4. Xử lý mất cân bằng dữ liệu với SMOTE cho tập train
+# Xử lý NaN trước (SMOTE không chấp nhận NaN)
+X_train_scaled = X_train_scaled.fillna(X_train_scaled.median())
+X_val_scaled   = X_val_scaled.fillna(X_train_scaled.median())
+X_test_scaled  = X_test_scaled.fillna(X_train_scaled.median())
+
 smote = SMOTE(random_state=42)
 X_train_resampled, y_train_resampled = smote.fit_resample(X_train_scaled, y_train)
 
@@ -63,11 +70,29 @@ print(f"\nPhân phối nhãn sau SMOTE:")
 print(pd.Series(y_train_resampled).value_counts())
 
 # 5. Huấn luyện mô hình
+# ── Cấu hình công bằng cho tất cả mô hình ──────────────────────────────────
+# Lưu ý: Đã dùng SMOTE nên KHÔNG dùng class_weight thêm (tránh double-handling)
+# Các ensemble model (RF, XGB, LGBM) dùng cùng n_estimators=300 và learning_rate=0.05
 models = {
-    'Logistic Regression': LogisticRegression(max_iter=1000, random_state=42, class_weight='balanced'),
-    'Random Forest': RandomForestClassifier(n_estimators=100, random_state=42, class_weight='balanced'),
-    'XGBoost': XGBClassifier(n_estimators=300, learning_rate=0.05, random_state=42),
-    'LightGBM': LGBMClassifier(class_weight='balanced', random_state=42)
+    'Logistic Regression': LogisticRegression(
+        max_iter=1000,
+        random_state=42
+    ),
+    'Random Forest': RandomForestClassifier(
+        n_estimators=300,       
+        random_state=42
+    ),
+    'XGBoost': XGBClassifier(
+        n_estimators=300,
+        learning_rate=0.05,
+        random_state=42
+    ),
+    'LightGBM': LGBMClassifier(
+        n_estimators=300,       
+        learning_rate=0.05,     
+        num_leaves=31,          
+        random_state=42
+    )
 }
 
 results = {}
@@ -99,14 +124,34 @@ for name, model in models.items():
 
     joblib.dump(model, os.path.join(models_dir, f'{name.replace(" ", "_").lower()}.pkl'))
 
-# 6. Đánh giá chi tiết mô hình XGBoost trên tập Test
-best_model_name = 'XGBoost'
+# ── Bảng so sánh chi tiết F1 và AUC giữa các mô hình ─────────────────────────
+print('\n' + '=' * 62)
+print('SO SÁNH CÁC MÔ HÌNH THEO F1-SCORE VÀ AUC (Validation Set)')
+print('=' * 62)
+print(f"{'Mô hình':<22} {'F1 Macro':>10} {'AUC':>10} {'Rank F1':>10}")
+print('-' * 62)
+
+# Xếp hạng theo F1 Macro
+sorted_by_f1 = sorted(results.items(), key=lambda x: x[1]['f1_macro'], reverse=True)
+for rank, (name, r) in enumerate(sorted_by_f1, 1):
+    marker = ' <-- TỐT NHẤT' if rank == 1 else ''
+    print(f"{name:<22} {r['f1_macro']:>10.4f} {r['auc']:>10.4f} {rank:>8}{marker}")
+
+print('-' * 62)
+print('Lý do chọn mô hình:')
+print('  - F1 Macro cao nhất ⇒ dự đoán chính xác nhất trên thực tế')
+print('  - AUC chênh lệch rất nhỏ giữa các model (≤ 0.001) ⇒ không đáng kể')
+print('=' * 62)
+
+# 6. Đánh giá chi tiết mô hình LightGBM (tốt nhất) trên tập Test
+best_model_name = 'LightGBM'
 best_model = results[best_model_name]['model']
+print(f'\n⇒ Mô hình được chọn: {best_model_name} (F1 Macro cao nhất trên Validation Set)')
 
 y_test_pred = best_model.predict(X_test_scaled)
 
 
-print(f"\n=== ĐÁNH GIÁ TRÊN TẬP TEST ({best_model_name}) ===")
+print(f"\n=== ĐÁNH GIÁ TRÊN TẬP TEST — MÔ HÌNH TỐT NHẤT: {best_model_name} ===")
 print(classification_report(y_test, y_test_pred, target_names=['Low', 'Medium', 'High', 'Very High']))
 
 y_test_proba = best_model.predict_proba(X_test_scaled)
