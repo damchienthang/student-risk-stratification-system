@@ -33,6 +33,39 @@ async def query_student(student_id: str, request: Request):
     if not user_session:
         raise HTTPException(status_code=401, detail="Vui lòng đăng nhập")
 
+    # Handle Guest Trial Query
+    if student_id.startswith("GUEST_"):
+        try:
+            log_id = int(student_id.replace("GUEST_", ""))
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Mã guest không hợp lệ")
+        
+        with Session(engine) as session:
+            from src.models.student_risk import InferenceLog
+            log = session.get(InferenceLog, log_id)
+            if not log:
+                raise HTTPException(status_code=404, detail="Không tìm thấy lịch sử dự báo")
+            
+            # Format to match StudentRisk report
+            return {
+                "student": {
+                    "id_student": f"GUEST_{log.id}",
+                    "code_module": log.code_module,
+                    "code_presentation": log.code_presentation,
+                    "avg_score": log.avg_score,
+                    "total_clicks": log.total_clicks,
+                    "active_days": 50, # Guest default
+                    "n_late": log.n_late,
+                    "studied_credits": log.studied_credits,
+                    "num_of_prev_attempts": log.num_of_prev_attempts
+                },
+                "prediction": {
+                    "risk_label": log.risk_label,
+                    "confidence": log.confidence,
+                    "recommendation": get_predictor().get_recommendation(log.risk_label)
+                }
+            }
+
     # Constraint: Student only queries themselves
     if is_student(user_session):
         if user_session["username"] != student_id:

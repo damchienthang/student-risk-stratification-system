@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request, HTTPException, Query
 from sqlmodel import Session, select, String
+from sqlalchemy import func
 from typing import Any, cast
 
 from src.core.database import engine

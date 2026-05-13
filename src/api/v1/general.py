@@ -11,7 +11,7 @@ async def health_check():
         return HealthResponse(
             status="healthy",
             model_loaded=predictor.is_loaded(),
-            model_name="XGBoost",
+            model_name="LightGBM",
             version="2.0.0"
         )
     except Exception as e:
