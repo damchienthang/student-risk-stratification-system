@@ -66,9 +66,9 @@
                             <div class="stat-trend">Bộ dữ liệu OULAD</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-label">Độ chính xác XGBoost</div>
-                            <div class="stat-value">92.71%</div>
-                            <div class="stat-trend up">↑ Mô hình tối ưu nhất</div>
+                            <div class="stat-label">F1-Score LightGBM</div>
+                            <div class="stat-value">84.03%</div>
+                            <div class="stat-trend up">↑ Mo hinh tot nhat</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-label">Điểm TB (Toàn bộ)</div>
@@ -196,36 +196,36 @@
                                 </thead>
                                 <tbody>
                                     <tr class="best-model">
-                                        <td>XGBoost</td>
-                                        <td>84.65%</td>
-                                        <td>92.71%</td>
-                                        <td>89.06%</td>
+                                        <td>LightGBM</td>
+                                        <td>84.03%</td>
+                                        <td>92.08%</td>
+                                        <td>87.01%</td>
                                         <td>98.68%</td>
-                                        <td><span class="badge badge-optimal">✦ Tối ưu nhất</span></td>
+                                        <td><span class="badge badge-optimal">Tot nhat</span></td>
                                     </tr>
                                     <tr>
-                                        <td>LightGBM</td>
-                                        <td>84.05%</td>
-                                        <td>92.58%</td>
-                                        <td>87.18%</td>
-                                        <td>98.66%</td>
-                                        <td><span class="badge badge-low">Hiệu năng cao</span></td>
+                                        <td>XGBoost</td>
+                                        <td>83.56%</td>
+                                        <td>91.93%</td>
+                                        <td>88.04%</td>
+                                        <td>98.72%</td>
+                                        <td><span class="badge badge-low">Hieu nang cao</span></td>
                                     </tr>
                                     <tr>
                                         <td>Random Forest</td>
-                                        <td>83.20%</td>
+                                        <td>83.31%</td>
                                         <td>91.55%</td>
-                                        <td>88.95%</td>
-                                        <td>98.39%</td>
-                                        <td><span class="badge badge-medium">Ổn định</span></td>
+                                        <td>89.72%</td>
+                                        <td>98.45%</td>
+                                        <td><span class="badge badge-medium">On dinh</span></td>
                                     </tr>
                                     <tr>
                                         <td>Logistic Regression</td>
-                                        <td>69.38%</td>
-                                        <td>83.31%</td>
-                                        <td>81.52%</td>
-                                        <td>95.85%</td>
-                                        <td><span class="badge badge-high">Cơ bản</span></td>
+                                        <td>70.41%</td>
+                                        <td>83.85%</td>
+                                        <td>82.61%</td>
+                                        <td>96.24%</td>
+                                        <td><span class="badge badge-high">Co ban</span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -239,14 +239,14 @@
                         <div class="card-body">
                             <div class="analytics-img-grid">
                                 <div class="analytics-img-card"
-                                    onclick="openModal('/visuals/03_feature_importance_best.png','Feature Importance — XGBoost')">
+                                    onclick="openModal('/visuals/03_feature_importance_best.png','Feature Importance — LightGBM')">
                                     <img src="/visuals/03_feature_importance_best.png" alt="Feature Importance">
-                                    <p>Top đặc trưng quan trọng (Feature Importance)</p>
+                                    <p>Top dac trung quan trong (Feature Importance — LightGBM)</p>
                                 </div>
                                 <div class="analytics-img-card"
-                                    onclick="openModal('/visuals/03_confusion_matrix_best.png','Confusion Matrix — XGBoost')">
+                                    onclick="openModal('/visuals/03_confusion_matrix_best.png','Confusion Matrix — LightGBM')">
                                     <img src="/visuals/03_confusion_matrix_best.png" alt="Confusion Matrix">
-                                    <p>Ma trận nhầm lẫn (Confusion Matrix)</p>
+                                    <p>Ma tran nham lan (Confusion Matrix — LightGBM)</p>
                                 </div>
                                 <div class="analytics-img-card"
                                     onclick="openModal('/visuals/01_class_distribution.png','Phân phối nhãn rủi ro')">

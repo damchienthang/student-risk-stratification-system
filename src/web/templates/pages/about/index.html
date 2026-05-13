@@ -196,14 +196,14 @@
         <div class="flow-arrow">➜</div>
         <div class="flow-node highlight">FastAPI (Backend)</div>
         <div class="flow-arrow">➜</div>
-        <div class="flow-node highlight">XGBoost (AI Model)</div>
+        <div class="flow-node highlight">LightGBM (AI Model)</div>
         <div class="flow-arrow">➜</div>
         <div class="flow-node">SQLite Database</div>
       </div>
       <div
         style="margin-top: 30px; color: var(--text-dim); font-size: 1rem; max-width: 800px; text-align: center; line-height: 1.6;">
         Hệ thống được thiết kế theo kiến trúc <strong>Client-Server</strong>. Frontend gửi yêu cầu đến API Python. Tại
-        đây, mô hình XGBoost sẽ phân tích dữ liệu sinh viên từ SQLite và trả về kết quả dự đoán rủi ro theo thời gian
+        dây, mô hình <strong>LightGBM</strong> (F1-Score: 84.03%, AUC: 98.68%) sẽ phân tích dữ liệu sinh viên từ SQLite và trả về kết quả dự đoán rủi ro theo thời gian
         thực.
       </div>
     </div>
@@ -219,10 +219,12 @@
     </div>
 
     <div class="tech-list">
-      <span class="tech-tag">Python 3.10+</span>
+      <span class="tech-tag">Python 3.11+</span>
       <span class="tech-tag">FastAPI</span>
+      <span class="tech-tag">LightGBM</span>
       <span class="tech-tag">XGBoost</span>
       <span class="tech-tag">Scikit-Learn</span>
+      <span class="tech-tag">SMOTE (imbalanced-learn)</span>
       <span class="tech-tag">SQLModel</span>
       <span class="tech-tag">SQLite</span>
       <span class="tech-tag">Jinja2</span>

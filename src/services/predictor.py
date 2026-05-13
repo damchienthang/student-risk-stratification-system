@@ -58,13 +58,34 @@ FEATURE_DEFAULTS: Dict[str, Any] = {
     'n_submitted': 4, 'n_late': 0, 'avg_submit_delay': -2.0
 }
 
-# Chỉ số hiệu năng của mô hình
+# Chỉ số hiệu năng của mô hình — cập nhật theo kết quả 03_modeling.py
 MODEL_METRICS = {
-    "XGBoost": {
-        "f1_macro": 0.8465,
-        "balanced_accuracy": 0.8906,
+    "LightGBM": {
+        "f1_macro": 0.8403,        # Validation set
+        "balanced_accuracy": 0.8701,
         "auc": 0.9868,
-        "accuracy": 0.9271
+        "accuracy": 0.9208,
+        "test_f1": 0.8445,         # Test set
+        "test_auc": 0.9887,
+        "test_accuracy": 0.93
+    },
+    "XGBoost": {
+        "f1_macro": 0.8356,
+        "balanced_accuracy": 0.8804,
+        "auc": 0.9872,
+        "accuracy": 0.9193
+    },
+    "Random Forest": {
+        "f1_macro": 0.8331,
+        "balanced_accuracy": 0.8972,
+        "auc": 0.9845,
+        "accuracy": 0.9155
+    },
+    "Logistic Regression": {
+        "f1_macro": 0.7041,
+        "balanced_accuracy": 0.8261,
+        "auc": 0.9624,
+        "accuracy": 0.8385
     }
 }
 
@@ -74,7 +95,7 @@ class RiskPredictor:
     RiskPredictor xử lý việc nạp mô hình ML và bộ chuẩn hóa (scaler) để thực hiện phân tầng rủi ro sinh viên.
     """
 
-    def __init__(self, model_name: str = "xgboost"):
+    def __init__(self, model_name: str = "lightgbm"):
         self.model_name = model_name
         self.model: Any = None
         self.scaler: Any = None
@@ -180,7 +201,7 @@ class RiskPredictor:
             "features": FEATURE_COLUMNS,
             "num_features": len(FEATURE_COLUMNS),
             "classes": list(RISK_LABELS.values()),
-            "metrics": MODEL_METRICS.get("XGBoost", {})
+            "metrics": MODEL_METRICS.get("LightGBM", {})
         }
 
 
