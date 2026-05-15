@@ -12,3 +12,4 @@ pandas>=2.2.2
 imbalanced-learn>=0.12.2
 xgboost>=2.0.3
 sqlmodel>=0.0.34
+google-generativeai>=0.8.6

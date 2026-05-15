@@ -71,7 +71,6 @@ print(pd.Series(y_train_resampled).value_counts())
 
 # 5. Huấn luyện mô hình
 # ── Cấu hình công bằng cho tất cả mô hình ──────────────────────────────────
-# Lưu ý: Đã dùng SMOTE nên KHÔNG dùng class_weight thêm (tránh double-handling)
 # Các ensemble model (RF, XGB, LGBM) dùng cùng n_estimators=300 và learning_rate=0.05
 models = {
     'Logistic Regression': LogisticRegression(
