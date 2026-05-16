@@ -5,19 +5,20 @@
 
 /* ── VARIABLES ──────────────────────────────────────────── */
 :root {
-    --primary:      #C8102E; /* Official PTIT Red */
+    --primary: #C8102E;
+    /* Official PTIT Red */
     --primary-dark: #a00d25;
-    --primary-bg:   rgba(200, 16, 46, 0.05);
-    --secondary:    #2d3436;
-    --bg:           #ffffff;
-    --bg-alt:       #f8f9fa;
-    --surface:      #ffffff;
-    --sidebar-bg:   #ffffff;
-    --sidebar-hover:#f3f4f6;
-    --sidebar-active:var(--primary);
-    --border:       #e0e0e0;
-    --text:         #1a1a1a;
-    --text-dim:     #666666;
+    --primary-bg: rgba(200, 16, 46, 0.05);
+    --secondary: #2d3436;
+    --bg: #ffffff;
+    --bg-alt: #f8f9fa;
+    --surface: #ffffff;
+    --sidebar-bg: #ffffff;
+    --sidebar-hover: #f3f4f6;
+    --sidebar-active: var(--primary);
+    --border: #e0e0e0;
+    --text: #1a1a1a;
+    --text-dim: #666666;
     --text-light: #9ca3af;
     --radius: 4px;
     /* Synced with home page (academic feel) */
@@ -44,8 +45,8 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg-alt);
     color: var(--text);
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -84,28 +85,28 @@ a {
 }
 
 .sidebar-brand-icon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background: var(--primary);
     border-radius: var(--radius);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 25px;
     flex-shrink: 0;
     color: white;
 }
 
 .sidebar-brand-text {
     font-weight: 800;
-    font-size: 1rem;
+    font-size: 1.6rem;
     color: var(--primary);
     line-height: 1.2;
     letter-spacing: -0.5px;
 }
 
 .sidebar-brand-sub {
-    font-size: 0.72rem;
+    font-size: 0.9rem;
     color: var(--text-dim);
     font-weight: 500;
 }
@@ -135,7 +136,7 @@ a {
     padding: 10px 16px;
     border-radius: var(--radius);
     color: var(--text);
-    font-size: 0.88rem;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
@@ -205,7 +206,7 @@ a {
 }
 
 .topbar-title {
-    font-size: 1.1rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--text);
 }
@@ -214,13 +215,13 @@ a {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 0.85rem;
+    font-size: 1rem;
     color: var(--text-dim);
 }
 
 .avatar {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     background: var(--primary);
     color: white;
     border-radius: 50%;
@@ -295,7 +296,7 @@ a {
 }
 
 .stat-label {
-    font-size: 0.72rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -304,7 +305,7 @@ a {
 }
 
 .stat-value {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 800;
     color: var(--secondary);
     line-height: 1;
@@ -312,7 +313,7 @@ a {
 }
 
 .stat-trend {
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: var(--text-light);
 }
@@ -344,7 +345,7 @@ a {
 }
 
 .card-title {
-    font-size: 0.9rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--text);
 }
@@ -361,7 +362,7 @@ a {
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.85rem;
+    font-size: 1.05rem;
 }
 
 thead tr {
@@ -372,7 +373,7 @@ thead tr {
 th {
     padding: 11px 16px;
     text-align: left;
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -395,7 +396,9 @@ tbody tr:last-child td {
     border-bottom: none;
 }
 
-.hidden { display: none !important; }
+.hidden {
+    display: none !important;
+}
 
 /* ── BADGE ───────────────────────────────────────────────── */
 .badge {
@@ -442,7 +445,7 @@ tbody tr:last-child td {
     gap: 6px;
     padding: 8px 16px;
     border-radius: 6px;
-    font-size: 0.82rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     border: 1px solid transparent;
@@ -481,7 +484,7 @@ tbody tr:last-child td {
     padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: 6px;
-    font-size: 0.84rem;
+    font-size: 0.95rem;
     font-family: inherit;
     color: var(--text);
     background: var(--surface);

@@ -170,3 +170,16 @@ tr:last-child td { border-bottom: none; }
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
 .modal-box { background: white; padding: 20px; border-radius: 12px; max-width: 1000px; width: 100%; max-height: 90vh; overflow: auto; position: relative; }
 .modal-close { position: absolute; top: 15px; right: 15px; font-size: 24px; cursor: pointer; border: none; background: none; color: var(--text-dim); }
+
+/* ── TOAST NOTIFICATION ───────────────────────────────────── */
+#toast-container { position: fixed; top: 80px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+.toast { min-width: 320px; background: white; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; transform: translateX(120%); opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-left: 5px solid var(--primary); }
+.toast.show { transform: translateX(0); opacity: 1; }
+.toast.success { border-left-color: var(--green); }
+.toast.error { border-left-color: var(--red); }
+.toast.info { border-left-color: var(--primary); }
+.toast-content { flex: 1; }
+.toast-title { font-weight: 800; font-size: 1rem; color: var(--secondary); margin-bottom: 2px; }
+.toast-msg { font-size: 0.9rem; color: var(--text-dim); }
+.toast-close { background: none; border: none; font-size: 1.2rem; color: var(--text-dim); cursor: pointer; padding-left: 15px; transition: color 0.2s; }
+.toast-close:hover { color: var(--secondary); }

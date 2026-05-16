@@ -49,12 +49,12 @@ async def login(
     user = auth_service.authenticate_user(username, password)
     if user:
         if user["role"] == UserRole.ADMIN:
-            response = RedirectResponse(url="/admin", status_code=303)
+            response = RedirectResponse(url="/admin?msg=login_success", status_code=303)
         elif user["role"] == UserRole.STUDENT:
-            response = RedirectResponse(url="/student", status_code=303)
+            response = RedirectResponse(url="/student?msg=login_success", status_code=303)
         else:
             # Guest/External users stay on home page to use Guest Trial
-            response = RedirectResponse(url="/", status_code=303)
+            response = RedirectResponse(url="/?msg=login_success", status_code=303)
         
         response.set_cookie(
             key="session_v2", 
@@ -67,7 +67,7 @@ async def login(
 
 @router.get("/logout")
 async def logout():
-    response = RedirectResponse(url="/")
+    response = RedirectResponse(url="/?msg=logout_success", status_code=303)
     response.delete_cookie("session_v2", path="/")
     return response
 

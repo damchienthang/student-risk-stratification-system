@@ -11,7 +11,65 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("Student detected, auto-querying for:", searchInput.value);
     searchStudent();
   }
+
+  // Handle Notifications from Query Params
+  const urlParams = new URLSearchParams(window.location.search);
+  const msg = urlParams.get('msg');
+  const err = urlParams.get('error');
+
+  if (msg) {
+    const msgMap = {
+      'login_success': { title: 'Đăng nhập thành công', text: 'Chào mừng bạn quay lại hệ thống.', type: 'success' },
+      'logout_success': { title: 'Đăng xuất thành công', text: 'Hẹn gặp lại bạn lần sau.', type: 'info' },
+      'reg_success': { title: 'Đăng ký thành công', text: 'Tài khoản của bạn đã được tạo.', type: 'success' },
+      'password_reset_simulated': { title: 'Đã gửi yêu cầu', text: 'Yêu cầu khôi phục mật khẩu đã được xử lý.', type: 'info' }
+    };
+    const toastData = msgMap[msg] || { title: 'Thông báo', text: msg, type: 'info' };
+    showToast(toastData.title, toastData.text, toastData.type);
+  }
+
+  if (err) {
+    const errMap = {
+      'auth_failed': { title: 'Đăng nhập thất bại', text: 'Sai tên đăng nhập hoặc mật khẩu.', type: 'error' },
+      'reg_failed': { title: 'Đăng ký thất bại', text: 'Tên đăng nhập hoặc email đã tồn tại.', type: 'error' }
+    };
+    const toastData = errMap[err] || { title: 'Lỗi', text: err, type: 'error' };
+    showToast(toastData.title, toastData.text, toastData.type);
+  }
+
+  // Clean up URL without reloading
+  if (msg || err) {
+    const newUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, newUrl);
+  }
 });
+
+// ── Toast Notification ────────────────────────────────────────
+function showToast(title, message, type = 'info') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `
+    <div class="toast-content">
+      <div class="toast-title">${title}</div>
+      <div class="toast-msg">${message}</div>
+    </div>
+    <button class="toast-close" onclick="this.parentElement.remove()">✕</button>
+  `;
+
+  container.appendChild(toast);
+
+  // Animate in
+  setTimeout(() => toast.classList.add('show'), 10);
+
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400); // Wait for transition
+  }, 5000);
+}
 
 // ── Navigation & UI ───────────────────────────────────────────
 function toggleDropdown(e) {

@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/admin_style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -59,61 +60,108 @@
 
                 <!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
                 <section id="section-overview" class="content-section active">
-                    <div class="stats-grid">
+                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 25px;">
                         <div class="stat-card">
                             <div class="stat-label">Tổng sinh viên</div>
                             <div id="statTotal" class="stat-value">—</div>
-                            <div class="stat-trend">Bộ dữ liệu OULAD</div>
+                            <div class="stat-trend">Hệ thống OULAD</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-label">F1-Score LightGBM</div>
-                            <div class="stat-value">84.03%</div>
-                            <div class="stat-trend up">↑ Mô hình tốt nhất</div>
+                            <div class="stat-label">Tỷ lệ rủi ro cao</div>
+                            <div id="statRiskRate" class="stat-value" style="color:var(--red);">—</div>
+                            <div class="stat-trend">High & Very High</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-label">Điểm TB (Toàn bộ)</div>
+                            <div class="stat-label">Điểm TB Hệ thống</div>
                             <div id="statAvgScore" class="stat-value">—</div>
-                            <div class="stat-trend">Trên tất cả môn học</div>
+                            <div class="stat-trend">Toàn bộ môn học</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-label">Click TB / sinh viên</div>
+                            <div class="stat-label">Tương tác TB</div>
                             <div id="statAvgClicks" class="stat-value">—</div>
-                            <div class="stat-trend">Tương tác hệ thống</div>
+                            <div class="stat-trend">Click / sinh viên</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Độ chính xác (F1)</div>
+                            <div class="stat-value">84.03%</div>
+                            <div class="stat-trend up">↑ LightGBM Model</div>
                         </div>
                     </div>
 
-                    <!-- Quick Search -->
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="card-title">Tra cứu sinh viên</span>
+                    <!-- Overview Widgets (Chart) -->
+                    <div class="card" style="margin-bottom: 20px;">
+                        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="card-title">Phân bổ mức độ rủi ro (Toàn hệ thống)</span>
+                            <div style="font-size:0.8rem; color:var(--text-dim);">Dữ liệu thời gian thực</div>
                         </div>
-                        <div class="card-body">
-                            <div style="display:flex;gap:10px;align-items:center;">
-                                <input type="text" id="adminSearchInput" class="form-input" style="flex:1;"
-                                    placeholder="Nhập mã sinh viên (VD: 11391)..."
-                                    onkeydown="if(event.key==='Enter') adminSearchStudent()">
-                                <button onclick="adminSearchStudent()" class="btn btn-primary">Truy vấn</button>
+                        <div class="card-body" style="display: flex; justify-content: center; align-items: center; height: 350px;">
+                            <canvas id="riskPieChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- New Row: Urgent Action & System Info -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <!-- Urgent Intervention -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title" style="color:var(--red);">🚨 Cần can thiệp khẩn cấp (Top 5)</span>
                             </div>
-                            <div id="adminSearchResult" class="result-panel"></div>
+                            <div class="card-body" id="overviewUrgentList">
+                                <p style="color:var(--text-dim);font-size:0.9rem;text-align:center;padding:20px;">Đang tải danh sách...</p>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Top At-Risk List -->
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="card-title">Top 10 sinh viên rủi ro cao nhất</span>
-                            <button class="btn btn-outline btn-sm"
-                                onclick="showSection('students',document.querySelectorAll('.nav-item')[1])">Xem tất cả
-                                →</button>
-                        </div>
-                        <div class="card-body" id="overviewRiskList">
-                            <p style="color:var(--text-dim);font-size:0.85rem;">Đang tải...</p>
+                        <!-- System Info -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">ℹ️ Thông tin hệ thống & Mô hình</span>
+                            </div>
+                            <div class="card-body">
+                                <div style="padding:12px; background:rgba(37, 99, 235, 0.05); border-radius:8px; margin-bottom:15px; border-left:4px solid var(--primary);">
+                                    <h4 style="color:var(--primary); font-size:0.9rem; margin-bottom:5px; font-weight:800;">TRẠNG THÁI MÔ HÌNH</h4>
+                                    <p style="font-size:0.85rem; margin:0; line-height:1.4;">Mô hình <strong>LightGBM</strong> đang hoạt động với độ tin cậy cao. Các yếu tố quan trọng nhất bao gồm: <em>Điểm số, Tổng tương tác</em> và <em>Số lần học lại</em>.</p>
+                                </div>
+                                <div style="display:flex; flex-direction:column; gap:12px;">
+                                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; border-bottom:1px solid var(--border); padding-bottom:8px;">
+                                        <span style="color:var(--text-dim);">Phiên bản:</span>
+                                        <strong>v2.1.0 (Stable)</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; border-bottom:1px solid var(--border); padding-bottom:8px;">
+                                        <span style="color:var(--text-dim);">Thuật toán:</span>
+                                        <span class="badge badge-optimal">LightGBM Classifier</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; border-bottom:1px solid var(--border); padding-bottom:8px;">
+                                        <span style="color:var(--text-dim);">Dữ liệu huấn luyện:</span>
+                                        <strong>OULAD Dataset</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
+                                        <span style="color:var(--text-dim);">Lần cập nhật cuối:</span>
+                                        <strong>Vừa xong</strong>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <!-- ═══════════════════════ STUDENTS ═══════════════════════ -->
                 <section id="section-students" class="content-section">
+                    <!-- Quick Search -->
+                    <div class="card" style="margin-bottom: 20px;">
+                        <div class="card-header">
+                            <span class="card-title">Tìm kiếm sinh viên</span>
+                        </div>
+                        <div class="card-body">
+                            <div style="display:flex;gap:10px;align-items:center;">
+                                <input type="text" id="adminSearchInput" class="form-input" style="flex:1;"
+                                    placeholder="Nhập mã sinh viên (VD: 11391)..."
+                                    onkeydown="if(event.key==='Enter') adminSearchStudent()">
+                                <button onclick="adminSearchStudent()" class="btn btn-primary">Tìm kiếm</button>
+                            </div>
+                            <div id="adminSearchResult" class="result-panel"></div>
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div class="card-header">
                             <span class="card-title">Danh sách sinh viên rủi ro cao</span>
@@ -377,6 +425,8 @@
             if (id === 'users') loadUsers();
         }
 
+        let overviewChart = null;
+
         /* ── OVERVIEW LOAD ────────────────────────────────────────── */
         async function loadOverview() {
             const module = document.getElementById('moduleSelect').value;
@@ -387,32 +437,70 @@
                 const r = await fetch(`/api/v1/admin/stats?module=${module}&semester=${semester}&risk=${risk}`);
                 const d = await r.json();
                 if (d.summary) {
-                    document.getElementById('statTotal').textContent = (d.summary.total_students || 0).toLocaleString('vi-VN');
+                    const total = d.summary.total_students || 0;
+                    document.getElementById('statTotal').textContent = total.toLocaleString('vi-VN');
                     document.getElementById('statAvgScore').textContent = (d.summary.avg_score || 0).toFixed(1);
                     document.getElementById('statAvgClicks').textContent = (d.summary.avg_clicks || 0).toLocaleString('vi-VN');
-                }
-                const el = document.getElementById('overviewRiskList');
-                const riskTitle = document.querySelector('#section-overview .card-title:last-of-type');
-                if (riskTitle) {
-                    riskTitle.textContent = risk === 'all' ? 'Top 10 sinh viên rủi ro cao nhất' : `Top 10 sinh viên rủi ro ${risk}`;
+                    
+                    if (d.risk_distribution && total > 0) {
+                        const highCount = (d.risk_distribution[2] || 0) + (d.risk_distribution[3] || 0);
+                        const rate = (highCount / total * 100).toFixed(1);
+                        document.getElementById('statRiskRate').textContent = rate + '%';
+                    }
                 }
 
-                if (el && d.top_at_risk && d.top_at_risk.length) {
-                    el.innerHTML = d.top_at_risk.slice(0, 10).map(s => `
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);">
-                    <div>
-                        <strong>#${s.id_student}</strong>
-                        <span style="color:var(--text-dim);font-size:0.8rem;margin-left:8px;">${s.code_module || ''} ${s.code_presentation || ''}</span>
-                    </div>
-                    <div style="display:flex;gap:8px;align-items:center;">
-                        <span style="font-size:0.8rem;color:var(--text-dim);">Điểm: ${(s.avg_score || 0).toFixed(1)}</span>
-                        ${RISK_BADGE[s.risk_label] || ''}
-                        <button class="btn btn-outline btn-sm" onclick="quickView(${s.id_student})">Xem</button>
-                    </div>
-                </div>
-            `).join('');
-                } else {
-                    el.innerHTML = '<p style="color:var(--text-dim);font-size:0.85rem;padding:20px 0;text-align:center;">Không tìm thấy sinh viên nào phù hợp bộ lọc.</p>';
+                // Update Pie Chart
+                if (d.risk_distribution) {
+                    const ctx = document.getElementById('riskPieChart');
+                    if (ctx) {
+                        const chartData = {
+                            labels: ['Rủi ro thấp', 'Rủi ro trung bình', 'Rủi ro cao', 'Rất nguy cấp'],
+                            datasets: [{
+                                data: d.risk_distribution,
+                                backgroundColor: ['#10b981', '#f59e0b', '#f97316', '#ef4444'],
+                                borderWidth: 0
+                            }]
+                        };
+
+                        if (overviewChart) {
+                            overviewChart.data = chartData;
+                            overviewChart.update();
+                        } else {
+                            overviewChart = new Chart(ctx, {
+                                type: 'pie',
+                                data: chartData,
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: { position: 'right', labels: { font: { family: 'Inter', size: 12 } } }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+
+                // Update Urgent List (Top 5)
+                const urgentEl = document.getElementById('overviewUrgentList');
+                if (urgentEl && d.top_at_risk) {
+                    if (d.top_at_risk.length > 0) {
+                        urgentEl.innerHTML = d.top_at_risk.slice(0, 5).map(s => `
+                            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border);">
+                                <div>
+                                    <div style="font-weight:700; font-size:0.9rem;">#${s.id_student}</div>
+                                    <div style="font-size:0.75rem; color:var(--text-dim);">${s.code_module} ${s.code_presentation}</div>
+                                </div>
+                                <div style="display:flex; gap:8px; align-items:center;">
+                                    <span style="font-size:0.8rem; font-weight:600;">${(s.avg_score || 0).toFixed(1)} đ</span>
+                                    ${RISK_BADGE[s.risk_label] || ''}
+                                    <button class="btn btn-outline btn-sm" onclick="quickView('${s.id_student}')">Chi tiết</button>
+                                </div>
+                            </div>
+                        `).join('');
+                    } else {
+                        urgentEl.innerHTML = '<p style="color:var(--text-dim);font-size:0.85rem;text-align:center;padding:20px;">Không có cảnh báo rủi ro cao.</p>';
+                    }
                 }
             } catch (e) { console.warn('Overview load error:', e.message); }
         }
@@ -487,10 +575,11 @@
         /* ── QUICK VIEW ───────────────────────────────────────────── */
         function quickView(id) {
             console.log("Quick view for ID:", id);
-            showSection('overview', document.querySelectorAll('.nav-item')[0]);
+            showSection('students', document.querySelectorAll('.nav-item')[1]);
             const input = document.getElementById('adminSearchInput');
             input.value = id;
             adminSearchStudent();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         /* ── STUDENT SEARCH ───────────────────────────────────────── */
