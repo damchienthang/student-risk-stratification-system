@@ -58,7 +58,7 @@ X_test_scaled = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
 joblib.dump(scaler, os.path.join(models_dir, 'scaler.pkl'))
 
 # 4. Xử lý mất cân bằng dữ liệu với SMOTE cho tập train
-# Xử lý NaN trước (SMOTE không chấp nhận NaN)
+# Xử lý NaN
 X_train_scaled = X_train_scaled.fillna(X_train_scaled.median())
 X_val_scaled   = X_val_scaled.fillna(X_train_scaled.median())
 X_test_scaled  = X_test_scaled.fillna(X_train_scaled.median())
