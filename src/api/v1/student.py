@@ -120,35 +120,43 @@ async def predict_guest(guest: GuestStudentInput, request: Request):
     
     prediction = predictor.predict(full_data)
     
-    # Persistence
+    # No default persistence here anymore. 
+    # Trials are only saved when user logs in (per requirement).
+    return prediction
+
+@router.post("/persist-trial")
+async def persist_trial(request: Request, data: dict):
     user_session = get_current_user(request)
+    if not user_session:
+        return {"status": "ignored", "reason": "user not logged in"}
+    
     with Session(engine) as session:
-        user_id = None
-        if user_session:
-            db_user = session.exec(select(User).where(User.username == user_session["username"])).first()
-            if db_user: user_id = db_user.id
+        db_user = session.exec(select(User).where(User.username == user_session["username"])).first()
+        if not db_user: 
+            return {"status": "error", "reason": "user not found"}
             
         log = InferenceLog(
-            user_id=user_id,
-            gender_num=guest.gender_num,
-            imd_band_num=guest.imd_band_num,
-            education_num=guest.education_num,
-            age_num=guest.age_num,
-            disability_num=guest.disability_num,
-            num_of_prev_attempts=guest.num_of_prev_attempts,
-            studied_credits=guest.studied_credits,
-            total_clicks=guest.total_clicks,
-            avg_score=guest.avg_score,
-            min_score=guest.min_score,
-            n_submitted=guest.n_submitted,
-            n_late=guest.n_late,
-            avg_submit_delay=guest.avg_submit_delay,
-            reg_days_before=guest.reg_days_before,
-            risk_level=prediction["risk_level"],
-            risk_label=prediction["risk_label"],
-            confidence=prediction["confidence"]
+            user_id=db_user.id,
+            gender_num=data.get("gender_num", 0),
+            imd_band_num=data.get("imd_band_num", 5),
+            education_num=data.get("education_num", 2),
+            age_num=data.get("age_num", 0),
+            disability_num=data.get("disability_num", 0),
+            num_of_prev_attempts=data.get("num_of_prev_attempts", 0),
+            studied_credits=data.get("studied_credits", 60),
+            total_clicks=data.get("total_clicks", 600),
+            avg_score=data.get("avg_score", 70),
+            min_score=data.get("min_score", 50),
+            n_submitted=data.get("n_submitted", 4),
+            n_late=data.get("n_late", 0),
+            avg_submit_delay=data.get("avg_submit_delay", 0),
+            reg_days_before=data.get("reg_days_before", -90),
+            risk_level=data.get("risk_level", 0),
+            risk_label=data.get("risk_label", "Low"),
+            confidence=data.get("confidence", 0.0)
         )
         session.add(log)
         session.commit()
+        return {"status": "success", "log_id": log.id}
         
     return prediction

@@ -37,6 +37,20 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast(toastData.title, toastData.text, toastData.type);
   }
 
+  // Handle Pending Trials after login
+  const pendingTrial = sessionStorage.getItem('pending_trial');
+  if (pendingTrial && msg === 'login_success') {
+    const trialData = JSON.parse(pendingTrial);
+    fetch('/api/v1/student/persist-trial', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(trialData)
+    }).then(() => {
+      sessionStorage.removeItem('pending_trial');
+      console.log("✅ Guest trial persisted after login");
+    });
+  }
+
   // Clean up URL without reloading
   if (msg || err) {
     const newUrl = window.location.pathname;
@@ -253,6 +267,13 @@ function showGuestResult(result, inputData) {
 
   panel.classList.remove('hidden');
   panel.style.display = 'block';
+
+  // If GUEST (Not logged in), save to sessionStorage for persistence after login
+  const isGuest = !document.querySelector('a[href="/api/v1/auth/logout"]');
+  if (isGuest) {
+    const persistData = { ...inputData, ...result };
+    sessionStorage.setItem('pending_trial', JSON.stringify(persistData));
+  }
 
   const header = panel.querySelector('h3');
   if (header) {
