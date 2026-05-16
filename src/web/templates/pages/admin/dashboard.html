@@ -134,25 +134,41 @@
                     <div id="adminSearchResult" style="margin-bottom: 24px;"></div>
 
                     <div class="table-container">
-                        <div class="table-controls"
-                            style="padding: 30px 40px; justify-content: space-between; align-items: flex-end;">
+                        <div class="table-controls" style="padding: 30px 40px; justify-content: space-between; align-items: flex-end;">
                             <div style="display: flex; gap: 32px; flex-wrap: wrap;">
-                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 300px;">
-                                    <label
-                                        style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Phân
-                                        loại sinh viên</label>
-                                    <select id="sourceSelect" class="select-field" onchange="updateDashboard()"
-                                        style="width: 100%;">
+                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 200px;">
+                                    <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Phân loại sinh viên</label>
+                                    <select id="sourceSelect" class="select-field" onchange="updateDashboard()" style="width: 100%;">
                                         <option value="official">Sinh viên chính thức (OULAD)</option>
                                         <option value="guest">Dự báo tự do (External Guest)</option>
                                     </select>
                                 </div>
-                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 300px;">
-                                    <label
-                                        style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Mức
-                                        độ rủi ro</label>
-                                    <select id="riskSelect" class="select-field" onchange="updateDashboard()"
-                                        style="width: 100%;">
+                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 150px;">
+                                    <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Học phần</label>
+                                    <select id="moduleSelect" class="select-field" onchange="updateDashboard()">
+                                        <option value="all">Tất cả</option>
+                                        <option value="AAA">AAA</option>
+                                        <option value="BBB">BBB</option>
+                                        <option value="CCC">CCC</option>
+                                        <option value="DDD">DDD</option>
+                                        <option value="EEE">EEE</option>
+                                        <option value="FFF">FFF</option>
+                                        <option value="GGG">GGG</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 120px;">
+                                    <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Kỳ học</label>
+                                    <select id="semesterSelect" class="select-field" onchange="updateDashboard()">
+                                        <option value="all">Tất cả</option>
+                                        <option value="2013J">2013J</option>
+                                        <option value="2013B">2013B</option>
+                                        <option value="2014J">2014J</option>
+                                        <option value="2014B">2014B</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 220px;">
+                                    <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Mức độ rủi ro</label>
+                                    <select id="riskSelect" class="select-field" onchange="updateDashboard()" style="width: 100%;">
                                         <option value="all">Tất cả mức rủi ro</option>
                                         <option value="Low">Rủi ro thấp (Low Risk)</option>
                                         <option value="Medium">Rủi ro trung bình (Medium Risk)</option>
@@ -339,10 +355,12 @@
         async function loadStudentList(page = 1) {
             const source = document.getElementById('sourceSelect').value;
             const risk = document.getElementById('riskSelect').value;
+            const module = document.getElementById('moduleSelect').value;
+            const semester = document.getElementById('semesterSelect').value;
             const tbody = document.getElementById('riskTableBody');
             tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;">Đang tải...</td></tr>';
             try {
-                const r = await fetch(`/api/v1/admin/stats?source=${source}&risk=${risk}&page=${page}&limit=15`);
+                const r = await fetch(`/api/v1/admin/stats?source=${source}&risk=${risk}&module=${module}&semester=${semester}&page=${page}&limit=15`);
                 const d = await r.json();
                 tbody.innerHTML = d.all_students.map(s => `
                     <tr>
