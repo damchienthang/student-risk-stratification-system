@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard — Student Risk System</title>
+    <title>RiskSight — Admin Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/admin_style.css">
@@ -13,131 +13,108 @@
 
 <body>
     <div class="app-layout">
-
         <!-- SIDEBAR -->
         <aside class="sidebar">
-            <div class="sidebar-brand">
-                <div class="sidebar-brand-icon">🎓</div>
-                <div>
-                    <div class="sidebar-brand-text">RiskSight</div>
-                    <div class="sidebar-brand-sub">Admin Dashboard</div>
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div
+                        style="background: var(--primary); width: 40px; height: 4px; margin-bottom: 12px; border-radius: 2px;">
+                    </div>
+                    <h1>RiskSight</h1>
+                    <p>SYSTEM ADMINISTRATION</p>
                 </div>
             </div>
             <nav class="sidebar-nav">
-                <div class="sidebar-label">BẢNG ĐIỀU KHIỂN</div>
+                <div class="nav-label">Main Menu</div>
                 <button class="nav-item active" onclick="showSection('overview',this)">
-                    Tổng quan
+                    <span>Tổng quan</span>
                 </button>
-                <div class="sidebar-label">QUẢN LÝ SINH VIÊN</div>
                 <button class="nav-item" onclick="showSection('students',this)">
-                    Danh sách sinh viên
+                    <span>Danh sách sinh viên</span>
                 </button>
-                <div class="sidebar-label">DỮ LIỆU & MÔ HÌNH</div>
+
+                <!-- Section hidden as per user request -->
+                <!-- 
+                <div class="nav-label">Analytics & Data</div>
                 <button class="nav-item" onclick="showSection('analytics',this)">
-                    Chi tiết mô hình
+                    <span>Chi tiết mô hình</span>
                 </button>
-                <div class="sidebar-label">HỆ THỐNG</div>
+                -->
+
+                <div class="nav-label">Administration</div>
                 <button class="nav-item" onclick="showSection('users',this)">
-                    Quản lý tài khoản
+                    <span>Quản lý tài khoản</span>
                 </button>
             </nav>
             <div class="sidebar-footer">
-                <a href="/api/v1/auth/logout" class="nav-item danger">Đăng xuất</a>
+                <a href="/api/v1/auth/logout" class="nav-item logout-btn">
+                    <span>Đăng xuất</span>
+                </a>
             </div>
         </aside>
 
-        <!-- MAIN -->
-        <div class="main-content">
-            <div class="topbar">
-                <div id="topbarTitle" class="topbar-title">Tổng quan hệ thống</div>
-                <div class="topbar-user">
-                    <span>Xin chào, <strong>{{ user.username }}</strong></span>
-                    <div class="avatar">AD</div>
+        <!-- MAIN WRAPPER -->
+        <main class="main-wrapper">
+            <header class="header">
+                <div class="header-title">
+                    <h2 id="topbarTitle">Tổng quan hệ thống</h2>
                 </div>
-            </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <div class="user-details">
+                            <span class="user-name" style="color: var(--primary);">{{ user.username }}</span>
+                            <span class="user-role"
+                                style="text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;">Administrator</span>
+                        </div>
+                        <div class="user-avatar"
+                            style="border: 2px solid var(--primary-light); box-shadow: var(--shadow-sm);">AD</div>
+                    </div>
+                </div>
+            </header>
 
-            <div class="page-content">
-
+            <div class="content-body">
                 <!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
                 <section id="section-overview" class="content-section active">
-                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 25px;">
+                    <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-label">Tổng sinh viên</div>
                             <div id="statTotal" class="stat-value">—</div>
-                            <div class="stat-trend">Hệ thống OULAD</div>
+                            <div class="stat-trend trend-up">Active</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-label">Tỷ lệ rủi ro cao</div>
-                            <div id="statRiskRate" class="stat-value" style="color:var(--red);">—</div>
-                            <div class="stat-trend">High & Very High</div>
+                            <div id="statRiskRate" class="stat-value" style="color:var(--primary);">—</div>
+                            <div class="stat-trend trend-down">Critical</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-label">Điểm TB Hệ thống</div>
-                            <div id="statAvgScore" class="stat-value">—</div>
-                            <div class="stat-trend">Toàn bộ môn học</div>
+                            <div class="stat-label">Điểm trung bình</div>
+                            <div id="statAvgScore" class="stat-value" style="color:var(--success);">—</div>
+                            <div class="stat-trend trend-up">System</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-label">Tương tác TB</div>
-                            <div id="statAvgClicks" class="stat-value">—</div>
-                            <div class="stat-trend">Click / sinh viên</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Độ chính xác (F1)</div>
-                            <div class="stat-value">84.03%</div>
-                            <div class="stat-trend up">↑ LightGBM Model</div>
+                            <div class="stat-label">Tương tác trung bình</div>
+                            <div id="statAvgClicks" class="stat-value" style="color:var(--warning);">—</div>
+                            <div class="stat-trend trend-up">VLE</div>
                         </div>
                     </div>
 
-                    <!-- Overview Widgets (Chart) -->
-                    <div class="card" style="margin-bottom: 20px;">
-                        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
-                            <span class="card-title">Phân bổ mức độ rủi ro (Toàn hệ thống)</span>
-                            <div style="font-size:0.8rem; color:var(--text-dim);">Dữ liệu thời gian thực</div>
-                        </div>
-                        <div class="card-body" style="display: flex; justify-content: center; align-items: center; height: 350px;">
-                            <canvas id="riskPieChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- New Row: Urgent Action & System Info -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                        <!-- Urgent Intervention -->
+                    <div class="dashboard-grid">
                         <div class="card">
                             <div class="card-header">
-                                <span class="card-title" style="color:var(--red);">🚨 Cần can thiệp khẩn cấp (Top 5)</span>
+                                <span class="card-title">Can thiệp khẩn cấp</span>
                             </div>
-                            <div class="card-body" id="overviewUrgentList">
-                                <p style="color:var(--text-dim);font-size:0.9rem;text-align:center;padding:20px;">Đang tải danh sách...</p>
+                            <div class="card-body" style="padding: 0;" id="overviewUrgentList">
+                                <p style="padding: 40px; text-align: center; color: var(--text-light);">Đang tải danh sách...</p>
                             </div>
                         </div>
 
-                        <!-- System Info -->
                         <div class="card">
                             <div class="card-header">
-                                <span class="card-title">ℹ️ Thông tin hệ thống & Mô hình</span>
+                                <span class="card-title">Phân bổ mức độ rủi ro</span>
                             </div>
                             <div class="card-body">
-                                <div style="padding:12px; background:rgba(37, 99, 235, 0.05); border-radius:8px; margin-bottom:15px; border-left:4px solid var(--primary);">
-                                    <h4 style="color:var(--primary); font-size:0.9rem; margin-bottom:5px; font-weight:800;">TRẠNG THÁI MÔ HÌNH</h4>
-                                    <p style="font-size:0.85rem; margin:0; line-height:1.4;">Mô hình <strong>LightGBM</strong> đang hoạt động với độ tin cậy cao. Các yếu tố quan trọng nhất bao gồm: <em>Điểm số, Tổng tương tác</em> và <em>Số lần học lại</em>.</p>
-                                </div>
-                                <div style="display:flex; flex-direction:column; gap:12px;">
-                                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; border-bottom:1px solid var(--border); padding-bottom:8px;">
-                                        <span style="color:var(--text-dim);">Phiên bản:</span>
-                                        <strong>v2.1.0 (Stable)</strong>
-                                    </div>
-                                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; border-bottom:1px solid var(--border); padding-bottom:8px;">
-                                        <span style="color:var(--text-dim);">Thuật toán:</span>
-                                        <span class="badge badge-optimal">LightGBM Classifier</span>
-                                    </div>
-                                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; border-bottom:1px solid var(--border); padding-bottom:8px;">
-                                        <span style="color:var(--text-dim);">Dữ liệu huấn luyện:</span>
-                                        <strong>OULAD Dataset</strong>
-                                    </div>
-                                    <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
-                                        <span style="color:var(--text-dim);">Lần cập nhật cuối:</span>
-                                        <strong>Vừa xong</strong>
-                                    </div>
+                                <div class="chart-container">
+                                    <canvas id="riskPieChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -146,165 +123,84 @@
 
                 <!-- ═══════════════════════ STUDENTS ═══════════════════════ -->
                 <section id="section-students" class="content-section">
-                    <!-- Quick Search -->
-                    <div class="card" style="margin-bottom: 20px;">
-                        <div class="card-header">
-                            <span class="card-title">Tìm kiếm sinh viên</span>
-                        </div>
-                        <div class="card-body">
-                            <div style="display:flex;gap:10px;align-items:center;">
-                                <input type="text" id="adminSearchInput" class="form-input" style="flex:1;"
-                                    placeholder="Nhập mã sinh viên (VD: 11391)..."
-                                    onkeydown="if(event.key==='Enter') adminSearchStudent()">
-                                <button onclick="adminSearchStudent()" class="btn btn-primary">Tìm kiếm</button>
-                            </div>
-                            <div id="adminSearchResult" class="result-panel"></div>
-                        </div>
+                    <div class="search-bar" style="margin-bottom: 32px; gap: 15px;">
+                        <input type="text" id="adminSearchInput" class="input-field"
+                            placeholder="Tra cứu nhanh mã sinh viên (VD: 11391)..."
+                            onkeydown="if(event.key==='Enter') adminSearchStudent()">
+                        <button onclick="adminSearchStudent()" class="btn btn-primary"
+                            style="padding: 0 40px; height: 56px; border-radius: 12px; font-size: 1rem;">Tìm
+                            kiếm</button>
                     </div>
+                    <div id="adminSearchResult" style="margin-bottom: 24px;"></div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="card-title">Danh sách sinh viên rủi ro cao</span>
-                            <div style="display:flex; gap:8px;">
-                                <select id="sourceSelect" class="form-select" onchange="updateDashboard()">
-                                    <option value="official">Sinh viên chính thức</option>
-                                    <option value="guest">Dự báo tự do (Guest)</option>
-                                </select>
-                                <select id="riskSelect" class="form-select" onchange="updateDashboard()">
-                                    <option value="all">Tất cả mức rủi ro</option>
-                                    <option value="Low">Low</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="High">High</option>
-                                    <option value="Very High">Very High</option>
-                                </select>
-                                <select id="moduleSelect" class="form-select" onchange="updateDashboard()">
-                                    <option value="all">Tất cả môn học</option>
-                                    <option value="AAA">AAA</option>
-                                    <option value="BBB">BBB</option>
-                                    <option value="CCC">CCC</option>
-                                    <option value="DDD">DDD</option>
-                                    <option value="EEE">EEE</option>
-                                    <option value="FFF">FFF</option>
-                                    <option value="GGG">GGG</option>
-                                </select>
-                                <select id="semesterSelect" class="form-select" onchange="updateDashboard()">
-                                    <option value="all">Tất cả học kỳ</option>
-                                    <option value="2013J">2013J</option>
-                                    <option value="2013B">2013B</option>
-                                    <option value="2014J">2014J</option>
-                                    <option value="2014B">2014B</option>
-                                </select>
+                    <div class="table-container">
+                        <div class="table-controls"
+                            style="padding: 30px 40px; justify-content: space-between; align-items: flex-end;">
+                            <div style="display: flex; gap: 32px; flex-wrap: wrap;">
+                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 300px;">
+                                    <label
+                                        style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Phân
+                                        loại sinh viên</label>
+                                    <select id="sourceSelect" class="select-field" onchange="updateDashboard()"
+                                        style="width: 100%;">
+                                        <option value="official">Sinh viên chính thức (OULAD)</option>
+                                        <option value="guest">Dự báo tự do (External Guest)</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 300px;">
+                                    <label
+                                        style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Mức
+                                        độ rủi ro</label>
+                                    <select id="riskSelect" class="select-field" onchange="updateDashboard()"
+                                        style="width: 100%;">
+                                        <option value="all">Tất cả mức rủi ro</option>
+                                        <option value="Low">Rủi ro thấp (Low Risk)</option>
+                                        <option value="Medium">Rủi ro trung bình (Medium Risk)</option>
+                                        <option value="High">Rủi ro cao (High Risk)</option>
+                                        <option value="Very High">Rủi ro cực cao (Very High Risk)</option>
+                                    </select>
+                                </div>
                             </div>
+                            <div id="paginationContainerTop" style="margin-bottom: 5px;"></div>
                         </div>
-                        <!-- TOP PAGINATION -->
-                        <div id="paginationContainerTop" class="pagination-container"
-                            style="padding: 10px 20px; border-bottom: 1px solid var(--border); border-top: none;"></div>
-                        <div class="table-wrap">
+                        <div style="overflow-x: auto;">
                             <table>
                                 <thead>
                                     <tr>
                                         <th>Mã SV</th>
-                                        <th>Môn học</th>
-                                        <th>Học kỳ</th>
+                                        <th>Môn học / Kỳ</th>
                                         <th>Điểm TB</th>
-                                        <th>Tổng Click</th>
+                                        <th>Tương tác</th>
                                         <th>Mức rủi ro</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
-                                <tbody id="riskTableBody">
-                                    <tr class="loading-row">
-                                        <td colspan="7">Đang tải dữ liệu...</td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="riskTableBody"></tbody>
                             </table>
                         </div>
-                        <!-- PAGINATION -->
-                        <div id="paginationContainer" class="pagination-container"></div>
+                        <div id="paginationContainer" class="pagination"></div>
                     </div>
                 </section>
 
                 <!-- ═══════════════════════ ANALYTICS ══════════════════════ -->
                 <section id="section-analytics" class="content-section">
-                    <div class="card" style="margin-bottom:20px;">
+                    <div class="card" style="margin-bottom: 24px;">
                         <div class="card-header">
-                            <span class="card-title">So sánh hiệu năng các mô hình</span>
-                        </div>
-                        <div class="table-wrap">
-                            <table class="model-table">
-                                <thead>
-                                    <tr>
-                                        <th>Mô hình</th>
-                                        <th>F1-Score (Macro)</th>
-                                        <th>Accuracy</th>
-                                        <th>Balanced Acc.</th>
-                                        <th>AUC</th>
-                                        <th>Trạng thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="best-model">
-                                        <td>LightGBM</td>
-                                        <td>84.03%</td>
-                                        <td>92.08%</td>
-                                        <td>87.01%</td>
-                                        <td>98.68%</td>
-                                        <td><span class="badge badge-optimal">Tốt nhất</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>XGBoost</td>
-                                        <td>83.56%</td>
-                                        <td>91.93%</td>
-                                        <td>88.04%</td>
-                                        <td>98.72%</td>
-                                        <td><span class="badge badge-low">Hiệu năng cao</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Random Forest</td>
-                                        <td>83.31%</td>
-                                        <td>91.55%</td>
-                                        <td>89.72%</td>
-                                        <td>98.45%</td>
-                                        <td><span class="badge badge-medium">Ổn định</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Logistic Regression</td>
-                                        <td>70.41%</td>
-                                        <td>83.85%</td>
-                                        <td>82.61%</td>
-                                        <td>96.24%</td>
-                                        <td><span class="badge badge-high">Cơ bản</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="card-title">Biểu đồ phân tích</span>
+                            <span class="card-title">Hiệu năng mô hình dự báo (F1-Score: 84.03%)</span>
                         </div>
                         <div class="card-body">
-                            <div class="analytics-img-grid">
-                                <div class="analytics-img-card"
-                                    onclick="openModal('/visuals/03_feature_importance_best.png','Feature Importance — LightGBM')">
-                                    <img src="/visuals/03_feature_importance_best.png" alt="Feature Importance">
-                                    <p>Top đặc trưng quan trọng (Feature Importance — LightGBM)</p>
+                            <div class="analytics-grid">
+                                <div class="analytics-card">
+                                    <img src="/visuals/03_feature_importance_best.png"
+                                        onclick="openModal(this.src, 'Tầm quan trọng đặc trưng')">
+                                    <p style="margin-top:10px; font-weight:600; text-align:center;">Top đặc trưng quan
+                                        trọng nhất</p>
                                 </div>
-                                <div class="analytics-img-card"
-                                    onclick="openModal('/visuals/03_confusion_matrix_best.png','Confusion Matrix — LightGBM')">
-                                    <img src="/visuals/03_confusion_matrix_best.png" alt="Confusion Matrix">
-                                    <p>Ma trận nhầm lẫn (Confusion Matrix — LightGBM)</p>
-                                </div>
-                                <div class="analytics-img-card"
-                                    onclick="openModal('/visuals/01_class_distribution.png','Phân phối nhãn rủi ro')">
-                                    <img src="/visuals/01_class_distribution.png" alt="Class Distribution">
-                                    <p>Phân phối nhãn rủi ro trong tập dữ liệu</p>
-                                </div>
-                                <div class="analytics-img-card"
-                                    onclick="openModal('/visuals/02_04_vle_features.png','Tương tác VLE')">
-                                    <img src="/visuals/02_04_vle_features.png" alt="VLE Features">
-                                    <p>Tương tác hệ thống VLE theo nhóm rủi ro</p>
+                                <div class="analytics-card">
+                                    <img src="/visuals/03_confusion_matrix_best.png"
+                                        onclick="openModal(this.src, 'Ma trận nhầm lẫn')">
+                                    <p style="margin-top:10px; font-weight:600; text-align:center;">Ma trận nhầm lẫn
+                                        (Confusion Matrix)</p>
                                 </div>
                             </div>
                         </div>
@@ -313,489 +209,334 @@
 
                 <!-- ═══════════════════════ USERS ══════════════════════════ -->
                 <section id="section-users" class="content-section">
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="card-title">Quản lý tài khoản</span>
-                            <button class="btn btn-primary btn-sm" onclick="showAddUserForm()">+ Thêm tài khoản</button>
+                    <div class="table-container">
+                        <div class="table-controls" style="justify-content: space-between;">
+                            <span class="card-title">Quản lý tài khoản hệ thống</span>
+                            <button class="btn btn-primary" onclick="showAddUserForm()"
+                                style="padding: 8px 16px; font-size: 0.8rem;">+ Thêm tài khoản</button>
                         </div>
                         <div id="addUserForm"
-                            style="display:none;padding:16px 20px;border-bottom:1px solid var(--border);background:#fafbfc;">
-                            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
-                                <div>
-                                    <label
-                                        style="font-size:0.72rem;font-weight:600;color:var(--text-dim);display:block;margin-bottom:4px;">TÊN
-                                        ĐĂNG NHẬP</label>
-                                    <input type="text" id="newUsername" class="form-input" placeholder="VD: giangvien2">
+                            style="display:none; padding:20px; background:var(--bg); border-bottom:1px solid var(--border);">
+                            <div
+                                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; align-items:end;">
+                                <input type="text" id="newUsername" class="input-field" placeholder="Tên đăng nhập">
+                                <input type="password" id="newPassword" class="input-field" placeholder="Mật khẩu">
+                                <input type="text" id="newFullname" class="input-field" placeholder="Họ tên">
+                                <select id="newRole" class="select-field" style="height:48px;">
+                                    <option value="lecturer">Giảng viên</option>
+                                    <option value="student">Sinh viên</option>
+                                </select>
+                                <div style="display:flex; gap:8px;">
+                                    <button class="btn btn-primary" onclick="createUser()">Tạo</button>
+                                    <button class="btn btn-outline" onclick="hideAddUserForm()">Hủy</button>
                                 </div>
-                                <div>
-                                    <label
-                                        style="font-size:0.72rem;font-weight:600;color:var(--text-dim);display:block;margin-bottom:4px;">MẬT
-                                        KHẨU</label>
-                                    <input type="password" id="newPassword" class="form-input" placeholder="Mật khẩu">
-                                </div>
-                                <div>
-                                    <label
-                                        style="font-size:0.72rem;font-weight:600;color:var(--text-dim);display:block;margin-bottom:4px;">HỌ
-                                        TÊN</label>
-                                    <input type="text" id="newFullname" class="form-input" placeholder="Họ và tên">
-                                </div>
-                                <div>
-                                    <label
-                                        style="font-size:0.72rem;font-weight:600;color:var(--text-dim);display:block;margin-bottom:4px;">VAI
-                                        TRÒ</label>
-                                    <select id="newRole" class="form-select">
-                                        <option value="lecturer">Giảng viên</option>
-                                        <option value="student">Sinh viên</option>
-                                    </select>
-                                </div>
-                                <button class="btn btn-primary" onclick="createUser()">Tạo tài khoản</button>
-                                <button class="btn btn-outline" onclick="hideAddUserForm()">Hủy</button>
                             </div>
-                            <div id="userFormMsg" style="margin-top:8px;font-size:0.82rem;"></div>
                         </div>
-                        <div class="table-wrap">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Người dùng</th>
-                                        <th>Email</th>
-                                        <th>Vai trò</th>
-                                        <th>Rủi ro mới nhất</th>
-                                        <th>Trạng thái</th>
-                                        <th>Hành động</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="usersTableBody">
-                                    <tr class="loading-row">
-                                        <td colspan="6">Đang tải...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Người dùng</th>
+                                    <th>Vai trò</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody"></tbody>
+                        </table>
                     </div>
                 </section>
-
-            </div><!-- /page-content -->
-        </div><!-- /main-content -->
-    </div><!-- /app-layout -->
-
-    <!-- USER DETAIL MODAL -->
-    <div id="userModal" class="modal-overlay" onclick="this.style.display='none'">
-        <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 800px;">
-            <button class="modal-close" onclick="document.getElementById('userModal').style.display='none'">✕</button>
-            <div id="userDetailContent"></div>
-        </div>
+            </div>
+        </main>
     </div>
 
     <!-- IMAGE MODAL -->
-    <div id="imgModal" class="modal-overlay" onclick="closeModal()">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <h3 id="modalTitle" style="font-size:0.95rem;font-weight:700;margin-bottom:16px;color:var(--secondary);">
-            </h3>
-            <img id="modalImg" src="" style="width:100%;border-radius:6px;">
+    <div id="imgModal"
+        style="position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:1000; display:none; align-items:center; justify-content:center; padding:40px;"
+        onclick="closeModal()">
+        <div style="background:white; border-radius:12px; padding:20px; max-width:900px; width:100%; position:relative;"
+            onclick="event.stopPropagation()">
+            <h3 id="modalTitle" style="margin-bottom:15px;"></h3>
+            <img id="modalImg" src="" style="width:100%; border-radius:8px;">
         </div>
     </div>
 
     <script>
-        const TITLES = {
-            overview: 'Tổng quan hệ thống', students: 'Quản lý sinh viên',
-            analytics: 'Chi tiết mô hình', users: 'Quản lý tài khoản'
-        };
-        const RISK_BADGE = {
-            'Low': '<span class="badge badge-low">Low</span>',
-            'Medium': '<span class="badge badge-medium">Medium</span>',
-            'High': '<span class="badge badge-high">High</span>',
-            'Very High': '<span class="badge badge-veryhigh">Very High</span>'
-        };
-        const BADGE_BG = { 'Low': '#d1fae5', 'Medium': '#fef3c7', 'High': '#ffedd5', 'Very High': '#fee2e2' };
-        const BADGE_COLOR = { 'Low': '#065f46', 'Medium': '#92400e', 'High': '#9a3412', 'Very High': '#991b1b' };
+        const RISK_LABELS = { Low: 'Rủi ro thấp', Medium: 'Trung bình', High: 'Rủi ro cao', 'Very High': 'Nguy cấp' };
+        const COLORS = { Low: '#10B981', Medium: '#F59E0B', High: '#F97316', 'Very High': '#EF4444' };
 
-        /* ── SECTIONS ─────────────────────────────────────────────── */
         function showSection(id, el) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.getElementById('section-' + id).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if (el) el.classList.add('active');
-            document.getElementById('topbarTitle').textContent = TITLES[id] || id;
+            document.getElementById('topbarTitle').textContent = el ? el.innerText.trim() : id;
 
-            // Sync filters when showing sections
             if (id === 'overview') loadOverview();
             if (id === 'students') updateDashboard();
             if (id === 'users') loadUsers();
         }
 
         let overviewChart = null;
-
-        /* ── OVERVIEW LOAD ────────────────────────────────────────── */
         async function loadOverview() {
-            const module = document.getElementById('moduleSelect').value;
-            const semester = document.getElementById('semesterSelect').value;
-            const risk = document.getElementById('riskSelect').value;
-
             try {
-                const r = await fetch(`/api/v1/admin/stats?module=${module}&semester=${semester}&risk=${risk}`);
+                const r = await fetch(`/api/v1/admin/stats?module=all&semester=all&risk=all`);
                 const d = await r.json();
                 if (d.summary) {
                     const total = d.summary.total_students || 0;
                     document.getElementById('statTotal').textContent = total.toLocaleString('vi-VN');
                     document.getElementById('statAvgScore').textContent = (d.summary.avg_score || 0).toFixed(1);
                     document.getElementById('statAvgClicks').textContent = (d.summary.avg_clicks || 0).toLocaleString('vi-VN');
-                    
+
                     if (d.risk_distribution && total > 0) {
                         const highCount = (d.risk_distribution[2] || 0) + (d.risk_distribution[3] || 0);
-                        const rate = (highCount / total * 100).toFixed(1);
-                        document.getElementById('statRiskRate').textContent = rate + '%';
+                        document.getElementById('statRiskRate').textContent = (highCount / total * 100).toFixed(1) + '%';
+                        updatePieChart(d.risk_distribution);
                     }
                 }
-
-                // Update Pie Chart
-                if (d.risk_distribution) {
-                    const ctx = document.getElementById('riskPieChart');
-                    if (ctx) {
-                        const chartData = {
-                            labels: ['Rủi ro thấp', 'Rủi ro trung bình', 'Rủi ro cao', 'Rất nguy cấp'],
-                            datasets: [{
-                                data: d.risk_distribution,
-                                backgroundColor: ['#10b981', '#f59e0b', '#f97316', '#ef4444'],
-                                borderWidth: 0
-                            }]
-                        };
-
-                        if (overviewChart) {
-                            overviewChart.data = chartData;
-                            overviewChart.update();
-                        } else {
-                            overviewChart = new Chart(ctx, {
-                                type: 'pie',
-                                data: chartData,
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        legend: { position: 'right', labels: { font: { family: 'Inter', size: 12 } } }
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-
-                // Update Urgent List (Top 5)
-                const urgentEl = document.getElementById('overviewUrgentList');
-                if (urgentEl && d.top_at_risk) {
-                    if (d.top_at_risk.length > 0) {
-                        urgentEl.innerHTML = d.top_at_risk.slice(0, 5).map(s => `
-                            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border);">
-                                <div>
-                                    <div style="font-weight:700; font-size:0.9rem;">#${s.id_student}</div>
-                                    <div style="font-size:0.75rem; color:var(--text-dim);">${s.code_module} ${s.code_presentation}</div>
-                                </div>
-                                <div style="display:flex; gap:8px; align-items:center;">
-                                    <span style="font-size:0.8rem; font-weight:600;">${(s.avg_score || 0).toFixed(1)} đ</span>
-                                    ${RISK_BADGE[s.risk_label] || ''}
-                                    <button class="btn btn-outline btn-sm" onclick="quickView('${s.id_student}')">Chi tiết</button>
-                                </div>
+                if (d.top_at_risk) {
+                    document.getElementById('overviewUrgentList').innerHTML = d.top_at_risk.slice(0, 5).map(s => `
+                        <div class="urgent-item" style="padding: 20px 24px;">
+                            <div class="urgent-avatar">${s.id_student.toString().slice(-2)}</div>
+                            <div class="urgent-info">
+                                <span class="urgent-name">MSSV: #${s.id_student}</span>
+                                <span class="urgent-meta">${s.code_module} — ${s.code_presentation}</span>
                             </div>
-                        `).join('');
-                    } else {
-                        urgentEl.innerHTML = '<p style="color:var(--text-dim);font-size:0.85rem;text-align:center;padding:20px;">Không có cảnh báo rủi ro cao.</p>';
-                    }
+                            <div class="urgent-score" style="margin-right: 20px;">
+                                <span class="score-val" style="font-size: 1.1rem;">${s.avg_score.toFixed(1)}</span>
+                                <span style="font-size: 0.6rem; font-weight: 700; color: var(--text-light); text-transform: uppercase;">Điểm trung bình</span>
+                            </div>
+                            <button class="btn btn-outline" style="padding: 8px 16px; font-size: 0.75rem; border-radius: 8px;" onclick="quickView('${s.id_student}')">CHI TIẾT</button>
+                        </div>
+                    `).join('');
                 }
-            } catch (e) { console.warn('Overview load error:', e.message); }
+            } catch (e) { console.error(e); }
         }
 
-        function updateDashboard(page = 1) {
-            // This function is now just a wrapper for backward compatibility or can be triggered by select changes
-            if (document.getElementById('section-overview').classList.contains('active')) {
-                loadOverview();
-            }
-            if (document.getElementById('section-students').classList.contains('active')) {
-                loadStudentList(page);
-            }
+        function updatePieChart(data) {
+            const ctx = document.getElementById('riskPieChart').getContext('2d');
+            const config = {
+                type: 'doughnut',
+                data: {
+                    labels: ['Thấp', 'Trung bình', 'Cao', 'Nguy cấp'],
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#10B981', '#F59E0B', '#F97316', '#EF4444'],
+                        borderWidth: 0,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    cutout: '70%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20, font: { family: 'Inter', size: 12, weight: 600 } } } }
+                }
+            };
+            if (overviewChart) overviewChart.destroy();
+            overviewChart = new Chart(ctx, config);
         }
 
-        /* ── STUDENTS TABLE ───────────────────────────────────────── */
         async function loadStudentList(page = 1) {
             const source = document.getElementById('sourceSelect').value;
-            const module = document.getElementById('moduleSelect').value;
-            const semester = document.getElementById('semesterSelect').value;
             const risk = document.getElementById('riskSelect').value;
             const tbody = document.getElementById('riskTableBody');
-            const pagContTop = document.getElementById('paginationContainerTop');
-            const pagContBot = document.getElementById('paginationContainer');
-
-            // Toggle module/semester visibility based on source
-            const isGuest = source === 'guest';
-            document.getElementById('moduleSelect').disabled = isGuest;
-            document.getElementById('semesterSelect').disabled = isGuest;
-
-            tbody.innerHTML = '<tr class="loading-row"><td colspan="7">Đang tải dữ liệu...</td></tr>';
-            pagContTop.innerHTML = '';
-            pagContBot.innerHTML = '';
-
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;">Đang tải...</td></tr>';
             try {
-                const r = await fetch(`/api/v1/admin/stats?source=${source}&module=${module}&semester=${semester}&risk=${risk}&page=${page}&limit=20`);
+                const r = await fetch(`/api/v1/admin/stats?source=${source}&risk=${risk}&page=${page}&limit=15`);
                 const d = await r.json();
-
-                if (d.error || !d.all_students || !d.all_students.length) {
-                    tbody.innerHTML = '<tr class="loading-row"><td colspan="7">Không có dữ liệu cho lựa chọn này.</td></tr>';
-                    return;
-                }
-
-                // Render table rows using all_students for full list
                 tbody.innerHTML = d.all_students.map(s => `
-            <tr>
-                <td><strong>#${s.id}</strong></td>
-                <td>${s.code_module || '—'}</td>
-                <td>${s.code_presentation || '—'}</td>
-                <td>${(s.score ?? 0).toFixed(1)}</td>
-                <td>${s.clicks ?? '—'}</td>
-                <td>${RISK_BADGE[s.risk] || `<span class="badge">${s.risk || '—'}</span>`}</td>
-                <td><button class="btn btn-outline btn-sm" onclick="quickView('${s.id}')">Chi tiết</button></td>
-            </tr>
-        `).join('');
+                    <tr>
+                        <td><strong>#${s.id}</strong></td>
+                        <td>${s.code_module} (${s.code_presentation})</td>
+                        <td>${(s.score ?? 0).toFixed(1)}</td>
+                        <td>${(s.clicks ?? 0).toLocaleString()}</td>
+                        <td><span class="badge badge-${s.risk.toLowerCase().replace(' ', '')}">${RISK_LABELS[s.risk]}</span></td>
+                        <td><button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="quickView('${s.id}')">Chi tiết</button></td>
+                    </tr>
+                `).join('');
+                renderPagination(d.pagination);
+            } catch (e) { }
+        }
 
-                // Render Pagination
-                if (d.pagination && d.pagination.total_pages > 1) {
-                    const p = d.pagination;
-                    const html = `
-                <button class="page-btn" ${p.page <= 1 ? 'disabled' : ''} onclick="updateDashboard(${p.page - 1})">← Trước</button>
-                <div class="page-info">Trang ${p.page} / ${p.total_pages} (Tổng: ${p.total_records})</div>
-                <button class="page-btn" ${p.page >= p.total_pages ? 'disabled' : ''} onclick="updateDashboard(${p.page + 1})">Sau →</button>
-            `;
-                    pagContTop.innerHTML = html;
-                    pagContBot.innerHTML = html;
-                }
-            } catch (e) {
-                tbody.innerHTML = `<tr class="loading-row"><td colspan="7">Lỗi: ${e.message}</td></tr>`;
+        function renderPagination(p) {
+            const conts = [document.getElementById('paginationContainer'), document.getElementById('paginationContainerTop')];
+            if (!p || p.total_pages <= 1) {
+                conts.forEach(c => c.innerHTML = '');
+                return;
             }
+            const html = `
+                <div class="pagination" style="padding: 0; gap: 10px;">
+                    <button class="page-btn" ${p.page <= 1 ? 'disabled' : ''} onclick="loadStudentList(${p.page - 1})" style="padding: 10px 18px; border-radius: 8px;">←</button>
+                    <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-main); padding: 0 10px;">TRANG ${p.page} / ${p.total_pages}</span>
+                    <button class="page-btn" ${p.page >= p.total_pages ? 'disabled' : ''} onclick="loadStudentList(${p.page + 1})" style="padding: 10px 18px; border-radius: 8px;">→</button>
+                </div>
+            `;
+            conts.forEach(c => c.innerHTML = html);
         }
 
-        /* ── QUICK VIEW ───────────────────────────────────────────── */
+        function updateDashboard() { loadStudentList(1); }
         function quickView(id) {
-            console.log("Quick view for ID:", id);
             showSection('students', document.querySelectorAll('.nav-item')[1]);
-            const input = document.getElementById('adminSearchInput');
-            input.value = id;
+            document.getElementById('adminSearchInput').value = id;
             adminSearchStudent();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* ── STUDENT SEARCH ───────────────────────────────────────── */
         async function adminSearchStudent() {
-            const idValue = document.getElementById('adminSearchInput').value.trim();
+            const val = document.getElementById('adminSearchInput').value.trim();
             const panel = document.getElementById('adminSearchResult');
-            if (!idValue) return;
+            if (!val) return;
+            panel.innerHTML = '<div class="card" style="padding:40px; text-align:center; color: var(--text-muted); font-weight: 600;">Đang tra cứu dữ liệu sinh viên...</div>';
 
-            panel.className = 'result-panel active';
-            panel.innerHTML = '<em style="color:var(--text-dim)">Đang tra cứu...</em>';
+            const GROUPS = [
+                {
+                    title: "Thông tin cơ bản & Nhân khẩu học",
+                    attrs: {
+                        gender_num: "Giới tính (0: Nữ, 1: Nam)",
+                        age_num: "Nhóm độ tuổi",
+                        education_num: "Trình độ học vấn",
+                        imd_band_num: "Chỉ số IMD (Band)",
+                        disability_num: "Khuyết tật (0: K, 1: C)"
+                    }
+                },
+                {
+                    title: "Lịch sử đăng ký & Học tập",
+                    attrs: {
+                        code_module: "Mã học phần",
+                        code_presentation: "Kỳ học",
+                        num_of_prev_attempts: "Số lần học lại",
+                        studied_credits: "Số tín chỉ tích lũy",
+                        early_registration: "Đăng ký sớm (1: Có)",
+                        reg_days_before: "Số ngày đ.ký trước",
+                        unregistered: "Đã hủy đ.ký (1: Có)"
+                    }
+                },
+                {
+                    title: "Hoạt động trên hệ thống (VLE)",
+                    attrs: {
+                        total_clicks: "Tổng tương tác",
+                        active_days: "Số ngày hoạt động",
+                        avg_clicks_day: "Tương tác TB/ngày",
+                        max_clicks_day: "Tương tác tối đa/ngày",
+                        n_resources: "Tài nguyên đã xem",
+                        click_density: "Mật độ tương tác"
+                    }
+                },
+                {
+                    title: "Kết quả học tập & Đánh giá",
+                    attrs: {
+                        avg_score: "Điểm trung bình",
+                        min_score: "Điểm thấp nhất",
+                        std_score: "Độ lệch chuẩn điểm",
+                        avg_tma_score: "Điểm TMA TB",
+                        n_submitted: "Số bài tập đã nộp",
+                        n_late: "Số bài nộp muộn",
+                        avg_submit_delay: "Độ trễ nộp bài TB",
+                        final_result: "Kết quả cuối (OULAD)"
+                    }
+                }
+            ];
 
             try {
-                let endpoint = `/api/v1/student/query/${idValue}`;
-
-                const r = await fetch(endpoint);
-                if (!r.ok) throw new Error('Không tìm thấy dữ liệu cho #' + idValue);
-
+                const r = await fetch(`/api/v1/student/query/${val}`);
                 const d = await r.json();
-                const s = d.student, p = d.prediction;
-                const bg = BADGE_BG[p.risk_label] || '#f3f4f6';
-                const clr = BADGE_COLOR[p.risk_label] || '#374151';
-                const conf = p.confidence ? `(${p.confidence.toFixed(1)}%)` : '';
+                const { student: s, prediction: p } = d;
+
+                let groupsHtml = '';
+                GROUPS.forEach(group => {
+                    let itemsHtml = '';
+                    for (const [key, label] of Object.entries(group.attrs)) {
+                        let val = s[key];
+                        if (typeof val === 'number' && !Number.isInteger(val)) val = val.toFixed(2);
+                        itemsHtml += `
+                            <div style="padding: 14px; background: #F8FAFC; border-radius: 10px; border: 1px solid var(--border);">
+                                <span style="display: block; font-size: 0.65rem; font-weight: 800; color: var(--text-light); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">${label}</span>
+                                <span style="font-weight: 700; color: var(--text-main); font-size: 1rem;">${val ?? '—'}</span>
+                            </div>
+                        `;
+                    }
+                    groupsHtml += `
+                        <div style="margin-bottom: 30px;">
+                            <h4 style="font-size: 0.75rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                                <span style="width: 30px; height: 2px; background: var(--primary); opacity: 0.3;"></span>
+                                ${group.title}
+                            </h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px;">
+                                ${itemsHtml}
+                            </div>
+                        </div>
+                    `;
+                });
 
                 panel.innerHTML = `
-            <div class="result-header">
-                <div>
-                    <div style="font-weight:700;font-size:1rem;">Sinh viên #${s.id_student || cleanId}</div>
-                    <div style="color:var(--text-dim);font-size:0.82rem;margin-top:2px;">${s.code_module || 'Guest'} — ${s.code_presentation || 'Manual'}</div>
-                </div>
-                <span class="badge" style="background:${bg};color:${clr};font-size:0.8rem;padding:6px 14px;">
-                    ${p.risk_label || '—'} RISK &nbsp;${conf}
-                </span>
-            </div>
-            <div class="result-row">
-                <div class="result-item"><span class="rl">Điểm TB</span><span class="rv">${(s.avg_score || 0).toFixed(1)}</span></div>
-                <div class="result-item"><span class="rl">Tổng Click</span><span class="rv">${s.total_clicks || 0}</span></div>
-                <div class="result-item"><span class="rl">Ngày học tích cực</span><span class="rv">${s.active_days || 0}</span></div>
-                <div class="result-item"><span class="rl">Bài nộp muộn</span><span class="rv">${s.n_late || 0}</span></div>
-                <div class="result-item"><span class="rl">Tín chỉ đã học</span><span class="rv">${s.studied_credits || 0}</span></div>
-                <div class="result-item"><span class="rl">Số lần thử lại</span><span class="rv">${s.num_of_prev_attempts || 0}</span></div>
-            </div>
-            <div style="margin-top:12px;padding:10px 14px;background:#fffbf2;border-left:3px solid #f59e0b;border-radius:4px;font-size:0.83rem;">
-                <strong>💡 Khuyến nghị:</strong> ${p.recommendation || '—'}
-            </div>`;
-            } catch (e) {
-                panel.innerHTML = `<span style="color:#dc2626;font-size:0.85rem;">⚠ ${e.message}</span>`;
-            }
-        }
-
-        /* ── USER MANAGEMENT ──────────────────────────────────────── */
-        async function loadUsers() {
-            const tbody = document.getElementById('usersTableBody');
-            tbody.innerHTML = '<tr class="loading-row"><td colspan="6">Đang tải...</td></tr>';
-            try {
-                const r = await fetch('/api/v1/admin/users');
-                if (!r.ok) throw new Error('Không tải được danh sách');
-                const d = await r.json();
-                if (!d.users || !d.users.length) {
-                    tbody.innerHTML = '<tr class="loading-row"><td colspan="6">Chưa có tài khoản nào.</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = d.users.map(u => {
-                    const riskClass = u.latest_risk !== 'N/A' ? 'badge-' + u.latest_risk.toLowerCase().replace(' ', '') : '';
-                    return `
-            <tr>
-                <td>
-                    <div style="font-weight:700;">${u.full_name || '—'}</div>
-                    <div style="font-size:0.75rem;color:var(--text-dim);">@${u.username}</div>
-                </td>
-                <td><div style="font-size:0.85rem;">${u.email || '—'}</div></td>
-                <td><span class="badge ${u.role === 'lecturer' ? 'badge-optimal' : 'badge-low'}">${u.role.toUpperCase()}</span></td>
-                <td><span class="badge ${riskClass}">${u.latest_risk}</span></td>
-                <td>
-                    <span class="badge" style="background:${u.is_active ? '#d1fae5' : '#fee2e2'};color:${u.is_active ? '#065f46' : '#991b1b'}">
-                        ${u.is_active ? 'Hoạt động' : 'Đã khóa'}
-                    </span>
-                </td>
-                <td>
-                    <div style="display:flex;gap:5px;">
-                        <button class="btn btn-outline btn-sm" onclick="viewUserDetails(${u.id})">Chi tiết</button>
-                        <button class="btn btn-sm ${u.is_active ? 'btn-outline' : 'btn-primary'}" 
-                                onclick="toggleUserStatus(${u.id}, ${u.is_active})">
-                            ${u.is_active ? 'Khóa' : 'Mở'}
-                        </button>
-                        <button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;border:none;" 
-                                onclick="deleteUser(${u.id}, '${u.username}')">Xóa</button>
-                    </div>
-                </td>
-            </tr>`;
-                }).join('');
-            } catch (e) {
-                tbody.innerHTML = `<tr class="loading-row"><td colspan="6">${e.message}</td></tr>`;
-            }
-        }
-
-        async function viewUserDetails(userId) {
-            const modal = document.getElementById('userModal');
-            const content = document.getElementById('userDetailContent');
-            modal.style.display = 'flex';
-            content.innerHTML = '<p style="padding:40px;text-align:center;">Đang tải chi tiết...</p>';
-
-            try {
-                const r = await fetch(`/api/v1/admin/users/${userId}/details`);
-                const d = await r.json();
-                const u = d.user;
-                const history = d.history;
-
-                content.innerHTML = `
-                    <h3 style="margin-bottom:20px;border-bottom:2px solid var(--border);padding-bottom:10px;">Hồ sơ người dùng: ${u.full_name || u.username}</h3>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px;background:var(--bg-alt);padding:20px;border-radius:8px;">
-                        <div>
-                            <div class="stat-label" style="font-size:0.7rem;">TÊN ĐĂNG NHẬP</div>
-                            <div style="font-weight:700;">${u.username}</div>
+                    <div class="card" style="border-left: 8px solid ${COLORS[p.risk_label]}; overflow: hidden; animation: slideIn 0.3s ease-out; box-shadow: var(--shadow-lg);">
+                        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; padding: 30px; background: white; border-bottom: 1px solid var(--border);">
+                            <div>
+                                <h3 style="font-size:1.6rem; font-weight:900; letter-spacing: -0.5px; margin-bottom: 4px;">Hồ sơ sinh viên #${s.id_student}</h3>
+                                <p style="font-size:0.9rem; color:var(--text-muted); font-weight: 500;">Dữ liệu chi tiết được phân nhóm theo đặc trưng hệ thống</p>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-light); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">PHÂN LOẠI RỦI RO</div>
+                                <span class="badge" style="background:${COLORS[p.risk_label]}; color:white; font-size:1.1rem; padding:12px 24px; font-weight: 900; box-shadow: 0 6px 15px ${COLORS[p.risk_label]}44; border-radius: 12px;">
+                                    ${RISK_LABELS[p.risk_label].toUpperCase()} (${p.confidence.toFixed(1)}%)
+                                </span>
+                            </div>
                         </div>
-                        <div>
-                            <div class="stat-label" style="font-size:0.7rem;">EMAIL</div>
-                            <div style="font-weight:700;">${u.email || '—'}</div>
+                        <div style="padding: 30px;">
+                            ${groupsHtml}
+                            <div style="margin-top: 10px; padding: 24px; background: var(--primary-light); border-radius: 16px; border: 1px solid rgba(200, 16, 46, 0.15); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                                <h4 style="color: var(--primary); font-size: 0.85rem; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px;">Khuyến nghị can thiệp</h4>
+                                <p style="font-size: 1.05rem; line-height: 1.7; color: var(--secondary); font-weight: 500; font-style: italic;">"${p.recommendation || 'Không có khuyến nghị cụ thể.'}"</p>
+                            </div>
                         </div>
-                        <div>
-                            <div class="stat-label" style="font-size:0.7rem;">SỐ ĐIỆN THOẠI</div>
-                            <div style="font-weight:700;">${u.phone_number || '—'}</div>
-                        </div>
-                        <div>
-                            <div class="stat-label" style="font-size:0.7rem;">VAI TRÒ / NGUỒN</div>
-                            <div style="font-weight:700;">${u.role.toUpperCase()} (${u.is_external ? 'NGOÀI' : 'OULAD'})</div>
-                        </div>
-                    </div>
-
-                    <h4 style="margin-bottom:15px;font-size:0.9rem;color:var(--primary);">LỊCH SỬ DỰ BÁO</h4>
-                    <div class="table-wrap" style="max-height:300px;overflow:auto;">
-                        <table style="font-size:0.8rem;">
-                            <thead>
-                                <tr>
-                                    <th>Thời gian</th>
-                                    <th>Mức rủi ro</th>
-                                    <th>Độ tin cậy</th>
-                                    <th>Điểm TB</th>
-                                    <th>Tương tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${history.length ? history.map(h => `
-                                    <tr>
-                                        <td>${h.timestamp}</td>
-                                        <td><span class="badge badge-${h.risk_label.toLowerCase().replace(' ', '')}">${h.risk_label}</span></td>
-                                        <td>${h.confidence.toFixed(1)}%</td>
-                                        <td>${h.avg_score.toFixed(1)}</td>
-                                        <td>${h.total_clicks} clicks</td>
-                                    </tr>
-                                `).join('') : '<tr><td colspan="5" style="text-align:center;padding:20px;">Chưa có lịch sử dự báo.</td></tr>'}
-                            </tbody>
-                        </table>
                     </div>
                 `;
             } catch (e) {
-                content.innerHTML = `<p style="padding:40px;text-align:center;color:var(--red);">⚠ Lỗi: ${e.message}</p>`;
+                panel.innerHTML = '<div class="card" style="padding:50px; color:var(--danger); text-align:center; font-weight: 800; font-size: 1.1rem;">Hệ thống không tìm thấy mã sinh viên này. Vui lòng xác nhận lại MSSV.</div>';
             }
         }
 
-        async function toggleUserStatus(userId, currentStatus) {
-            if (!confirm(`Bạn có chắc chắn muốn ${currentStatus ? 'KHÓA' : 'MỞ'} tài khoản này?`)) return;
-            try {
-                const r = await fetch(`/api/v1/admin/users/${userId}/toggle-status`, { method: 'POST' });
-                if (!r.ok) {
-                    const d = await r.json();
-                    throw new Error(d.detail || 'Lỗi xử lý');
-                }
-                loadUsers();
-            } catch (e) { alert('Lỗi: ' + e.message); }
+        async function loadUsers() {
+            const tbody = document.getElementById('usersTableBody');
+            const r = await fetch('/api/v1/admin/users');
+            const d = await r.json();
+            tbody.innerHTML = d.users.map(u => `
+                <tr>
+                    <td>
+                        <div style="font-weight:700;">${u.full_name || '—'}</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">@${u.username}</div>
+                    </td>
+                    <td><span class="badge badge-low">${u.role.toUpperCase()}</span></td>
+                    <td><span class="badge" style="background:${u.is_active ? '#DCFCE7' : '#FEE2E2'}; color:${u.is_active ? '#166534' : '#991B1B'}">${u.is_active ? 'Hoạt động' : 'Đã khóa'}</span></td>
+                    <td>
+                        <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="toggleUserStatus(${u.id})">${u.is_active ? 'Khóa' : 'Mở'}</button>
+                    </td>
+                </tr>
+            `).join('');
         }
 
-        async function deleteUser(userId, username) {
-            if (!confirm(`CẢNH BÁO: Bạn có chắc chắn muốn XÓA vĩnh viễn tài khoản @${username}?\nHành động này không thể hoàn tác.`)) return;
-            try {
-                const r = await fetch(`/api/v1/admin/users/${userId}`, { method: 'DELETE' });
-                if (!r.ok) {
-                    const d = await r.json();
-                    throw new Error(d.detail || 'Lỗi xóa tài khoản');
-                }
-                loadUsers();
-            } catch (e) { alert('Lỗi: ' + e.message); }
-        }
         function showAddUserForm() { document.getElementById('addUserForm').style.display = 'block'; }
         function hideAddUserForm() { document.getElementById('addUserForm').style.display = 'none'; }
         async function createUser() {
-            const msg = document.getElementById('userFormMsg');
             const body = {
-                username: document.getElementById('newUsername').value.trim(),
+                username: document.getElementById('newUsername').value,
                 password: document.getElementById('newPassword').value,
-                full_name: document.getElementById('newFullname').value.trim(),
+                full_name: document.getElementById('newFullname').value,
                 role: document.getElementById('newRole').value
             };
-            if (!body.username || !body.password) {
-                msg.innerHTML = '<span style="color:#dc2626">Vui lòng nhập đủ thông tin.</span>'; return;
-            }
-            try {
-                const r = await fetch('/api/v1/admin/users', {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
-                });
-                const d = await r.json();
-                if (!r.ok) throw new Error(d.detail || 'Lỗi tạo tài khoản');
-                msg.innerHTML = '<span style="color:#059669">✓ Tạo thành công!</span>';
-                loadUsers(); setTimeout(hideAddUserForm, 1500);
-            } catch (e) { msg.innerHTML = `<span style="color:#dc2626">⚠ ${e.message}</span>`; }
+            const r = await fetch('/api/v1/admin/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            if (r.ok) { loadUsers(); hideAddUserForm(); }
         }
-
-        /* ── MODAL ────────────────────────────────────────────────── */
+        async function toggleUserStatus(id) {
+            await fetch(`/api/v1/admin/users/${id}/toggle-status`, { method: 'POST' });
+            loadUsers();
+        }
         function openModal(src, title) {
             document.getElementById('modalImg').src = src;
             document.getElementById('modalTitle').textContent = title;
-            document.getElementById('imgModal').classList.add('open');
+            document.getElementById('imgModal').style.display = 'flex';
         }
-        function closeModal() { document.getElementById('imgModal').classList.remove('open'); }
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+        function closeModal() { document.getElementById('imgModal').style.display = 'none'; }
 
-        /* ── INIT ─────────────────────────────────────────────────── */
         document.addEventListener('DOMContentLoaded', loadOverview);
     </script>
 </body>

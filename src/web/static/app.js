@@ -131,10 +131,10 @@ async function searchStudent() {
 function displayStudent(data) {
   const panel = document.getElementById('studentDataPanel');
   if (!panel) return;
-  
+
   panel.classList.remove('hidden');
   panel.style.display = 'block';
-  
+
   const searchInput = document.getElementById('studentSearchInput');
   const isSelf = searchInput && searchInput.disabled && searchInput.value == data.student.id_student;
 
@@ -158,7 +158,7 @@ function displayStudent(data) {
 
   const confEl = document.getElementById('resConfidence');
   if (confEl) confEl.innerText = data.prediction.confidence;
-  
+
   const recEl = document.getElementById('resRecommendation');
   if (recEl) recEl.innerText = data.prediction.recommendation;
 
@@ -206,7 +206,7 @@ function closeStudentPanel() {
 async function submitGuestPrediction(event) {
   const form = document.getElementById('guestForm');
   if (!form) return;
-  
+
   const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
@@ -250,7 +250,7 @@ async function submitGuestPrediction(event) {
 function showGuestResult(result, inputData) {
   const panel = document.getElementById('studentDataPanel');
   if (!panel) return;
-  
+
   panel.classList.remove('hidden');
   panel.style.display = 'block';
 
@@ -275,7 +275,7 @@ function showGuestResult(result, inputData) {
 
   const confEl = document.getElementById('resConfidence');
   if (confEl) confEl.innerHTML = result.confidence.toFixed(1);
-  
+
   const recEl = document.getElementById('resRecommendation');
   if (recEl) recEl.innerText = result.recommendation;
 
@@ -284,7 +284,7 @@ function showGuestResult(result, inputData) {
     grid.innerHTML = '';
     const eduLabels = ['Không bằng cấp', 'Dưới A Level', 'A Level/Tương đương', 'HE Qualification', 'Sau đại học'];
     const ageLabels = ['0-35', '35-55', '55+'];
-    
+
     const clickVal = parseInt(inputData.total_clicks);
     let clickLabel = 'Trung bình';
     if (clickVal <= 150) clickLabel = 'Rất ít';
@@ -427,7 +427,7 @@ function renderAnalysis(features) {
     const div = document.createElement('div');
     const borderCol = item.type === 'danger' ? 'var(--red)' : (item.type === 'warning' ? 'var(--amber)' : 'var(--green)');
     const bgCol = item.type === 'danger' ? '#fff5f5' : (item.type === 'warning' ? '#fffbf2' : '#f6ffed');
-    
+
     div.style.padding = '15px 20px';
     div.style.borderRadius = '8px';
     div.style.background = bgCol;
