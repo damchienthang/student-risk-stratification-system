@@ -355,16 +355,88 @@ function showGuestResult(result, inputData) {
   }
 
   const badge = document.getElementById('resRiskBadge');
+  const riskVal = result.risk_label || 'UNKNOWN';
   if (badge) {
-    badge.className = `badge badge-${result.risk_label.toLowerCase().replace(' ', '')}`;
-    badge.innerHTML = `${result.risk_label} RISK`;
+    badge.innerText = `${riskVal} RISK`;
   }
 
   const confEl = document.getElementById('resConfidence');
   if (confEl) confEl.innerHTML = result.confidence.toFixed(1);
 
   const recEl = document.getElementById('resRecommendation');
-  if (recEl) recEl.innerText = result.recommendation;
+  if (recEl) recEl.innerText = result.recommendation || '';
+
+  // Apply premium styling updates to Guest Trial results to match official student dashboard perfectly
+  const card = document.getElementById('resRiskCard');
+  const glow = document.getElementById('resRiskBadgeGlow');
+  const title = document.getElementById('resRiskTitle');
+  const bullet = document.getElementById('resRiskBullet');
+  const recBox = document.getElementById('resRecommendationBox');
+
+  if (title) {
+    title.innerText = riskVal;
+  }
+
+  const riskUpper = riskVal.toUpperCase().trim();
+  let bg_grad = '', border_color = '', badge_grad = '', risk_title_color = '', shadow_glow = '', stripe_color = '';
+
+  if (riskUpper.includes('LOW')) {
+    bg_grad = 'linear-gradient(135deg, rgba(46, 204, 113, 0.05) 0%, rgba(255, 255, 255, 1) 100%)';
+    border_color = 'rgba(46, 204, 113, 0.2)';
+    badge_grad = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
+    risk_title_color = '#27ae60';
+    shadow_glow = 'rgba(46, 204, 113, 0.12)';
+    stripe_color = '#27ae60';
+  } else if (riskUpper.includes('MEDIUM')) {
+    bg_grad = 'linear-gradient(135deg, rgba(230, 126, 34, 0.05) 0%, rgba(255, 255, 255, 1) 100%)';
+    border_color = 'rgba(230, 126, 34, 0.2)';
+    badge_grad = 'linear-gradient(135deg, #d35400 0%, #e67e22 100%)';
+    risk_title_color = '#d35400';
+    shadow_glow = 'rgba(230, 126, 34, 0.12)';
+    stripe_color = '#e67e22';
+  } else if (riskUpper.includes('HIGH')) {
+    bg_grad = 'linear-gradient(135deg, rgba(231, 76, 60, 0.05) 0%, rgba(255, 255, 255, 1) 100%)';
+    border_color = 'rgba(231, 76, 60, 0.2)';
+    badge_grad = 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)';
+    risk_title_color = '#c0392b';
+    shadow_glow = 'rgba(231, 76, 60, 0.12)';
+    stripe_color = '#e74c3c';
+  } else {
+    bg_grad = 'linear-gradient(135deg, rgba(147, 41, 30, 0.05) 0%, rgba(255, 255, 255, 1) 100%)';
+    border_color = 'rgba(147, 41, 30, 0.25)';
+    badge_grad = 'linear-gradient(135deg, #78281f 0%, #93291e 100%)';
+    risk_title_color = '#78281f';
+    shadow_glow = 'rgba(147, 41, 30, 0.15)';
+    stripe_color = '#93291e';
+  }
+
+  if (card) {
+    card.style.background = bg_grad;
+    card.style.borderColor = border_color;
+    card.style.boxShadow = `0 15px 35px rgba(0,0,0,0.02), 0 10px 30px ${shadow_glow}`;
+  }
+  if (glow) {
+    glow.style.background = badge_grad;
+    glow.style.opacity = '0.15';
+  }
+  if (badge) {
+    badge.className = ''; // Reset small badge classes to prevent style breaking
+    badge.style.background = badge_grad;
+    badge.style.boxShadow = `0 8px 25px ${shadow_glow}`;
+    badge.style.color = 'white';
+    badge.style.opacity = '1';
+    badge.style.filter = 'none';
+  }
+  if (title) {
+    title.style.color = risk_title_color;
+    title.innerText = riskVal;
+  }
+  if (bullet) {
+    bullet.style.color = risk_title_color;
+  }
+  if (recBox) {
+    recBox.style.borderLeftColor = stripe_color;
+  }
 
   const grid = document.getElementById('resDataTable');
   if (grid) {
