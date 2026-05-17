@@ -138,8 +138,51 @@ async def predict_guest(guest: GuestStudentInput, request: Request):
     
     prediction = predictor.predict(full_data)
     
-    # No default persistence here anymore. 
-    # Trials are only saved when user logs in (per requirement).
+    # Try to see if user is logged in
+    user_id = None
+    try:
+        user_session = get_current_user(request)
+        if user_session:
+            with Session(engine) as session:
+                db_user = session.exec(select(User).where(User.username == user_session["username"])).first()
+                if db_user:
+                    user_id = db_user.id
+    except Exception:
+        pass
+
+    # Save to database immediately
+    try:
+        with Session(engine) as session:
+            log = InferenceLog(
+                user_id=user_id,
+                code_module="Guest",
+                code_presentation="Guest",
+                gender_num=guest.gender_num,
+                imd_band_num=guest.imd_band_num,
+                education_num=guest.education_num,
+                age_num=guest.age_num,
+                disability_num=guest.disability_num,
+                num_of_prev_attempts=guest.num_of_prev_attempts,
+                studied_credits=guest.studied_credits,
+                total_clicks=guest.total_clicks,
+                avg_score=guest.avg_score,
+                min_score=guest.min_score,
+                n_submitted=guest.n_submitted,
+                n_late=guest.n_late,
+                avg_submit_delay=guest.avg_submit_delay,
+                reg_days_before=guest.reg_days_before,
+                risk_level=prediction["risk_level"],
+                risk_label=prediction["risk_label"],
+                confidence=prediction["confidence"]
+            )
+            session.add(log)
+            session.commit()
+            session.refresh(log)
+            prediction["log_id"] = log.id
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Failed to instantly save inference log: {e}")
+
     return prediction
 
 @router.post("/persist-trial")
@@ -153,8 +196,21 @@ async def persist_trial(request: Request, data: dict):
         if not db_user: 
             return {"status": "error", "reason": "user not found"}
             
+        log_id = data.get("log_id")
+        if log_id:
+            # Look up the existing instantly-saved log to link it directly to the user
+            log = session.get(InferenceLog, log_id)
+            if log:
+                log.user_id = db_user.id
+                session.add(log)
+                session.commit()
+                return {"status": "success", "log_id": log.id, "linked": True}
+        
+        # Fallback: Create a new InferenceLog if no log_id was provided or found
         log = InferenceLog(
             user_id=db_user.id,
+            code_module="Guest",
+            code_presentation="Guest",
             gender_num=data.get("gender_num", 0),
             imd_band_num=data.get("imd_band_num", 5),
             education_num=data.get("education_num", 2),
@@ -163,11 +219,11 @@ async def persist_trial(request: Request, data: dict):
             num_of_prev_attempts=data.get("num_of_prev_attempts", 0),
             studied_credits=data.get("studied_credits", 60),
             total_clicks=data.get("total_clicks", 600),
-            avg_score=data.get("avg_score", 70),
-            min_score=data.get("min_score", 50),
+            avg_score=data.get("avg_score", 70.0),
+            min_score=data.get("min_score", 50.0),
             n_submitted=data.get("n_submitted", 4),
             n_late=data.get("n_late", 0),
-            avg_submit_delay=data.get("avg_submit_delay", 0),
+            avg_submit_delay=data.get("avg_submit_delay", 0.0),
             reg_days_before=data.get("reg_days_before", -90),
             risk_level=data.get("risk_level", 0),
             risk_label=data.get("risk_label", "Low"),
@@ -175,6 +231,4 @@ async def persist_trial(request: Request, data: dict):
         )
         session.add(log)
         session.commit()
-        return {"status": "success", "log_id": log.id}
-        
-    return prediction
+        return {"status": "success", "log_id": log.id, "linked": False}

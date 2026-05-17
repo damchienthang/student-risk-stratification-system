@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle Pending Trials after login
   const pendingTrial = sessionStorage.getItem('pending_trial');
-  if (pendingTrial && msg === 'login_success') {
+  const isLoggedIn = !!document.querySelector('a[href="/api/v1/auth/logout"]');
+  if (pendingTrial && isLoggedIn) {
     const trialData = JSON.parse(pendingTrial);
     fetch('/api/v1/student/persist-trial', {
       method: 'POST',

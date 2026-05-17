@@ -77,6 +77,7 @@ class RiskPrediction(BaseModel):
     recommendation: str = Field(..., description="Khuyến nghị hành động")
     model_used: str = Field(default="LightGBM", description="Mô hình được sử dụng")
     risk_color: Optional[str] = Field(default=None, description="Mã màu hex tương ứng mức rủi ro")
+    log_id: Optional[int] = Field(default=None, description="Mã log lịch sử đã lưu")
 
 
 class UserUpdate(BaseModel):
