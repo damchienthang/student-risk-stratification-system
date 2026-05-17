@@ -70,16 +70,23 @@
   }
 
   .step-num-circle {
-    box-shadow: 0 0 0 4px rgba(255,255,255,1);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 1);
   }
 
   .step-indicator.active .step-num-circle {
-    box-shadow: 0 4px 15px rgba(200, 16, 46, 0.35), 0 0 0 4px rgba(255,255,255,1) !important;
+    box-shadow: 0 4px 15px rgba(200, 16, 46, 0.35), 0 0 0 4px rgba(255, 255, 255, 1) !important;
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* Range input customization */
@@ -120,7 +127,7 @@
   .stat-card {
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
-  
+
   .stat-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 45px rgba(200, 16, 46, 0.08) !important;
@@ -131,10 +138,15 @@
 
 {% block content %}
 <!-- ── HERO ──────────────────────────────────────────────── -->
-<section class="hero" id="about" style="padding: 120px 0 80px; background: linear-gradient(135deg, rgba(200, 16, 46, 0.04) 0%, rgba(26, 37, 48, 0.02) 100%), radial-gradient(at top right, rgba(200, 16, 46, 0.05) 0%, transparent 60%); text-align: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border);">
+<section class="hero" id="about"
+  style="padding: 120px 0 80px; background: linear-gradient(135deg, rgba(200, 16, 46, 0.04) 0%, rgba(26, 37, 48, 0.02) 100%), radial-gradient(at top right, rgba(200, 16, 46, 0.05) 0%, transparent 60%); text-align: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border);">
   <!-- Glowing Background Blobs -->
-  <div style="position: absolute; width: 500px; height: 500px; background: rgba(200, 16, 46, 0.06); filter: blur(140px); border-radius: 50%; top: -150px; right: -100px; pointer-events: none; z-index: 0;"></div>
-  <div style="position: absolute; width: 400px; height: 400px; background: rgba(45, 52, 70, 0.04); filter: blur(120px); border-radius: 50%; bottom: -100px; left: -100px; pointer-events: none; z-index: 0;"></div>
+  <div
+    style="position: absolute; width: 500px; height: 500px; background: rgba(200, 16, 46, 0.06); filter: blur(140px); border-radius: 50%; top: -150px; right: -100px; pointer-events: none; z-index: 0;">
+  </div>
+  <div
+    style="position: absolute; width: 400px; height: 400px; background: rgba(45, 52, 70, 0.04); filter: blur(120px); border-radius: 50%; bottom: -100px; left: -100px; pointer-events: none; z-index: 0;">
+  </div>
 
   <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 5;">
     <h1 class="hero-title">Phân Tầng Rủi Ro <span class="gradient-text">Học Tập Sinh Viên</span></h1>
@@ -144,68 +156,155 @@
     {% if user and user.role != UserRole.GUEST %}
     <!-- Student Search (Official) -->
     <div class="search-container" style="max-width: 800px; margin: 0 auto 30px; position: relative; padding: 0 20px;">
-      <h3 style="text-align: center; margin-bottom: 20px; color: var(--secondary); font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">
+      <h3
+        style="text-align: center; margin-bottom: 20px; color: var(--secondary); font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">
         Tra cứu rủi ro học tập chính thức</h3>
-      <div class="search-box" style="display: flex; background: white; padding: 8px; border-radius: 100px; box-shadow: 0 15px 40px rgba(0,0,0,0.06); border: 2px solid var(--border); transition: all 0.3s; overflow: hidden;">
+      <div class="search-box"
+        style="display: flex; background: white; padding: 8px; border-radius: 100px; box-shadow: 0 15px 40px rgba(0,0,0,0.06); border: 2px solid var(--border); transition: all 0.3s; overflow: hidden;">
         <input type="text" id="studentSearchInput" class="search-input"
           placeholder="Nhập mã sinh viên để truy vấn thông tin rủi ro (VD: 11391)..."
           style="flex: 1; border: none; padding: 15px 30px; font-size: 1.05rem; outline: none; font-weight: 600; background: transparent; {{ 'color: var(--text-dim); cursor: not-allowed; background: #f9f9f9;' if user.role == UserRole.STUDENT else '' }}"
-          value="{{ user.username if user.role == UserRole.STUDENT else '' }}" {{ 'disabled' if user.role==UserRole.STUDENT else '' }}>
+          value="{{ user.username if user.role == UserRole.STUDENT else '' }}" {{ 'disabled' if
+          user.role==UserRole.STUDENT else '' }}>
 
         {% if user.role == UserRole.STUDENT %}
         <a href="/student" class="search-btn"
-          style="background: var(--primary); color: white; border: none; padding: 15px 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(200, 16, 46, 0.2);">XEM KẾT QUẢ CỦA TÔI</a>
+          style="background: var(--primary); color: white; border: none; padding: 15px 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(200, 16, 46, 0.2);">XEM
+          KẾT QUẢ CỦA TÔI</a>
         {% elif user.role == UserRole.ADMIN %}
         <button class="search-btn" onclick="searchStudent()"
-          style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 15px rgba(200, 16, 46, 0.2);">Tra cứu ngay</button>
+          style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 15px rgba(200, 16, 46, 0.2);">Tra
+          cứu ngay</button>
         {% endif %}
       </div>
       {% if user.role == UserRole.STUDENT %}
-      <p style="margin-top: 12px; font-size: 0.85rem; color: var(--text-dim); font-weight: 500;">* Bạn đang đăng nhập với tư cách sinh viên. Kết quả rủi ro học tập của bạn được hiển thị bên dưới.</p>
+      <p style="margin-top: 12px; font-size: 0.85rem; color: var(--text-dim); font-weight: 500;">* Bạn đang đăng nhập
+        với tư cách sinh viên. Kết quả rủi ro học tập của bạn được hiển thị bên dưới.</p>
       {% endif %}
     </div>
 
     <div style="text-align: center; margin: 45px 0;">
-      <span style="background: var(--border); height: 1px; width: 120px; display: inline-block; vertical-align: middle;"></span>
-      <span style="margin: 0 20px; color: var(--text-dim); font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">HOẶC THỬ NGHIỆM</span>
-      <span style="background: var(--border); height: 1px; width: 120px; display: inline-block; vertical-align: middle;"></span>
+      <span
+        style="background: var(--border); height: 1px; width: 120px; display: inline-block; vertical-align: middle;"></span>
+      <spanx`
+        style="margin: 0 20px; color: var(--text-dim); font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">HOẶC
+        THỬ NGHIỆM</span>
+        <span
+          style="background: var(--border); height: 1px; width: 120px; display: inline-block; vertical-align: middle;"></span>
     </div>
     {% endif %}
 
     <!-- Guest Trial Section (Available for everyone NOT lecturer) -->
     {% if not user or user.role != UserRole.ADMIN %}
-    <div id="guest-trial" style="max-width: 900px; margin: 0 auto; background: white; padding: 50px; border-radius: 20px; border: 1px solid rgba(224, 224, 224, 0.8); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.05); position: relative; z-index: 10;">
-      <h3 style="text-align: center; margin-bottom: 12px; color: var(--secondary); font-size: 2.3rem; font-weight: 900; letter-spacing: -1px;">
+    <div id="guest-trial"
+      style="max-width: 900px; margin: 0 auto; background: white; padding: 50px; border-radius: 20px; border: 1px solid rgba(224, 224, 224, 0.8); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.05); position: relative; z-index: 10;">
+      <h3
+        style="text-align: center; margin-bottom: 12px; color: var(--secondary); font-size: 2.3rem; font-weight: 900; letter-spacing: -1px;">
         Thử nghiệm dự báo rủi ro</h3>
-      <p style="text-align: center; color: var(--text-dim); margin-bottom: 45px; font-size: 1.05rem; font-weight: 500;">Hãy hoàn thành các thông số dưới đây để AI tiến hành phân tích phân tầng rủi ro.</p>
+      <p style="text-align: center; color: var(--text-dim); margin-bottom: 30px; font-size: 1.05rem; font-weight: 500;">
+        Hãy hoàn thành các thông số dưới đây để AI tiến hành phân tích phân tầng rủi ro.</p>
+
+      <!-- 💡 LƯU Ý THUỘC TÍNH QUAN TRỌNG (FEATURE IMPORTANCE ALERT BOX) -->
+      <div
+        style="background: rgba(200, 16, 46, 0.03); border-left: 4px solid var(--primary); border-radius: 12px; padding: 20px; margin-bottom: 35px; text-align: left;">
+        <h4
+          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3;">
+          Chỉ số ảnh hưởng lớn nhất đến dự đoán
+        </h4>
+        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 15px; font-weight: 500;">
+          Dựa trên phân tích trọng số của mô hình <strong>LightGBM</strong>, kết quả rủi ro học tập của sinh viên chịu
+          ảnh hưởng sâu sắc nhất bởi 4 nhóm chỉ số dưới đây. Hãy lưu ý khi thay đổi các thông số thử nghiệm:
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 15px;">
+
+          <!-- Item 1: VLE Clicks -->
+          <div style="display: flex; gap: 10px; font-size: 0.82rem; line-height: 1.5;">
+            <div>
+              <strong style="color: var(--secondary);">Tương tác trực tuyến:</strong>
+              <span style="color: var(--text-dim); font-weight: 500;">Tần suất click học liệu. Lượng click <strong>dưới
+                  400</strong> đẩy nguy cơ rơi vào nhóm <strong>Cao / Nguy cấp</strong> lên gấp 3 lần.</span>
+            </div>
+          </div>
+
+          <!-- Item 2: Avg Score -->
+          <div style="display: flex; gap: 10px; font-size: 0.82rem; line-height: 1.5;">
+            <div>
+              <strong style="color: var(--secondary);">Điểm trung bình học phần:</strong>
+              <span style="color: var(--text-dim); font-weight: 500;">Kết quả kiểm tra tích lũy. Điểm số <strong>dưới
+                  55/100</strong> là ngưỡng cảnh báo cực kỳ lớn đối với mô hình.</span>
+            </div>
+          </div>
+
+          <!-- Item 3: Prev Attempts -->
+          <div style="display: flex; gap: 10px; font-size: 0.82rem; line-height: 1.5;">
+            <div>
+              <strong style="color: var(--secondary);">Số lần đã thi lại học phần:</strong>
+              <span style="color: var(--text-dim); font-weight: 500;">Lịch sử trượt môn. Từng trượt từ <strong>1 lần trở
+                  lên</strong> chịu tỷ lệ rủi ro trượt môn cao hơn 45% so với bạn học.</span>
+            </div>
+          </div>
+
+          <!-- Item 4: Submission Discipline -->
+          <div style="display: flex; gap: 10px; font-size: 0.82rem; line-height: 1.5;">
+            <div>
+              <strong style="color: var(--secondary);">Kỷ luật nộp bài tập:</strong>
+              <span style="color: var(--text-dim); font-weight: 500;">Nộp bài trễ hạn. Số ngày trễ trung bình
+                <strong>trên 3 ngày</strong> trực tiếp đẩy sinh viên vào ranh giới rủi ro.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
 
       <!-- Step Progress Wizard Bar -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; position: relative; max-width: 650px; margin-left: auto; margin-right: auto;">
-        <div style="position: absolute; top: 22px; left: 10%; right: 10%; height: 4px; background: #e2e8f0; z-index: 1; border-radius: 2px;">
-          <div id="step-progress-bar" style="height: 100%; width: 0%; background: var(--primary); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 2px;"></div>
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; position: relative; max-width: 650px; margin-left: auto; margin-right: auto;">
+        <div
+          style="position: absolute; top: 22px; left: 10%; right: 10%; height: 4px; background: #e2e8f0; z-index: 1; border-radius: 2px;">
+          <div id="step-progress-bar"
+            style="height: 100%; width: 0%; background: var(--primary); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 2px;">
+          </div>
         </div>
-        <div class="step-indicator active" data-step="1" onclick="goToStep(1)" style="display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; cursor: pointer; flex: 1;">
-          <div class="step-num-circle" style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; border: 4px solid white; transition: all 0.3s;">1</div>
-          <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.5px;">Cá nhân</span>
+        <div class="step-indicator active" data-step="1" onclick="goToStep(1)"
+          style="display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; cursor: pointer; flex: 1;">
+          <div class="step-num-circle"
+            style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; border: 4px solid white; transition: all 0.3s;">
+            1</div>
+          <span
+            style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.5px;">Cá
+            nhân</span>
         </div>
-        <div class="step-indicator" data-step="2" onclick="goToStep(2)" style="display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; cursor: pointer; flex: 1;">
-          <div class="step-num-circle" style="width: 44px; height: 44px; border-radius: 50%; background: #e2e8f0; color: #718096; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; border: 4px solid white; transition: all 0.3s;">2</div>
-          <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #718096; letter-spacing: 0.5px;">Học tập</span>
+        <div class="step-indicator" data-step="2" onclick="goToStep(2)"
+          style="display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; cursor: pointer; flex: 1;">
+          <div class="step-num-circle"
+            style="width: 44px; height: 44px; border-radius: 50%; background: #e2e8f0; color: #718096; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; border: 4px solid white; transition: all 0.3s;">
+            2</div>
+          <span
+            style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #718096; letter-spacing: 0.5px;">Học
+            tập</span>
         </div>
-        <div class="step-indicator" data-step="3" onclick="goToStep(3)" style="display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; cursor: pointer; flex: 1;">
-          <div class="step-num-circle" style="width: 44px; height: 44px; border-radius: 50%; background: #e2e8f0; color: #718096; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; border: 4px solid white; transition: all 0.3s;">3</div>
-          <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #718096; letter-spacing: 0.5px;">Kết quả & Tương tác</span>
+        <div class="step-indicator" data-step="3" onclick="goToStep(3)"
+          style="display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; cursor: pointer; flex: 1;">
+          <div class="step-num-circle"
+            style="width: 44px; height: 44px; border-radius: 50%; background: #e2e8f0; color: #718096; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; border: 4px solid white; transition: all 0.3s;">
+            3</div>
+          <span
+            style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #718096; letter-spacing: 0.5px;">Kết
+            quả & Tương tác</span>
         </div>
       </div>
 
       <form id="guestForm" onsubmit="event.preventDefault();">
         <!-- STEP 1: Demographic -->
         <div class="step-panel" id="step-panel-1">
-          <h4 style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
-            <span style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
+          <h4
+            style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
+            <span
+              style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
             I. Thông tin cá nhân & Nhân khẩu học
           </h4>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 20px; text-align: left;">
+          <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 20px; text-align: left;">
             <div class="form-group">
               <label>GIỚI TÍNH</label>
               <select name="gender_num" class="form-control">
@@ -251,13 +350,21 @@
 
         <!-- STEP 2: History & Registration -->
         <div class="step-panel hidden" id="step-panel-2">
-          <h4 style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
-            <span style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
+          <h4
+            style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
+            <span
+              style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
             II. Lịch sử & Lộ trình học tập
           </h4>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 20px; text-align: left;">
+          <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 20px; text-align: left;">
             <div class="form-group">
-              <label>SỐ LẦN ĐÃ THI LẠI HỌC PHẦN</label>
+              <label style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <span>SỐ LẦN ĐÃ THI LẠI HỌC PHẦN</span>
+                <span class="badge badge-medium"
+                  style="font-size: 0.62rem; padding: 2px 6px; font-weight: 800; background: #fff9db; color: #947100; border-radius: 4px; line-height: 1;">Ảnh
+                  hưởng cao</span>
+              </label>
               <input type="number" name="num_of_prev_attempts" class="form-control" value="0" min="0">
             </div>
             <div class="form-group">
@@ -267,20 +374,30 @@
             <div class="form-group">
               <label>SỐ NGÀY ĐĂNG KÝ TRƯỚC KHAI GIẢNG (REG DAYS)</label>
               <input type="number" name="reg_days_before" class="form-control" value="-90">
-              <small style="color:var(--text-dim); font-size:0.75rem; display:block; margin-top:6px; font-weight: 500;">* Giá trị âm biểu thị số ngày đăng ký trước khai giảng</small>
+              <small
+                style="color:var(--text-dim); font-size:0.75rem; display:block; margin-top:6px; font-weight: 500;">* Giá
+                trị âm biểu thị số ngày đăng ký trước khai giảng</small>
             </div>
           </div>
         </div>
 
         <!-- STEP 3: Assessment & VLE Engagement -->
         <div class="step-panel hidden" id="step-panel-3">
-          <h4 style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
-            <span style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
+          <h4
+            style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
+            <span
+              style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
             III. Kỷ luật, Kết quả học tập & Tương tác
           </h4>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 30px; text-align: left;">
+          <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 30px; text-align: left;">
             <div class="form-group">
-              <label>ĐIỂM TRUNG BÌNH HỌC PHẦN (0-100)</label>
+              <label style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <span>ĐIỂM TRUNG BÌNH HỌC PHẦN (0-100)</span>
+                <span class="badge badge-high"
+                  style="font-size: 0.62rem; padding: 2px 6px; font-weight: 800; background: #fff5f5; color: #c92a2a; border-radius: 4px; line-height: 1;">Trọng
+                  số cực cao</span>
+              </label>
               <input type="number" name="avg_score" class="form-control" value="70" min="0" max="100">
             </div>
             <div class="form-group">
@@ -302,12 +419,21 @@
           </div>
 
           <div class="form-group" style="text-align: left; margin-bottom: 20px;">
-            <label style="display:flex; justify-content:space-between;">
-              <span>MỨC ĐỘ TƯƠNG TÁC HỌC TẬP TRỰC TUYẾN (VLE CLICKS)</span>
-              <span id="click-val-badge" style="color:var(--primary); font-weight:800; font-size:0.9rem;">600 Clicks</span>
+            <label style="display:flex; justify-content:space-between; align-items: center;">
+              <span style="display: flex; align-items: center; gap: 8px;">
+                MỨC ĐỘ TƯƠNG TÁC HỌC TẬP TRỰC TUYẾN (VLE CLICKS)
+                <span class="badge"
+                  style="font-size: 0.62rem; padding: 2px 6px; font-weight: 800; background: var(--primary); color: white; border-radius: 4px; line-height: 1; text-transform: uppercase;">TRỌNG
+                  SỐ CAO NHẤT ★</span>
+              </span>
+              <span id="click-val-badge" style="color:var(--primary); font-weight:800; font-size:0.9rem;">600
+                Clicks</span>
             </label>
-            <input type="range" name="total_clicks" value="600" min="150" max="3500" step="10" oninput="document.getElementById('click-val-badge').textContent = this.value + ' Clicks';" style="margin-top:10px;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-dim); margin-top: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+            <input type="range" name="total_clicks" value="600" min="150" max="3500" step="10"
+              oninput="document.getElementById('click-val-badge').textContent = this.value + ' Clicks';"
+              style="margin-top:10px;">
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-dim); margin-top: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
               <span>Rất ít (150)</span>
               <span>Trung bình</span>
               <span>Tích cực</span>
@@ -317,14 +443,18 @@
         </div>
 
         <!-- Navigation Buttons inside Wizard -->
-        <div style="display: flex; justify-content: space-between; gap: 15px; margin-top: 40px; border-top: 1px solid #f0f0f0; padding-top: 25px;">
-          <button type="button" id="prevStepBtn" onclick="navigateStep(-1)" style="padding: 14px 28px; border-radius: 10px; border: 2px solid var(--border); background: white; font-weight: 700; cursor: pointer; color: var(--text-dim); transition: all 0.2s; opacity: 0.5; pointer-events: none;">
+        <div
+          style="display: flex; justify-content: space-between; gap: 15px; margin-top: 40px; border-top: 1px solid #f0f0f0; padding-top: 25px;">
+          <button type="button" id="prevStepBtn" onclick="navigateStep(-1)"
+            style="padding: 14px 28px; border-radius: 10px; border: 2px solid var(--border); background: white; font-weight: 700; cursor: pointer; color: var(--text-dim); transition: all 0.2s; opacity: 0.5; pointer-events: none;">
             ← QUAY LẠI
           </button>
-          <button type="button" id="nextStepBtn" onclick="navigateStep(1)" style="padding: 14px 28px; border-radius: 10px; border: none; background: var(--primary); color: white; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(200, 16, 46, 0.2);">
+          <button type="button" id="nextStepBtn" onclick="navigateStep(1)"
+            style="padding: 14px 28px; border-radius: 10px; border: none; background: var(--primary); color: white; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(200, 16, 46, 0.2);">
             TIẾP THEO →
           </button>
-          <button type="button" id="submitPredictionBtn" onclick="submitGuestPrediction(event)" style="display: none; padding: 14px 35px; border-radius: 10px; border: none; background: #27ae60; color: white; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);">
+          <button type="button" id="submitPredictionBtn" onclick="submitGuestPrediction(event)"
+            style="display: none; padding: 14px 35px; border-radius: 10px; border: none; background: #27ae60; color: white; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);">
             PHÂN TÍCH RỦI RO TOÀN DIỆN ✓
           </button>
         </div>
@@ -335,37 +465,62 @@
 </section>
 
 <!-- ── SCIENTIFIC ACHIEVEMENTS (KPI STATS) ────────────────── -->
-<section class="section" style="padding: 60px 0 40px; background: white; position: relative; z-index: 12; margin-top: -30px;">
+<section class="section"
+  style="padding: 60px 0 40px; background: white; position: relative; z-index: 12; margin-top: -30px;">
   <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
     <!-- Grid 4 Stats Cards -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px;">
-      
+
       <!-- Card 1 -->
-      <div class="stat-card" style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid var(--primary);">
-        <div style="font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif;">92.08%</div>
-        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">Độ chính xác (Accuracy)</h4>
-        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Hiệu suất dự báo rủi ro học tập chính xác vượt trội của thuật toán LightGBM tối ưu trên bộ dữ liệu kiểm thử OULAD.</p>
+      <div class="stat-card"
+        style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid var(--primary);">
+        <div
+          style="font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+          92.08%</div>
+        <h4
+          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">
+          Độ chính xác (Accuracy)</h4>
+        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Hiệu suất
+          dự báo rủi ro học tập chính xác vượt trội của thuật toán LightGBM tối ưu trên bộ dữ liệu kiểm thử OULAD.</p>
       </div>
 
       <!-- Card 2 -->
-      <div class="stat-card" style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid #ff4d6d;">
-        <div style="font-size: 2.8rem; font-weight: 900; color: #ff4d6d; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">84.03%</div>
-        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">Độ đo F1-Score</h4>
-        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Cân bằng tối ưu giữa việc tránh bỏ sót sinh viên có nguy cơ thực tế và hạn chế tối đa các cảnh báo sai lệch.</p>
+      <div class="stat-card"
+        style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid #ff4d6d;">
+        <div
+          style="font-size: 2.8rem; font-weight: 900; color: #ff4d6d; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+          84.03%</div>
+        <h4
+          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">
+          Độ đo F1-Score</h4>
+        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Cân bằng
+          tối ưu giữa việc tránh bỏ sót sinh viên có nguy cơ thực tế và hạn chế tối đa các cảnh báo sai lệch.</p>
       </div>
 
       <!-- Card 3 -->
-      <div class="stat-card" style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid var(--secondary);">
-        <div style="font-size: 2.8rem; font-weight: 900; color: var(--secondary); margin-bottom: 10px; font-family: 'Outfit', sans-serif;">98.68%</div>
-        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">Chỉ số AUC-ROC</h4>
-        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Khả năng phân tách xuất sắc giữa các mức rủi ro, hỗ trợ phân loại sinh viên chính xác tiệm cận tuyệt đối.</p>
+      <div class="stat-card"
+        style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid var(--secondary);">
+        <div
+          style="font-size: 2.8rem; font-weight: 900; color: var(--secondary); margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+          98.68%</div>
+        <h4
+          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">
+          Chỉ số AUC-ROC</h4>
+        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Khả năng
+          phân tách xuất sắc giữa các mức rủi ro, hỗ trợ phân loại sinh viên chính xác tiệm cận tuyệt đối.</p>
       </div>
 
       <!-- Card 4 -->
-      <div class="stat-card" style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid #27ae60;">
-        <div style="font-size: 2.8rem; font-weight: 900; color: #27ae60; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">Day 60</div>
-        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">Mốc can thiệp sớm</h4>
-        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Thời điểm vàng (Ngày thứ 60 của học kỳ) được mô hình chọn để đưa ra các dự báo giúp hỗ trợ học tập kịp thời.</p>
+      <div class="stat-card"
+        style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid #27ae60;">
+        <div
+          style="font-size: 2.8rem; font-weight: 900; color: #27ae60; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+          Day 60</div>
+        <h4
+          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">
+          Mốc can thiệp sớm</h4>
+        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Thời điểm
+          ngày thứ 60 của học kỳ được mô hình chọn để đưa ra các dự báo giúp hỗ trợ học tập kịp thời.</p>
       </div>
 
     </div>
@@ -373,39 +528,59 @@
 </section>
 
 <!-- ── HOW IT WORKS (QUY TRÌNH HỆ THỐNG) ─────────────────── -->
-<section class="section" style="padding: 80px 0; background: #fbfbfb; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; position: relative; z-index: 10;">
+<section class="section"
+  style="padding: 80px 0; background: #fbfbfb; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; position: relative; z-index: 10;">
   <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
     <div class="section-header" style="text-align: center; margin-bottom: 60px;">
-      <h2 class="section-title" style="font-size: 2.2rem; font-weight: 900; color: var(--secondary); margin-bottom: 15px;">Quy Trình Hoạt Động Của <span class="text-primary" style="color: var(--primary);">RiskSight</span></h2>
-      <p class="section-sub" style="font-size: 1.05rem; color: var(--text-dim); max-width: 700px; margin: 0 auto; line-height: 1.6;">Cách thức hệ thống AI phân tích hành vi và bảo vệ kết quả học tập của sinh viên</p>
+      <h2 class="section-title"
+        style="font-size: 2.2rem; font-weight: 900; color: var(--secondary); margin-bottom: 15px;">Quy Trình Hoạt Động
+        Của <span class="text-primary" style="color: var(--primary);">RiskSight</span></h2>
+      <p class="section-sub"
+        style="font-size: 1.05rem; color: var(--text-dim); max-width: 700px; margin: 0 auto; line-height: 1.6;">Cách
+        thức hệ thống AI phân tích hành vi và bảo vệ kết quả học tập của sinh viên</p>
     </div>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
-      
+
       <!-- Step 1 -->
       <div style="display: flex; gap: 20px; text-align: left;">
-        <div style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 18px; background: rgba(200, 16, 46, 0.06); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;">01</div>
+        <div
+          style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 18px; background: rgba(200, 16, 46, 0.06); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;">
+          01</div>
         <div>
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px;">Thu Thập Tương Tác Số</h3>
-          <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Tự động ghi nhận và chuẩn hóa các tương tác trực tuyến (VLE Clicks), lịch sử học tập và tình hình chuyên cần nộp bài kiểm tra đánh giá hàng tuần của sinh viên.</p>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px;">Thu Thập Tương
+            Tác Số</h3>
+          <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Tự động
+            ghi nhận và chuẩn hóa các tương tác trực tuyến (VLE Clicks), lịch sử học tập và tình hình chuyên cần nộp bài
+            kiểm tra đánh giá hàng tuần của sinh viên.</p>
         </div>
       </div>
 
       <!-- Step 2 -->
       <div style="display: flex; gap: 20px; text-align: left;">
-        <div style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 18px; background: rgba(200, 16, 46, 0.06); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;">02</div>
+        <div
+          style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 18px; background: rgba(200, 16, 46, 0.06); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;">
+          02</div>
         <div>
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px;">Dự Báo AI Phân Tầng Chuyên Sâu</h3>
-          <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Mô hình LightGBM tối ưu tiến hành phân tích các hành vi học tập đa chiều, tính toán rủi ro và phân nhóm sinh viên vào 4 tầng rủi ro tương ứng.</p>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px;">Dự Báo AI Phân
+            Tầng Chuyên Sâu</h3>
+          <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Mô hình
+            LightGBM tối ưu tiến hành phân tích các hành vi học tập đa chiều, tính toán rủi ro và phân nhóm sinh viên
+            vào 4 tầng rủi ro tương ứng.</p>
         </div>
       </div>
 
       <!-- Step 3 -->
       <div style="display: flex; gap: 20px; text-align: left;">
-        <div style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 18px; background: rgba(200, 16, 46, 0.06); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;">03</div>
+        <div
+          style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 18px; background: rgba(200, 16, 46, 0.06); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;">
+          03</div>
         <div>
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px;">Khuyến Nghị & Can Thiệp Kịp Thời</h3>
-          <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Hệ thống chủ động đưa ra các cảnh báo chi tiết gửi tới Cố vấn học tập, đồng thời gợi ý lộ trình và giải pháp học tập phù hợp để cải thiện kết quả.</p>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px;">Khuyến Nghị &
+            Can Thiệp Kịp Thời</h3>
+          <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Hệ thống
+            chủ động đưa ra các cảnh báo chi tiết gửi tới Cố vấn học tập, đồng thời gợi ý lộ trình và giải pháp học tập
+            phù hợp để cải thiện kết quả.</p>
         </div>
       </div>
 
@@ -425,17 +600,41 @@
     <div class="panel-content"
       style="padding: 30px; background: white; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; box-shadow: var(--shadow-lg);">
 
-      <div style="display: flex; gap: 30px; margin-bottom: 40px; align-items: center; flex-wrap: wrap;">
-        <div id="resRiskBadge" class="badge"
-          style="font-size: 1.5rem; padding: 15px 30px; border-radius: 50px; font-weight: 800; text-transform: uppercase;">
-          UNKNOWN RISK</div>
-        <div>
-          <p style="margin: 0; font-weight: 700; font-size: 1.1rem; color: var(--secondary);">Độ tin cậy mô hình:
-            <span id="resConfidence">0</span>%
+      <!-- Premium Risk Summary Card for search/guest -->
+      <div id="resRiskCard"
+        style="padding: 35px; border-radius: 20px; margin-bottom: 45px; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; border: 1px solid var(--border); box-shadow: 0 15px 35px rgba(0,0,0,0.02); transition: all 0.3s ease; text-align: left;">
+
+        <!-- Outer circular glowing ring for badge -->
+        <div style="display: flex; align-items: center; justify-content: center; position: relative;">
+          <!-- Subtle backdrop glow -->
+          <div id="resRiskBadgeGlow"
+            style="position: absolute; width: 140px; height: 140px; opacity: 0.15; filter: blur(20px); border-radius: 50%;">
+          </div>
+          <div id="resRiskBadge"
+            style="color: white !important; font-size: 2.1rem; padding: 25px 45px; border-radius: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; z-index: 2; min-width: 170px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.25);">
+            UNKNOWN
+          </div>
+        </div>
+
+        <div style="flex: 1; min-width: 300px; text-align: left;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <h4 style="margin: 0; font-size: 1.6rem; color: var(--secondary); font-weight: 800;">Mức độ rủi ro:</h4>
+            <span id="resRiskTitle"
+              style="font-weight: 900; font-size: 1.7rem; text-transform: uppercase; letter-spacing: 0.5px;">UNKNOWN</span>
+          </div>
+
+          <p
+            style="margin: 0 0 18px; font-weight: 700; color: var(--text-dim); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+            <span id="resRiskBullet">●</span> Độ tin cậy dự báo của AI:
+            <strong style="color: var(--secondary); font-size: 1.05rem; font-family: 'Outfit', sans-serif;"><span
+                id="resConfidence">0</span>%</strong>
           </p>
-          <p id="resRecommendation"
-            style="margin: 5px 0 0; color: var(--text-dim); max-width: 600px; font-weight: 500;">Dữ liệu chưa sẵn sàng.
-          </p>
+
+          <!-- Premium Quote Recommendation box -->
+          <div id="resRecommendationBox"
+            style="padding: 18px 24px; border-radius: 0 12px 12px 0; font-style: italic; color: var(--secondary); font-size: 0.92rem; font-weight: 600; line-height: 1.65; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015); border-top: 1px solid #f0f0f0; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; backdrop-filter: blur(5px); border-left: 5px solid var(--primary);">
+            <span id="resRecommendation">Dữ liệu chưa sẵn sàng.</span>
+          </div>
         </div>
       </div>
 
@@ -455,6 +654,23 @@
         </h4>
         <div id="resAnalysisContent" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
           <!-- Explanations injected by JS -->
+        </div>
+      </div>
+
+      <!-- ⚠️ KHUYẾN CÁO MIỄN TRỪ TRÁCH NHIỆM HỌC THUẬT (DISCLAIMER) -->
+      <div
+        style="margin-top: 40px; padding: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; display: flex; gap: 15px; align-items: flex-start; text-align: left; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);">
+        <span style="font-size: 1.4rem; line-height: 1; color: #e74c3c; margin-top: 2px;">⚠️</span>
+        <div>
+          <strong
+            style="color: var(--secondary); font-size: 0.85rem; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Khuyến
+            cáo:</strong>
+          <p style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">
+            Kết quả dự báo trên đây là đánh giá khách quan được tính toán tự động bằng thuật toán học máy
+            <strong>LightGBM</strong> dựa trên dữ liệu tương tác học tập số. Đây chỉ là thông tin hỗ trợ mang tính chất
+            tham khảo dành cho giáo viên và cố vấn học tập, <strong>không đại diện hay phản ánh toàn
+              diện</strong> năng lực thực tế, trí tuệ cá nhân hay tiềm năng phát triển của sinh viên.
+          </p>
         </div>
       </div>
     </div>
@@ -524,9 +740,9 @@
 
   function goToStep(step) {
     if (step < 1 || step > totalSteps) return;
-    
+
     currentStep = step;
-    
+
     // Update panels visibility
     for (let i = 1; i <= totalSteps; i++) {
       const panel = document.getElementById(`step-panel-${i}`);
@@ -545,7 +761,7 @@
       const s = parseInt(ind.getAttribute('data-step'));
       const circle = ind.querySelector('.step-num-circle');
       const label = ind.querySelector('span');
-      
+
       if (s === step) {
         ind.classList.add('active');
         if (circle) {

@@ -40,7 +40,7 @@
 
 /* ── RESET ───────────────────────────────────────────────── */
 html {
-    font-size: 87.5%; /* 1rem = 14px */
+    font-size: 78%; /* 1rem = 12.5px */
 }
 
 *,
@@ -55,7 +55,7 @@ body {
     font-family: 'Inter', -apple-system, system-ui, sans-serif;
     background: var(--bg);
     color: var(--text-main);
-    font-size: 13px; /* Compact high-density text */
+    font-size: 11px; /* Compact high-density text */
     line-height: 1.5;
     overflow-x: hidden;
 }

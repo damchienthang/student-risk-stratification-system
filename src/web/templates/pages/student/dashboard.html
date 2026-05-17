@@ -122,56 +122,330 @@
             TRANG CHỦ</a>
         </div>
         {% else %}
-        <!-- Risk Summary Card -->
-        <div
-          style="background: var(--bg-alt); padding: 30px; border-radius: 16px; margin-bottom: 40px; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; border: 1px solid var(--border);">
-          <div class="badge badge-{{ prediction.risk_label.lower().replace(' ', '') }}"
-            style="font-size: 2rem; padding: 25px 45px; border-radius: 100px; font-weight: 900; text-transform: uppercase; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
-            {{ prediction.risk_label }}
+        <!-- Dynamic Risk Styling configuration -->
+        {% set risk = prediction.risk_label.upper().strip() %}
+        {% if 'LOW' in risk %}
+          {% set bg_grad = 'linear-gradient(135deg, rgba(46, 204, 113, 0.05) 0%, rgba(255, 255, 255, 1) 100%)' %}
+          {% set border_color = 'rgba(46, 204, 113, 0.2)' %}
+          {% set badge_grad = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)' %}
+          {% set risk_title_color = '#27ae60' %}
+          {% set shadow_glow = 'rgba(46, 204, 113, 0.12)' %}
+          {% set stripe_color = '#27ae60' %}
+        {% elif 'MEDIUM' in risk %}
+          {% set bg_grad = 'linear-gradient(135deg, rgba(230, 126, 34, 0.05) 0%, rgba(255, 255, 255, 1) 100%)' %}
+          {% set border_color = 'rgba(230, 126, 34, 0.2)' %}
+          {% set badge_grad = 'linear-gradient(135deg, #d35400 0%, #e67e22 100%)' %}
+          {% set risk_title_color = '#d35400' %}
+          {% set shadow_glow = 'rgba(230, 126, 34, 0.12)' %}
+          {% set stripe_color = '#e67e22' %}
+        {% elif 'HIGH' in risk %}
+          {% set bg_grad = 'linear-gradient(135deg, rgba(231, 76, 60, 0.05) 0%, rgba(255, 255, 255, 1) 100%)' %}
+          {% set border_color = 'rgba(231, 76, 60, 0.2)' %}
+          {% set badge_grad = 'linear-gradient(135deg, #c0392b 0%, #e74c3c 100%)' %}
+          {% set risk_title_color = '#c0392b' %}
+          {% set shadow_glow = 'rgba(231, 76, 60, 0.12)' %}
+          {% set stripe_color = '#e74c3c' %}
+        {% else %}
+          {% set bg_grad = 'linear-gradient(135deg, rgba(147, 41, 30, 0.05) 0%, rgba(255, 255, 255, 1) 100%)' %}
+          {% set border_color = 'rgba(147, 41, 30, 0.25)' %}
+          {% set badge_grad = 'linear-gradient(135deg, #78281f 0%, #93291e 100%)' %}
+          {% set risk_title_color = '#78281f' %}
+          {% set shadow_glow = 'rgba(147, 41, 30, 0.15)' %}
+          {% set stripe_color = '#93291e' %}
+        {% endif %}
+
+        <!-- Premium Risk Summary Card -->
+        <div style="background: {{ bg_grad }}; padding: 35px; border-radius: 20px; margin-bottom: 45px; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; border: 1px solid {{ border_color }}; box-shadow: 0 15px 35px rgba(0,0,0,0.02), 0 10px 30px {{ shadow_glow }};">
+          
+          <!-- Outer circular glowing ring for badge -->
+          <div style="display: flex; align-items: center; justify-content: center; position: relative;">
+            <!-- Subtle backdrop glow -->
+            <div style="position: absolute; width: 140px; height: 140px; background: {{ badge_grad }}; opacity: 0.15; filter: blur(20px); border-radius: 50%;"></div>
+            <div style="background: {{ badge_grad }}; color: white !important; font-size: 2.1rem; padding: 25px 45px; border-radius: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 8px 25px {{ shadow_glow }}; z-index: 2; min-width: 170px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.25);">
+              {{ prediction.risk_label }}
+            </div>
           </div>
-          <div style="flex: 1; min-width: 300px;">
-            <h4 style="margin: 0 0 10px; font-size: 1.4rem; color: var(--secondary);">Mức độ rủi ro: <span
-                class="text-primary">{{ prediction.risk_label }}</span></h4>
-            <p style="margin: 0; font-weight: 600; color: var(--text-dim);">Độ tin cậy dự báo: {{ prediction.confidence
-              }}%</p>
-            <div
-              style="margin-top: 15px; padding: 15px; background: white; border-left: 5px solid var(--primary); border-radius: 4px; font-style: italic; color: var(--text);">
+
+          <div style="flex: 1; min-width: 300px; text-align: left;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+              <h4 style="margin: 0; font-size: 1.6rem; color: var(--secondary); font-weight: 800;">Mức độ rủi ro:</h4>
+              <span style="color: {{ risk_title_color }}; font-weight: 900; font-size: 1.7rem; text-transform: uppercase; letter-spacing: 0.5px;">{{ prediction.risk_label }}</span>
+            </div>
+            
+            <p style="margin: 0 0 18px; font-weight: 700; color: var(--text-dim); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+              <span style="color: {{ risk_title_color }};">●</span> Độ tin cậy dự báo của AI: 
+              <strong style="color: var(--secondary); font-size: 1.05rem; font-family: 'Outfit', sans-serif;">{{ "%.2f"|format(prediction.confidence) }}%</strong>
+            </p>
+            
+            <!-- Premium Quote Recommendation box -->
+            <div style="padding: 18px 24px; background: rgba(255,255,255,0.85); border-left: 5px solid {{ stripe_color }}; border-radius: 0 12px 12px 0; font-style: italic; color: var(--secondary); font-size: 0.92rem; font-weight: 600; line-height: 1.65; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015); border-top: 1px solid #f0f0f0; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; backdrop-filter: blur(5px);">
               "{{ prediction.recommendation }}"
             </div>
           </div>
         </div>
 
-        <h4
-          style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary); letter-spacing: 1px; font-weight: 800;">
-          Chỉ số học tập hiện tại</h4>
+        <!-- Dynamic Mappings -->
+        {% set age_labels = ['0-35', '35-55', '55+'] %}
+        {% set edu_labels = ['Không bằng cấp', 'Dưới A Level', 'A Level/Tương đương', 'HE Qualification', 'Sau đại học'] %}
+        
+        {% if student.total_clicks <= 200 %}
+          {% set click_label = 'Rất ít' %}
+        {% elif student.total_clicks >= 3500 %}
+          {% set click_label = 'Rất tích cực' %}
+        {% elif student.total_clicks >= 1500 %}
+          {% set click_label = 'Tích cực' %}
+        {% else %}
+          {% set click_label = 'Trung bình' %}
+        {% endif %}
 
-        <div class="data-table-grid"
-          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
-          <div class="data-item"
-            style="padding: 20px; background: white; border: 1px solid var(--border); border-radius: 12px;">
-            <span class="data-label">Điểm trung bình</span>
-            <div style="display: flex; align-items: baseline; gap: 10px;">
-              <span class="data-value" style="font-size: 1.8rem; font-weight: 800; color: var(--secondary);">{{
-                "%.2f"|format(student.avg_score) }}</span>
-              <span style="color: var(--text-dim); font-weight: 600;">/ 100</span>
+        <!-- SECTION 1: Core Performance Indicators -->
+        <h4 style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary); letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+          <span style="width: 3px; height: 14px; background: var(--primary); display: inline-block; border-radius: 1px;"></span>
+          Chỉ số kết quả & Tương tác cốt lõi
+        </h4>
+        <div class="data-table-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px;">
+          
+          <!-- Avg Score -->
+          <div class="data-item {% if student.avg_score < 40 %}at-risk{% endif %}" style="padding: 18px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left; position: relative;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Điểm trung bình học phần</span>
+            <div style="display: flex; align-items: baseline; gap: 6px;">
+              <span style="font-size: 1.6rem; font-weight: 800; color: var(--secondary);">{{ "%.2f"|format(student.avg_score) }}</span>
+              <span style="color: var(--text-dim); font-weight: 600; font-size: 0.85rem;">/ 100</span>
+            </div>
+            {% if student.avg_score < 40 %}
+            <span style="position: absolute; top: 18px; right: 18px; background: var(--primary); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.58rem; font-weight: 800; text-transform: uppercase;">Cảnh báo</span>
+            {% endif %}
+          </div>
+
+          <!-- Min Score -->
+          <div class="data-item {% if student.min_score < 35 %}at-risk{% endif %}" style="padding: 18px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left; position: relative;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Điểm số thấp nhất</span>
+            <div style="display: flex; align-items: baseline; gap: 6px;">
+              <span style="font-size: 1.6rem; font-weight: 800; color: var(--secondary);">{{ "%.2f"|format(student.min_score) }}</span>
+              <span style="color: var(--text-dim); font-weight: 600; font-size: 0.85rem;">/ 100</span>
+            </div>
+            {% if student.min_score < 35 %}
+            <span style="position: absolute; top: 18px; right: 18px; background: var(--primary); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.58rem; font-weight: 800; text-transform: uppercase;">Cảnh báo</span>
+            {% endif %}
+          </div>
+
+          <!-- Clicks -->
+          <div class="data-item {% if student.total_clicks < 200 %}at-risk{% endif %}" style="padding: 18px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left; position: relative;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Lượt tương tác số (VLE)</span>
+            <div style="display: flex; align-items: baseline; gap: 6px;">
+              <span style="font-size: 1.6rem; font-weight: 800; color: var(--secondary);">{{ student.total_clicks }}</span>
+              <span style="color: var(--text-dim); font-weight: 600; font-size: 0.85rem;">clicks ({{ click_label }})</span>
+            </div>
+            {% if student.total_clicks < 200 %}
+            <span style="position: absolute; top: 18px; right: 18px; background: var(--primary); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.58rem; font-weight: 800; text-transform: uppercase;">Cảnh báo</span>
+            {% endif %}
+          </div>
+
+          <!-- Homeworks Submitted -->
+          <div class="data-item" style="padding: 18px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Bài kiểm tra đã nộp</span>
+            <div style="display: flex; align-items: baseline; gap: 6px;">
+              <span style="font-size: 1.6rem; font-weight: 800; color: var(--secondary);">{{ student.n_submitted }}</span>
+              <span style="color: var(--text-dim); font-weight: 600; font-size: 0.85rem;">bài nộp</span>
             </div>
           </div>
-          <div class="data-item"
-            style="padding: 20px; background: white; border: 1px solid var(--border); border-radius: 12px;">
-            <span class="data-label">Tương tác hệ thống (VLE)</span>
-            <div style="display: flex; align-items: baseline; gap: 10px;">
-              <span class="data-value" style="font-size: 1.8rem; font-weight: 800; color: var(--secondary);">{{
-                student.total_clicks|int }}</span>
-              <span style="color: var(--text-dim); font-weight: 600;">clicks</span>
+
+          <!-- Late Homeworks -->
+          <div class="data-item {% if student.n_late > 0 %}at-risk{% endif %}" style="padding: 18px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left; position: relative;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Số bài nộp muộn</span>
+            <div style="display: flex; align-items: baseline; gap: 6px;">
+              <span style="font-size: 1.6rem; font-weight: 800; color: var(--secondary);">{{ student.n_late }}</span>
+              <span style="color: var(--text-dim); font-weight: 600; font-size: 0.85rem;">bài muộn</span>
+            </div>
+            {% if student.n_late > 0 %}
+            <span style="position: absolute; top: 18px; right: 18px; background: var(--primary); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.58rem; font-weight: 800; text-transform: uppercase;">Muộn</span>
+            {% endif %}
+          </div>
+
+          <!-- Avg Submit Delay -->
+          <div class="data-item {% if student.avg_submit_delay > 0 %}at-risk{% endif %}" style="padding: 18px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left; position: relative;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Độ trễ nộp bài trung bình</span>
+            <div style="display: flex; align-items: baseline; gap: 6px;">
+              <span style="font-size: 1.6rem; font-weight: 800; color: var(--secondary);">{{ "%.1f"|format(student.avg_submit_delay) }}</span>
+              <span style="color: var(--text-dim); font-weight: 600; font-size: 0.85rem;">ngày</span>
+            </div>
+            {% if student.avg_submit_delay > 0 %}
+            <span style="position: absolute; top: 18px; right: 18px; background: var(--primary); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.58rem; font-weight: 800; text-transform: uppercase;">Chậm</span>
+            {% endif %}
+          </div>
+
+        </div>
+
+        <!-- SECTION 2: Demographic & Course Context -->
+        <h4 style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary); letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+          <span style="width: 3px; height: 14px; background: var(--primary); display: inline-block; border-radius: 1px;"></span>
+          Thông tin khóa học & Nhân khẩu học học viên
+        </h4>
+        <div class="data-table-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px;">
+          
+          <!-- Gender -->
+          <div class="data-item" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Giới tính</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ 'Nam' if student.gender_num == 0 else 'Nữ' }}</span>
+          </div>
+
+          <!-- Age -->
+          <div class="data-item" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Độ tuổi học viên</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ age_labels[student.age_num] }} tuổi</span>
+          </div>
+
+          <!-- Education -->
+          <div class="data-item" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Trình độ học vấn</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ edu_labels[student.education_num] }}</span>
+          </div>
+
+          <!-- IMD Band -->
+          <div class="data-item {% if student.imd_band_num < 2 %}at-risk{% endif %}" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left; position: relative;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Kinh tế vùng (IMD Band)</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ student.imd_band_num }}0%</span>
+            {% if student.imd_band_num < 2 %}
+            <span style="position: absolute; top: 15px; right: 15px; background: #fff5f5; color: #c92a2a; padding: 2px 6px; border-radius: 4px; font-size: 0.58rem; font-weight: 800;">Khó khăn</span>
+            {% endif %}
+          </div>
+
+          <!-- Disability -->
+          <div class="data-item" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Cần hỗ trợ đặc biệt</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ 'Có' if student.disability_num == 1 else 'Không' }}</span>
+          </div>
+
+          <!-- Attempts -->
+          <div class="data-item {% if student.num_of_prev_attempts > 0 %}at-risk{% endif %}" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left; position: relative;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Số lần học lại môn này</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ student.num_of_prev_attempts }} lần</span>
+            {% if student.num_of_prev_attempts > 0 %}
+            <span style="position: absolute; top: 15px; right: 15px; background: var(--primary); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.58rem; font-weight: 800;">Thi lại</span>
+            {% endif %}
+          </div>
+
+          <!-- Course Info -->
+          <div class="data-item" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Môn học & Kỳ học</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ student.code_module }} — {{ student.code_presentation }}</span>
+          </div>
+
+          <!-- Credits -->
+          <div class="data-item" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Số tín chỉ học phần</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ student.studied_credits }} tín chỉ</span>
+          </div>
+
+          <!-- Reg days -->
+          <div class="data-item" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left;">
+            <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Đăng ký trước khai giảng</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ student.reg_days_before|abs }} ngày</span>
+          </div>
+
+        </div>
+
+        <!-- SECTION 3: Deep Behavioral Explanations -->
+        <h4 style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary); letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+          <span style="width: 3px; height: 14px; background: var(--primary); display: inline-block; border-radius: 1px;"></span>
+          Phân tích các yếu tố ảnh hưởng chi tiết
+        </h4>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 40px;">
+          
+          <!-- Score Analysis card -->
+          <div style="padding: 15px 20px; border-radius: 8px; text-align: left; display: flex; gap: 12px; align-items: flex-start;
+            {% if student.avg_score < 40 %}
+              background: #fff5f5; border: 1px solid #ffc9c9;
+            {% elif student.avg_score < 55 %}
+              background: #fff9db; border: 1px solid #ffe3e3;
+            {% else %}
+              background: #ebfbee; border: 1px solid #d3f9d8;
+            {% endif %}">
+            <span style="font-size: 1.2rem; line-height: 1;">
+              {% if student.avg_score < 40 %}❌{% elif student.avg_score < 55 %}⚠️{% else %}✓{% endif %}
+            </span>
+            <div>
+              <strong style="font-size: 0.85rem; color: var(--secondary); display: block; margin-bottom: 4px;">
+                {% if student.avg_score < 40 %}Điểm số báo động đỏ (Critical){% elif student.avg_score < 55 %}Điểm số ở vùng nguy hiểm{% else %}Năng lực học tập xuất sắc & ổn định{% endif %}
+              </strong>
+              <span style="font-size: 0.82rem; color: var(--text-dim); font-weight: 500; line-height: 1.5;">
+                {% if student.avg_score < 40 %}
+                  Điểm trung bình tích lũy hiện tại là {{ "%.1f"|format(student.avg_score) }} đang nằm dưới ngưỡng qua môn (40). Đây là lý do cốt lõi thuật toán xếp bạn vào nhóm rủi ro cao. Bạn cần liên hệ khẩn cấp với Cố vấn học tập!
+                {% elif student.avg_score < 55 %}
+                  Điểm trung bình {{ "%.1f"|format(student.avg_score) }} của bạn đang nằm trong vùng cảnh báo. Chỉ cần một bài kiểm tra kết quả kém tiếp theo sẽ kéo rủi ro học tập của bạn lên mức rất cao. Hãy nỗ lực ôn tập nhiều hơn!
+                {% else %}
+                  Với mức điểm trung bình tích lũy lý tưởng {{ "%.1f"|format(student.avg_score) }}, bạn đang kiểm soát cực kỳ xuất sắc lộ trình kiến thức và kết quả môn học. Hãy tiếp tục duy trì phong độ!
+                {% endif %}
+              </span>
             </div>
           </div>
-          <div class="data-item"
-            style="padding: 20px; background: white; border: 1px solid var(--border); border-radius: 12px;">
-            <span class="data-label">Thông tin khóa học</span>
-            <div style="font-weight: 700; color: var(--secondary); font-size: 1.1rem; margin-top: 5px;">{{
-              student.code_module }} — {{ student.code_presentation }}</div>
-            <div style="margin-top: 5px; color: var(--text-dim); font-size: 0.9rem;">Số tín chỉ: {{
-              student.studied_credits }}</div>
+
+          <!-- Interaction Analysis card -->
+          {% if student.total_clicks < 500 %}
+          <div style="padding: 15px 20px; border-radius: 8px; text-align: left; display: flex; gap: 12px; align-items: flex-start;
+            {% if student.total_clicks < 200 %}
+              background: #fff5f5; border: 1px solid #ffc9c9;
+            {% else %}
+              background: #fff9db; border: 1px solid #ffe3e3;
+            {% endif %}">
+            <span style="font-size: 1.2rem; line-height: 1;">⚠️</span>
+            <div>
+              <strong style="font-size: 0.85rem; color: var(--secondary); display: block; margin-bottom: 4px;">
+                {% if student.total_clicks < 200 %}Thiếu hụt tương tác học liệu nghiêm trọng{% else %}Tương tác học trực tuyến ở mức tối thiểu{% endif %}
+              </strong>
+              <span style="font-size: 0.82rem; color: var(--text-dim); font-weight: 500; line-height: 1.5;">
+                {% if student.total_clicks < 200 %}
+                  Mức tương tác hệ thống cực kỳ thấp ({{ student.total_clicks }} clicks). Thuật toán AI nhận diện đây là dấu hiệu của việc bỏ bê học tập số, trực tiếp đẩy rủi ro trượt môn lên cao. Bạn cần tăng cường đọc học liệu số ngay lập tức!
+                {% else %}
+                  Tần suất clicks trực tuyến là {{ student.total_clicks }} chỉ vừa đủ để xem thông báo cơ bản. Hãy chủ động tham gia nhiều hơn vào các hoạt động thực hành, làm lab và xem tài nguyên trên hệ thống E-learning để cải thiện phản xạ môn học.
+                {% endif %}
+              </span>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Attempts History Analysis card -->
+          {% if student.num_of_prev_attempts > 0 %}
+          <div style="padding: 15px 20px; background: #fff9db; border: 1px solid #ffe3e3; border-radius: 8px; text-align: left; display: flex; gap: 12px; align-items: flex-start;">
+            <span style="font-size: 1.2rem; line-height: 1;">⚠️</span>
+            <div>
+              <strong style="font-size: 0.85rem; color: var(--secondary); display: block; margin-bottom: 4px;">Yếu tố rủi ro từ lịch sử môn học</strong>
+              <span style="font-size: 0.82rem; color: var(--text-dim); font-weight: 500; line-height: 1.5;">
+                Lịch sử ghi nhận bạn đã từng thi lại môn học này {{ student.num_of_prev_attempts }} lần. Áp lực từ lịch sử kết hợp với khối lượng kiến thức hổng trước đó làm tăng cao tỷ lệ rủi ro trượt môn ở học kỳ hiện tại theo mô hình dự báo của LightGBM.
+              </span>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Late Homework Analysis card -->
+          {% if student.n_late > 0 or student.avg_submit_delay > 0 %}
+          <div style="padding: 15px 20px; background: #fff5f5; border: 1px solid #ffc9c9; border-radius: 8px; text-align: left; display: flex; gap: 12px; align-items: flex-start;">
+            <span style="font-size: 1.2rem; line-height: 1;">❌</span>
+            <div>
+              <strong style="font-size: 0.85rem; color: var(--secondary); display: block; margin-bottom: 4px;">Kỷ luật tự học & Nộp bài kiểm tra kém</strong>
+              <span style="font-size: 0.82rem; color: var(--text-dim); font-weight: 500; line-height: 1.5;">
+                Bạn đã nộp muộn {{ student.n_late }} bài kiểm tra với độ trễ nộp bài trung bình là {{ "%.1f"|format(student.avg_submit_delay) }} ngày. Thói quen nộp trễ kéo dài là dấu hiệu của việc thiếu kỹ năng quản lý thời gian, trực tiếp làm hổng kiến thức định kỳ và đẩy sinh viên vào ranh giới rủi ro cao.
+              </span>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+
+        <!-- ⚠️ KHUYẾN CÁO MIỄN TRỪ TRÁCH NHIỆM HỌC THUẬT (DISCLAIMER) -->
+        <div
+          style="margin-top: 40px; padding: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; display: flex; gap: 15px; align-items: flex-start; text-align: left; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);">
+          <span style="font-size: 1.4rem; line-height: 1; color: #e74c3c; margin-top: 2px;">⚠️</span>
+          <div>
+            <strong
+              style="color: var(--secondary); font-size: 0.85rem; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Khuyến
+              cáo:</strong>
+            <p style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">
+              Kết quả dự báo trên đây là đánh giá khách quan được tính toán tự động bằng thuật toán học máy
+              <strong>LightGBM</strong> dựa trên dữ liệu tương tác học tập số. Đây chỉ là thông tin hỗ trợ mang tính
+              chất tham khảo học thuật dành cho giáo viên và cố vấn học tập, <strong>không đại diện hay phản ánh toàn
+                diện</strong> năng lực thực tế, trí tuệ cá nhân hay tiềm năng phát triển của sinh viên.
+            </p>
           </div>
         </div>
         {% endif %}
