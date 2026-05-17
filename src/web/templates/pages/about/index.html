@@ -4,232 +4,586 @@
 
 {% block extra_css %}
 <style>
-  /* Bổ sung một số style đặc thù cho trang About */
-  .arch-box {
-    margin-top: 40px;
-    padding: 40px;
+  /* ── GRAPHIC HERO & PATTERNS ────────────────────────────── */
+  .about-hero {
+    padding: 100px 0 120px;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary) 0%, #ff4d6d 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Plus-grid academic pattern overlay like Grade PTIT */
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    background-image: radial-gradient(white 1.5px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+
+  .about-hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    letter-spacing: -1.5px;
+    color: white;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .about-hero-desc {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.95);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.7;
+    font-weight: 500;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* ── STATS GRID ─────────────────────────────────────────── */
+  .about-stats-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: -60px;
+    position: relative;
+    z-index: 20;
+  }
+
+  @media (max-width: 768px) {
+    .about-stats {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .about-stat-card {
     background: white;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 30px 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
 
-  .arch-flow {
+  .about-stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(200, 16, 46, 0.08);
+    border-color: rgba(200, 16, 46, 0.15);
+  }
+
+  .about-stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary); /* Solid PTIT Red */
+    color: white; /* Clean White Vector Icon */
     display: flex;
     align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
     justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 12px rgba(200, 16, 46, 0.2);
   }
 
-  .flow-node {
-    padding: 15px 25px;
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-weight: 600;
+  .about-stat-num {
+    font-size: 2.5rem;
+    font-weight: 900;
     color: var(--secondary);
+    line-height: 1.1;
+    margin-bottom: 6px;
+    font-family: 'Outfit', sans-serif;
   }
 
-  .flow-node.highlight {
+  .about-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── INTRO SECTION ──────────────────────────────────────── */
+  .intro-box {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.01);
+    max-width: 900px;
+    margin: 60px auto 0;
+    text-align: center;
+  }
+
+  .about-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .about-pill-red {
     background: var(--primary);
     color: white;
-    border-color: var(--primary);
+    box-shadow: 0 4px 15px rgba(200, 16, 46, 0.2);
   }
 
-  .flow-arrow {
+  .about-pill-red:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  .about-pill-outline {
+    border: 2px solid var(--border);
     color: var(--text-dim);
-    font-weight: 800;
-  }
-
-  .tech-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 30px;
-  }
-
-  .tech-tag {
-    padding: 8px 18px;
     background: white;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-dim);
-    transition: all 0.2s;
   }
 
-  .tech-tag:hover {
+  .about-pill-outline:hover {
     border-color: var(--primary);
     color: var(--primary);
     transform: translateY(-2px);
   }
 
-  .dataset-info-grid {
+  /* ── TWO-COLUMN FEATURES ────────────────────────────────── */
+  .features-container {
+    max-width: 1100px;
+    margin: 100px auto 0;
+    padding: 0 20px;
+  }
+
+  .feature-item {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
     align-items: center;
+    margin-bottom: 80px;
     text-align: left;
   }
 
+  .feature-item:nth-child(even) {
+    grid-template-columns: 1fr 1.2fr;
+  }
+
+  .feature-item:nth-child(even) .feature-text-block {
+    order: 2;
+  }
+
   @media (max-width: 768px) {
-    .dataset-info-grid {
+
+    .feature-item,
+    .feature-item:nth-child(even) {
       grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .feature-item:nth-child(even) .feature-text-block {
+      order: unset;
     }
   }
 
-  .team-avatar {
-    width: 80px;
-    height: 80px;
-    background: rgba(200, 16, 46, 0.05);
-    color: var(--primary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
+  .feature-tag-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(200, 16, 46, 0.06);
+    border-radius: 100px;
+    font-size: 0.75rem;
     font-weight: 800;
-    margin: 0 auto 20px;
-    border: 2px solid var(--primary);
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+
+  .feature-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 18px;
+    line-height: 1.3;
+  }
+
+  .feature-desc {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 25px;
+  }
+
+  .feature-img-card {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  }
+
+  .feature-img-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .feature-img-caption {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── TIMELINE UPDATES ───────────────────────────────────── */
+  .timeline-box {
+    max-width: 800px;
+    margin: 50px auto 0;
+    padding: 0 20px;
+    text-align: left;
+  }
+
+  .about-timeline {
+    position: relative;
+    padding-left: 35px;
+    border-left: 2px dashed rgba(200, 16, 46, 0.2);
+    margin-top: 40px;
+  }
+
+  .about-timeline-item {
+    position: relative;
+    margin-bottom: 35px;
+  }
+
+  .about-timeline-item::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--primary);
+    left: -43px;
+    top: 4px;
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
+  }
+
+  .about-timeline-date {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(200, 16, 46, 0.08);
+    color: var(--primary);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .about-timeline-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 8px;
+  }
+
+  .about-timeline-desc {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── THANK YOU BANNERS ──────────────────────────────────── */
+  .thankyou-card {
+    background: linear-gradient(135deg, var(--primary) 0%, #ff4d6d 100%);
+    color: white;
+    border-radius: 24px;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    max-width: 950px;
+    margin: 80px auto 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .thankyou-card::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.15);
+    filter: blur(100px);
+    border-radius: 50%;
+    top: -150px;
+    right: -100px;
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- ── HERO ───────────────────────────────────────────────── -->
-<section class="hero" style="padding: 60px 0; text-align: center; background: var(--bg-alt);">
-  <div class="container">
-    <h1 style="font-weight: 900; color: var(--secondary); margin-bottom: 20px;">Về Dự Án <span
-        class="text-primary">RiskSight</span></h1>
-    <p class="hero-desc" style="max-width: 800px; margin: 0 auto; color: var(--text-dim);">
-      Dự án RiskSight được xây dựng nhằm hỗ trợ giảng viên và sinh viên trong việc nhận diện sớm các rủi ro học tập
-      thông qua phân tích dữ liệu và học máy.
+<!-- ── HERO SECTION (🎓 GRAPHIC HEADER WITH RADIAL PLUS GRID) ─ -->
+<section class="about-hero">
+  <div class="container" style="position: relative; z-index: 5;">
+    <!-- Large vector mortarboard icon (White) -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); margin-bottom: 25px;">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+      <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+    </svg>
+    <h1 class="about-hero-title">RiskSight System</h1>
+    <p class="about-hero-desc">
+      Hệ thống phân tầng rủi ro học tập thông minh dựa trên Trí tuệ nhân tạo (AI). Nhận diện sớm nguy cơ học tập và đồng
+      hành cùng sinh viên PTIT vượt qua mọi chướng ngại vật môn học.
     </p>
   </div>
 </section>
 
-<!-- ── TEAM ───────────────────────────────────────────────── -->
-<section class="section" style="padding: 80px 0;">
-  <div class="container">
-    <div class="section-header" style="text-align: center; margin-bottom: 50px;">
-      <h2 class="section-title">Nhóm thực hiện</h2>
-      <p class="section-sub">Nhóm 14 — Học viện Công nghệ Bưu chính Viễn thông</p>
+<!-- ── STATS GRID ─────────────────────────────────────────── -->
+<section class="about-stats-container">
+  <div class="about-stats">
+
+    <!-- Stat 1 -->
+    <div class="about-stat-card">
+      <div class="about-stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div class="about-stat-num">32,590+</div>
+      <div class="about-stat-label">Sinh viên được phân tích</div>
     </div>
 
-    <div class="cards-grid"
-      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-      <div class="card"
-        style="text-align: center; padding: 40px; background: white; border: 1px solid var(--border); border-radius: 12px;">
-        <div class="team-avatar">ĐT</div>
-        <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary); margin-bottom: 5px;">Đàm Chiến Thắng
-        </div>
-        <div
-          style="font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
-          Phát triển Hệ thống, Dữ liệu & Giao diện</div>
+    <!-- Stat 2 -->
+    <div class="about-stat-card">
+      <div class="about-stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="6" height="6" rx="1"/>
+          <path d="M9 1H5a2 2 0 0 0-2 2v4"/>
+          <path d="M15 1h4a2 2 0 0 1 2 2v4"/>
+          <path d="M9 23H5a2 2 0 0 1-2-2v-4"/>
+          <path d="M15 23h4a2 2 0 0 0 2-2v-4"/>
+          <path d="M9 5h6"/>
+          <path d="M9 19h6"/>
+          <path d="M5 9v6"/>
+          <path d="M19 9v6"/>
+        </svg>
       </div>
-      <div class="card"
-        style="text-align: center; padding: 40px; background: white; border: 1px solid var(--border); border-radius: 12px;">
-        <div class="team-avatar">QT</div>
-        <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary); margin-bottom: 5px;">Đỗ Quốc Tấn
+      <div class="about-stat-num">04</div>
+      <div class="about-stat-label">Mô hình AI đối sánh</div>
+    </div>
+
+    <!-- Stat 3 -->
+    <div class="about-stat-card">
+      <div class="about-stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+          <path d="M4 22h16"/>
+          <path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34"/>
+          <path d="M12 2a5 5 0 0 0-5 5v3c0 2.2 1.8 4 4 4h2c2.2 0 4-1.8 4-4V7a5 5 0 0 0-5-5z"/>
+        </svg>
+      </div>
+      <div class="about-stat-num">92.08%</div>
+      <div class="about-stat-label">Độ chính xác dự báo</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── ABOUT RISKSIGHT (INTRODUCTION & CONTACT ACTIONS) ───── -->
+<section class="section" style="padding: 60px 0 20px;">
+  <div class="container">
+    <div class="intro-box">
+      <h2 style="font-size: 2rem; font-weight: 900; color: var(--secondary); margin-bottom: 20px;">Về Dự Án RiskSight
+      </h2>
+      <p style="font-size: 1.05rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 35px; font-weight: 500;">
+        RiskSight được phát triển bởi các kỹ sư công nghệ của Học viện Công nghệ Bưu chính Viễn thông. Chúng tôi thấu
+        hiểu rằng hành trình học đại học đầy rẫy những thử thách. Bằng việc phân tích các chỉ số tương tác số trên hệ
+        thống E-Learning và lịch sử thi cử của sinh viên, hệ thống sẽ đưa ra dự báo mức độ rủi ro trượt môn kịp thời và
+        gợi ý lộ trình cải thiện tốt nhất.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+        <span
+          style="font-size: 0.85rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Liên
+          hệ với chúng tôi để được hỗ trợ:</span>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+          <a href="https://www.facebook.com/gradeptit" target="_blank" class="about-pill-btn about-pill-red">
+            <span style="display: inline-flex; align-items: center; gap: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              Kết nối Fanpage Hỗ trợ
+            </span>
+          </a>
+          <a href="mailto:thangd595@gmail.com" class="about-pill-btn about-pill-outline">
+            <span style="display: inline-flex; align-items: center; gap: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              thangd595@gmail.com
+            </span>
+          </a>
         </div>
-        <div
-          style="font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
-          Mô hình ML & Huấn luyện</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── DATASET ────────────────────────────────────────────── -->
-<section class="section" style="background: var(--bg-alt); padding: 80px 0;">
+<!-- ── MAIN FEATURES (TWO-COLUMN RESPONSIVE LAYOUTS) ──────── -->
+<section class="section" style="padding: 60px 0; background: white;">
   <div class="container">
-    <div class="section-header" style="text-align: center; margin-bottom: 50px;">
-      <h2 class="section-title">Bộ dữ liệu OULAD</h2>
-      <p class="section-sub">Nền tảng tri thức cho mô hình dự báo rủi ro</p>
+
+    <div style="text-align: center; margin-bottom: 70px;">
+      <span class="feature-tag-pill">Chức năng</span>
+      <h2 style="font-size: 2.2rem; font-weight: 900; color: var(--secondary); margin-bottom: 15px;">Tính Năng Toàn Diện
+      </h2>
+      <p style="font-size: 1.05rem; color: var(--text-dim); max-width: 600px; margin: 0 auto; line-height: 1.6;">Giải
+        pháp thông minh hỗ trợ giảng viên can thiệp và giúp đỡ sinh viên kịp thời.</p>
     </div>
 
-    <div class="dataset-info-grid">
-      <div style="font-size: 1.05rem; color: var(--text-dim); line-height: 1.8;">
-        <p>Hệ thống sử dụng bộ dữ liệu chuẩn quốc tế <strong>Open University Learning Analytics Dataset
-            (OULAD)</strong> để huấn luyện và đánh giá mô hình dự báo rủi ro học tập.</p>
-        <ul style="padding-left: 0; list-style: none; margin-top: 20px;">
-          <li>• <strong>Quy mô:</strong> 32,593 sinh viên và 22 môn học khác nhau.</li>
-          <li>• <strong>Dữ liệu:</strong> Thông tin nhân khẩu, bài kiểm tra và tương tác VLE.</li>
-          <li>• <strong>Mục tiêu:</strong> Dự đoán khả năng sinh viên không hoàn thành khóa học.</li>
-        </ul>
+    <div class="features-container">
+
+      <!-- Feature 1 -->
+      <div class="feature-item">
+        <div class="feature-text-block">
+          <span class="feature-tag-pill">Học Máy AI</span>
+          <h3 class="feature-title">Phân tầng rủi ro tự động (LightGBM)</h3>
+          <p class="feature-desc">
+            Sử dụng mô hình LightGBM tối ưu nhất được huấn luyện trên bộ dữ liệu OULAD khổng lồ để phân cấp sinh viên
+            thành 4 tầng rủi ro: Thấp, Trung bình, Cao, và Nguy cấp với độ chính xác F1-Score đạt 84.03%.
+          </p>
+          <a href="/" class="about-pill-btn about-pill-red" style="padding: 10px 22px; font-size: 0.8rem;">Thử nghiệm
+            ngay →</a>
+        </div>
+        <div class="feature-img-card">
+          <img src="/visuals/03_confusion_matrix_best.png" alt="Confusion Matrix">
+          <span class="feature-img-caption">Ma trận nhầm lẫn tối ưu của mô hình</span>
+        </div>
       </div>
-      <div class="cards-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div class="card"
-          style="background: white; padding: 30px; border-radius: 12px; border: 1px solid var(--border); text-align: center;">
-          <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">32K+</div>
-          <div style="font-weight: 700; color: var(--text-dim); font-size: 0.9rem; text-transform: uppercase;">Sinh viên
-          </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-item">
+        <div class="feature-text-block">
+          <span class="feature-tag-pill">Tương Tác Số</span>
+          <h3 class="feature-title">Giám sát tương tác hệ thống E-Learning (VLE)</h3>
+          <p class="feature-desc">
+            Phân tích chuyên sâu tần suất hoạt động trực tuyến (Clicks) của sinh viên. Hệ thống tự động nhận diện sự sụt
+            giảm trong việc tương tác trực tuyến nhằm cảnh báo nguy cơ thiếu tập trung học tập.
+          </p>
+          <a href="/login" class="about-pill-btn about-pill-outline" style="padding: 10px 22px; font-size: 0.8rem;">Đăng
+            nhập để xem →</a>
         </div>
-        <div class="card"
-          style="background: white; padding: 30px; border-radius: 12px; border: 1px solid var(--border); text-align: center;">
-          <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">10M+</div>
-          <div style="font-weight: 700; color: var(--text-dim); font-size: 0.9rem; text-transform: uppercase;">Tương tác
-            VLE</div>
+        <div class="feature-img-card">
+          <img src="/visuals/02_04_vle_features.png" alt="VLE features">
+          <span class="feature-img-caption">Phân phối lượng Clicks theo nhóm rủi ro</span>
         </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-item">
+        <div class="feature-text-block">
+          <span class="feature-tag-pill">Can Thiệp</span>
+          <h3 class="feature-title">Khuyến nghị lộ trình cá nhân hóa</h3>
+          <p class="feature-desc">
+            Hệ thống không chỉ cảnh báo mà còn tự động tính toán các nguyên nhân cụ thể dẫn đến rủi ro trượt môn để đưa
+            ra khuyến nghị chỉ dẫn học tập riêng cho từng sinh viên, giúp cứu vãn điểm số kịp thời.
+          </p>
+        </div>
+        <div class="feature-img-card">
+          <img src="/visuals/03_feature_importance_best.png" alt="Feature Importance">
+          <span class="feature-img-caption">Tầm quan trọng đặc trưng trong mô hình AI</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SYSTEM UPDATES (TIMELINE CHRONOLOGY) ────────────────── -->
+<section class="section"
+  style="padding: 80px 0; background: #fbfbfb; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
+  <div class="container">
+
+    <div style="text-align: center; margin-bottom: 60px;">
+      <span class="feature-tag-pill">Lộ Trình</span>
+      <h2 style="font-size: 2.2rem; font-weight: 900; color: var(--secondary); margin-bottom: 15px;">Cập Nhật Gần Đây
+      </h2>
+      <p style="font-size: 1.05rem; color: var(--text-dim); max-width: 600px; margin: 0 auto; line-height: 1.6;">Những
+        cột mốc phát triển nổi bật và cải tiến không ngừng của dự án.</p>
+    </div>
+
+    <div class="timeline-box">
+      <div class="about-timeline">
+
+        <!-- Node 1 -->
+        <div class="about-timeline-item">
+          <span class="about-timeline-date">17/05/2026</span>
+          <h3 class="about-timeline-title">Nâng cấp giao diện người dùng & Compact Mode</h3>
+          <p class="about-timeline-desc">
+            Tích hợp thanh đo chỉ số khoa học đề tài (KPI Cards), biểu mẫu thử nghiệm dự báo 3 bước (Wizard Form) trực
+            quan và tối giản kích thước chữ toàn diện giúp tăng 30% mật độ hiển thị hữu ích trên màn hình.
+          </p>
+        </div>
+
+        <!-- Node 2 -->
+        <div class="about-timeline-item">
+          <span class="about-timeline-date">12/05/2026</span>
+          <h3 class="about-timeline-title">Tích hợp bộ trực quan hóa dữ liệu trong Admin</h3>
+          <p class="about-timeline-desc">
+            Di chuyển và nâng cấp 6 biểu đồ phân tích tương tác và mô hình học máy nâng cao vào trang dành riêng cho
+            Giảng viên và Cố vấn học tập, hỗ trợ báo cáo và lập kế hoạch can thiệp.
+          </p>
+        </div>
+
+        <!-- Node 3 -->
+        <div class="about-timeline-item">
+          <span class="about-timeline-date">08/05/2026</span>
+          <h3 class="about-timeline-title">Ra mắt phiên bản Alpha & liên kết SQLite</h3>
+          <p class="about-timeline-desc">
+            Hoàn thiện liên kết dữ liệu thời gian thực giữa FastAPI Backend và cơ sở dữ liệu SQLite sinh viên OULAD.
+            Kiểm thử thành công thời gian phản hồi dự đoán dưới 100ms.
+          </p>
+        </div>
+
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── ARCHITECTURE ───────────────────────────────────────── -->
-<section class="section" style="padding: 80px 0;">
+<!-- ── THANK YOU CARD & FOOTER NOTE ───────────────────────── -->
+<section class="section" style="padding: 80px 0; background: white;">
   <div class="container">
-    <div class="section-header" style="text-align: center; margin-bottom: 50px;">
-      <h2 class="section-title">Kiến trúc hệ thống</h2>
-      <p class="section-sub">Cách thức RiskSight vận hành và xử lý dữ liệu</p>
-    </div>
-
-    <div class="arch-box">
-      <div class="arch-flow">
-        <div class="flow-node">Browser (HTML/JS)</div>
-        <div class="flow-arrow">➜</div>
-        <div class="flow-node highlight">FastAPI (Backend)</div>
-        <div class="flow-arrow">➜</div>
-        <div class="flow-node highlight">LightGBM (AI Model)</div>
-        <div class="flow-arrow">➜</div>
-        <div class="flow-node">SQLite Database</div>
-      </div>
-      <div
-        style="margin-top: 30px; color: var(--text-dim); font-size: 1rem; max-width: 800px; text-align: center; line-height: 1.6;">
-        Hệ thống được thiết kế theo kiến trúc <strong>Client-Server</strong>. Frontend gửi yêu cầu đến API Python. Tại
-        dây, mô hình <strong>LightGBM</strong> (F1-Score: 84.03%, AUC: 98.68%) sẽ phân tích dữ liệu sinh viên từ SQLite
-        và trả về kết quả dự đoán rủi ro theo thời gian
-        thực.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── TECH STACK ─────────────────────────────────────────── -->
-<section class="section" style="background: var(--bg-alt); padding: 80px 0;">
-  <div class="container">
-    <div class="section-header" style="text-align: center; margin-bottom: 50px;">
-      <h2 class="section-title">Công nghệ sử dụng</h2>
-      <p class="section-sub">Các công cụ và môi trường phát triển hệ thống</p>
-    </div>
-
-    <div class="tech-list">
-      <span class="tech-tag">Python 3.11+</span>
-      <span class="tech-tag">FastAPI</span>
-      <span class="tech-tag">LightGBM</span>
-      <span class="tech-tag">XGBoost</span>
-      <span class="tech-tag">Scikit-Learn</span>
-      <span class="tech-tag">SMOTE (imbalanced-learn)</span>
-      <span class="tech-tag">SQLModel</span>
-      <span class="tech-tag">SQLite</span>
-      <span class="tech-tag">Jinja2</span>
-      <span class="tech-tag">Vanilla JS / CSS3</span>
+    <div class="thankyou-card">
+      <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 20px; color: white;">Đồng Hành Cùng Sinh Viên
+      </h2>
+      <p
+        style="font-size: 1.1rem; line-height: 1.8; max-width: 750px; margin: 0 auto 30px; font-weight: 500; opacity: 0.95;">
+        Cảm ơn bạn đã tin tưởng và đồng hành cùng hệ thống RiskSight. Chúng tôi không ngừng nỗ lực nghiên cứu, cải
+        tiến mô hình học máy và giao diện để bảo vệ tốt nhất cho sự thành công học tập của sinh viên. Hãy cùng RiskSight
+        hướng tới tương lai học tập thông minh và an toàn hơn!
+      </p>
     </div>
   </div>
 </section>

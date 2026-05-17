@@ -39,6 +39,10 @@
 }
 
 /* ── RESET ───────────────────────────────────────────────── */
+html {
+    font-size: 87.5%; /* 1rem = 14px */
+}
+
 *,
 *::before,
 *::after {
@@ -51,8 +55,8 @@ body {
     font-family: 'Inter', -apple-system, system-ui, sans-serif;
     background: var(--bg);
     color: var(--text-main);
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 13px; /* Compact high-density text */
+    line-height: 1.5;
     overflow-x: hidden;
 }
 

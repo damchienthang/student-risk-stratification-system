@@ -33,13 +33,10 @@
                     <span>Danh sách sinh viên</span>
                 </button>
 
-                <!-- Section hidden as per user request -->
-                <!-- 
-                <div class="nav-label">Analytics & Data</div>
+                <div class="nav-label">Phân Tích & Mô Hình</div>
                 <button class="nav-item" onclick="showSection('analytics',this)">
-                    <span>Chi tiết mô hình</span>
+                    <span>Phân tích dữ liệu & ML</span>
                 </button>
-                -->
 
                 <div class="nav-label">Administration</div>
                 <button class="nav-item" onclick="showSection('users',this)">
@@ -201,23 +198,63 @@
                 <!-- ═══════════════════════ ANALYTICS ══════════════════════ -->
                 <section id="section-analytics" class="content-section">
                     <div class="card" style="margin-bottom: 24px;">
-                        <div class="card-header">
-                            <span class="card-title">Hiệu năng mô hình dự báo (F1-Score: 84.03%)</span>
+                        <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+                            <span class="card-title">Phân Tích Dữ Liệu Học Thuật & Trực Quan Hóa Mô Hình AI</span>
+                            <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px; font-weight: 500;">
+                                Báo cáo chi tiết cấu trúc phân phối rủi ro, tương tác hệ thống (VLE), và hiệu năng phân lớp của mô hình LightGBM tối ưu.
+                            </p>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="padding: 30px 40px;">
                             <div class="analytics-grid">
-                                <div class="analytics-card">
+                                
+                                <!-- Card 1 -->
+                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                    <img src="/visuals/01_class_distribution.png"
+                                        onclick="openModal(this.src, 'Phân phối các mức độ rủi ro')"
+                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Phân phối các mức độ rủi ro</p>
+                                </div>
+
+                                <!-- Card 2 -->
+                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                    <img src="/visuals/02_04_vle_features.png"
+                                        onclick="openModal(this.src, 'Tương tác hệ thống (VLE) theo nhóm rủi ro')"
+                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Tương tác hệ thống (VLE)</p>
+                                </div>
+
+                                <!-- Card 3 -->
+                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                    <img src="/visuals/02_05_assessment_features.png"
+                                        onclick="openModal(this.src, 'Kết quả kiểm tra theo nhóm rủi ro')"
+                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Kết quả kiểm tra & đánh giá</p>
+                                </div>
+
+                                <!-- Card 4 -->
+                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
                                     <img src="/visuals/03_feature_importance_best.png"
-                                        onclick="openModal(this.src, 'Tầm quan trọng đặc trưng')">
-                                    <p style="margin-top:10px; font-weight:600; text-align:center;">Top đặc trưng quan
-                                        trọng nhất</p>
+                                        onclick="openModal(this.src, 'Top đặc trưng quan trọng nhất')"
+                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Các yếu tố quan trọng hàng đầu</p>
                                 </div>
-                                <div class="analytics-card">
+
+                                <!-- Card 5 -->
+                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
                                     <img src="/visuals/03_confusion_matrix_best.png"
-                                        onclick="openModal(this.src, 'Ma trận nhầm lẫn')">
-                                    <p style="margin-top:10px; font-weight:600; text-align:center;">Ma trận nhầm lẫn
-                                        (Confusion Matrix)</p>
+                                        onclick="openModal(this.src, 'Ma trận nhầm lẫn (Confusion Matrix)')"
+                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Ma trận nhầm lẫn LightGBM</p>
                                 </div>
+
+                                <!-- Card 6 -->
+                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                    <img src="/visuals/02_07_correlation.png"
+                                        onclick="openModal(this.src, 'Ma trận tương quan giữa các đặc trưng')"
+                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Ma trận tương quan đặc trưng</p>
+                                </div>
+
                             </div>
                         </div>
                     </div>
