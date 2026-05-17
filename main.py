@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-main.py - Entry point for Student Risk Stratification System v2
+main.py - Entry point for Student Risk Stratification System
 """
 import sys
 from fastapi import FastAPI

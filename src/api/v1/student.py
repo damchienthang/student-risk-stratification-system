@@ -60,7 +60,7 @@ async def query_student(student_id: str, request: Request):
                     "num_of_prev_attempts": log.num_of_prev_attempts,
                     "studied_credits": log.studied_credits,
                     "total_clicks": log.total_clicks,
-                    "active_days": 50, # Guest default
+                    "active_days": 50,
                     "avg_clicks_day": log.total_clicks / 50 if log.total_clicks > 0 else 0,
                     "max_clicks_day": (log.total_clicks / 50) * 2 if log.total_clicks > 0 else 0,
                     "n_resources": 15,

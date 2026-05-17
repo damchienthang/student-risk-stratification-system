@@ -92,7 +92,7 @@ MODEL_METRICS = {
 
 class RiskPredictor:
     """
-    RiskPredictor xử lý việc nạp mô hình ML và bộ chuẩn hóa (scaler) để thực hiện phân tầng rủi ro sinh viên.
+    Nạp mô hình ML và bộ chuẩn hóa (scaler) để thực hiện phân tầng rủi ro sinh viên.
     """
 
     def __init__(self, model_name: str = "lightgbm"):
