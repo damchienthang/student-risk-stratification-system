@@ -47,7 +47,7 @@ FEATURE_COLUMNS: List[str] = [
 ]
 
 # Giá trị mặc định "trung tính" cho các đặc trưng (dựa trên trung bình cộng của quần thể OULAD)
-# Điều này giúp tránh thiên kiến khi chỉ cung cấp dữ liệu một phần (ví dụ: Thử nghiệm Guest)
+# Điều này giúp tránh thiên kiến khi chỉ cung cấp dữ liệu một phần
 FEATURE_DEFAULTS: Dict[str, Any] = {
     'gender_num': 0, 'imd_band_num': 5, 'education_num': 2, 'age_num': 0, 'disability_num': 0,
     'num_of_prev_attempts': 0, 'studied_credits': 60,
@@ -58,7 +58,7 @@ FEATURE_DEFAULTS: Dict[str, Any] = {
     'n_submitted': 4, 'n_late': 0, 'avg_submit_delay': -2.0
 }
 
-# Chỉ số hiệu năng của mô hình — cập nhật theo kết quả 03_modeling.py
+# Chỉ số hiệu năng của mô hình
 MODEL_METRICS = {
     "LightGBM": {
         "f1_macro": 0.8403,        # Validation set
@@ -129,7 +129,7 @@ class RiskPredictor:
 
         except Exception as e:
             logger.error(f"❌ Lỗi khi nạp mô hình {self.model_name}: {e}")
-            # Không raise lỗi ở đây để ứng dụng vẫn khởi động được ngay cả khi nạp mô hình thất bại (giảm cấp nhẹ nhàng)
+            # Không raise lỗi ở đây để ứng dụng vẫn khởi động được ngay cả khi nạp mô hình thất bại
             self.model = None
             self.scaler = None
 
