@@ -133,35 +133,10 @@
                     <div class="table-container">
                         <div class="table-controls" style="padding: 30px 40px; justify-content: space-between; align-items: flex-end;">
                             <div style="display: flex; gap: 32px; flex-wrap: wrap;">
-                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 200px;">
-                                    <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Phân loại sinh viên</label>
-                                    <select id="sourceSelect" class="select-field" onchange="updateDashboard()" style="width: 100%;">
-                                        <option value="official">Sinh viên chính thức (OULAD)</option>
-                                        <option value="guest">Dự báo tự do (External Guest)</option>
-                                    </select>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 150px;">
-                                    <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Học phần</label>
-                                    <select id="moduleSelect" class="select-field" onchange="updateDashboard()">
-                                        <option value="all">Tất cả</option>
-                                        <option value="AAA">AAA</option>
-                                        <option value="BBB">BBB</option>
-                                        <option value="CCC">CCC</option>
-                                        <option value="DDD">DDD</option>
-                                        <option value="EEE">EEE</option>
-                                        <option value="FFF">FFF</option>
-                                        <option value="GGG">GGG</option>
-                                    </select>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 120px;">
-                                    <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Kỳ học</label>
-                                    <select id="semesterSelect" class="select-field" onchange="updateDashboard()">
-                                        <option value="all">Tất cả</option>
-                                        <option value="2013J">2013J</option>
-                                        <option value="2013B">2013B</option>
-                                        <option value="2014J">2014J</option>
-                                        <option value="2014B">2014B</option>
-                                    </select>
+                                <div style="display: none;">
+                                    <select id="sourceSelect" class="select-field"><option value="guest">Guest</option></select>
+                                    <select id="moduleSelect" class="select-field"><option value="all">all</option></select>
+                                    <select id="semesterSelect" class="select-field"><option value="all">all</option></select>
                                 </div>
                                 <div style="display: flex; flex-direction: column; gap: 12px; min-width: 220px;">
                                     <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Mức độ rủi ro</label>
@@ -332,7 +307,7 @@
         let overviewChart = null;
         async function loadOverview() {
             try {
-                const r = await fetch(`/api/v1/admin/stats?module=all&semester=all&risk=all`);
+                const r = await fetch(`/api/v1/admin/stats?module=all&semester=all&risk=all&source=guest`);
                 const d = await r.json();
                 if (d.summary) {
                     const total = d.summary.total_students || 0;
@@ -444,49 +419,23 @@
 
             const GROUPS = [
                 {
-                    title: "Thông tin cơ bản & Nhân khẩu học",
+                    title: "I. Năng lực & Nền tảng",
                     attrs: {
-                        gender_num: "Giới tính (0: Nữ, 1: Nam)",
-                        age_num: "Nhóm độ tuổi",
-                        education_num: "Trình độ học vấn",
-                        imd_band_num: "Chỉ số IMD (Band)",
-                        disability_num: "Khuyết tật (0: K, 1: C)"
-                    }
-                },
-                {
-                    title: "Lịch sử đăng ký & Học tập",
-                    attrs: {
-                        code_module: "Mã học phần",
-                        code_presentation: "Kỳ học",
-                        num_of_prev_attempts: "Số lần học lại",
-                        studied_credits: "Số tín chỉ tích lũy",
-                        early_registration: "Đăng ký sớm (1: Có)",
-                        reg_days_before: "Số ngày đ.ký trước",
-                        unregistered: "Đã hủy đ.ký (1: Có)"
-                    }
-                },
-                {
-                    title: "Hoạt động trên hệ thống (VLE)",
-                    attrs: {
-                        total_clicks: "Tổng tương tác",
-                        active_days: "Số ngày hoạt động",
-                        avg_clicks_day: "Tương tác TB/ngày",
-                        max_clicks_day: "Tương tác tối đa/ngày",
-                        n_resources: "Tài nguyên đã xem",
-                        click_density: "Mật độ tương tác"
-                    }
-                },
-                {
-                    title: "Kết quả học tập & Đánh giá",
-                    attrs: {
-                        avg_score: "Điểm trung bình",
+                        education_num: "Học vấn đầu vào",
+                        avg_score: "Điểm trung bình (0-100)",
                         min_score: "Điểm thấp nhất",
-                        std_score: "Độ lệch chuẩn điểm",
-                        avg_tma_score: "Điểm TMA TB",
-                        n_submitted: "Số bài tập đã nộp",
-                        n_late: "Số bài nộp muộn",
-                        avg_submit_delay: "Độ trễ nộp bài TB",
-                        final_result: "Kết quả cuối (OULAD)"
+                        num_of_prev_attempts: "Số lần đã học lại môn này"
+                    }
+                },
+                {
+                    title: "II. Thái độ & Áp lực học tập",
+                    attrs: {
+                        total_clicks: "Tương tác LMS (Clicks)",
+                        attendance_rate: "Tỷ lệ chuyên cần (%)",
+                        n_late: "Số bài nộp trễ hạn",
+                        n_submitted: "Số bài đã nộp",
+                        std_score: "Phong độ học tập (Độ lệch chuẩn)",
+                        reg_days_before: "Thời điểm đăng ký (ngày)"
                     }
                 }
             ];
@@ -496,12 +445,19 @@
                 const d = await r.json();
                 const { student: s, prediction: p } = d;
 
+                const EDU_MAP = ['Chưa tốt nghiệp THPT', 'Trung cấp nghề', 'Tốt nghiệp THPT', 'Đại học/Cao đẳng', 'Sau đại học'];
+                const AGE_MAP = ['0-35 tuổi', '35-55 tuổi', 'Trên 55 tuổi'];
+
                 let groupsHtml = '';
                 GROUPS.forEach(group => {
                     let itemsHtml = '';
                     for (const [key, label] of Object.entries(group.attrs)) {
                         let val = s[key];
-                        if (typeof val === 'number' && !Number.isInteger(val)) val = val.toFixed(2);
+                        if (key === 'education_num' && val != null) val = EDU_MAP[val] || val;
+                        else if (key === 'age_num' && val != null) val = AGE_MAP[val] || val;
+                        else if (key === 'imd_band_num' && val != null) val = 'Mức ' + (val + 1) + ' / 10';
+                        else if (key === 'gender_num' && val != null) val = val === 0 ? 'Nam' : 'Nữ';
+                        else if (typeof val === 'number' && !Number.isInteger(val)) val = val.toFixed(2);
                         itemsHtml += `
                             <div style="padding: 14px; background: #F8FAFC; border-radius: 10px; border: 1px solid var(--border);">
                                 <span style="display: block; font-size: 0.65rem; font-weight: 800; color: var(--text-light); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">${label}</span>
@@ -522,6 +478,36 @@
                     `;
                 });
 
+                let actionsHtml = '';
+                if (p.risk_label === 'High' || p.risk_label === 'Very High' || p.risk_level >= 2) {
+                    actionsHtml = `
+                        <button onclick="alert('Đã gửi email cảnh báo khẩn cấp tới sinh viên và gia đình.')" style="padding: 10px 15px; background: #c92a2a; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                            📧 Gửi Email Cảnh Báo
+                        </button>
+                        <button onclick="alert('Đã tạo lịch hẹn tư vấn học thuật với sinh viên vào tuần tới.')" style="padding: 10px 15px; background: #e67700; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                            📅 Lên Lịch Tư Vấn
+                        </button>
+                        <button onclick="alert('Sinh viên đã được đưa vào danh sách theo dõi đặc biệt.')" style="padding: 10px 15px; background: #1864ab; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                            🚨 Đưa Vào Theo Dõi
+                        </button>
+                    `;
+                } else if (p.risk_label === 'Medium' || p.risk_level === 1) {
+                    actionsHtml = `
+                        <button onclick="alert('Đã gửi thông báo nhắc nhở tự động qua VLE.')" style="padding: 10px 15px; background: #e67700; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                            🔔 Gửi Nhắc Nhở
+                        </button>
+                        <button onclick="alert('Đã gửi tài liệu hướng dẫn ôn tập bổ sung.')" style="padding: 10px 15px; background: #1864ab; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                            📚 Gửi Tài Liệu
+                        </button>
+                    `;
+                } else {
+                    actionsHtml = `
+                        <button onclick="alert('Đã gửi email khích lệ tinh thần học tập của sinh viên.')" style="padding: 10px 15px; background: #2b8a3e; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                            ⭐ Gửi Lời Khen Ngợi
+                        </button>
+                    `;
+                }
+
                 panel.innerHTML = `
                     <div class="card" style="border-left: 8px solid ${COLORS[p.risk_label]}; overflow: hidden; animation: slideIn 0.3s ease-out; box-shadow: var(--shadow-lg);">
                         <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; padding: 30px; background: white; border-bottom: 1px solid var(--border);">
@@ -541,6 +527,12 @@
                             <div style="margin-top: 10px; padding: 24px; background: var(--primary-light); border-radius: 16px; border: 1px solid rgba(200, 16, 46, 0.15); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
                                 <h4 style="color: var(--primary); font-size: 0.85rem; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px;">Khuyến nghị can thiệp</h4>
                                 <p style="font-size: 1.05rem; line-height: 1.7; color: var(--secondary); font-weight: 500; font-style: italic;">"${p.recommendation || 'Không có khuyến nghị cụ thể.'}"</p>
+                            </div>
+                            <div style="margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid var(--border);">
+                                <h4 style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; color: var(--secondary);">Xử lý hành động</h4>
+                                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                                    ${actionsHtml}
+                                </div>
                             </div>
                         </div>
                     </div>

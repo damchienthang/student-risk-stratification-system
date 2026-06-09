@@ -16,8 +16,11 @@ class GuestStudentInput(BaseModel):
     
     # Lộ trình & Lịch sử
     num_of_prev_attempts: int = Field(0, description="Số lần thi lại")
-    studied_credits: int = Field(60, description="Số tín chỉ")
     reg_days_before: int = Field(-90, description="Số ngày đăng ký trước khi bắt đầu")
+    
+    # Feature Engineering (Trích xuất ngầm)
+    attendance_rate: int = Field(80, description="Tỷ lệ chuyên cần (%) tính đến ngày 60")
+    std_score_eval: float = Field(12.0, description="Phong độ điểm số (Ổn định/Thất thường)")
     
     # Kỷ luật nộp bài
     n_submitted: int = Field(4, description="Số bài đã nộp")

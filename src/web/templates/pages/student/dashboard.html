@@ -186,7 +186,7 @@
 
         <!-- Dynamic Mappings -->
         {% set age_labels = ['0-35', '35-55', '55+'] %}
-        {% set edu_labels = ['Không bằng cấp', 'Dưới A Level', 'A Level/Tương đương', 'HE Qualification', 'Sau đại học'] %}
+        {% set edu_labels = ['Chưa tốt nghiệp THPT', 'Trung cấp nghề', 'Tốt nghiệp THPT', 'Đại học/Cao đẳng', 'Sau đại học'] %}
         
         {% if student.total_clicks <= 200 %}
           {% set click_label = 'Rất ít' %}
@@ -306,7 +306,7 @@
           <!-- IMD Band -->
           <div class="data-item {% if student.imd_band_num < 2 %}at-risk{% endif %}" style="padding: 15px; background: white; border: 1px solid var(--border); border-radius: 10px; text-align: left; position: relative;">
             <span class="data-label" style="display: block; font-size: 0.72rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 5px;">Kinh tế vùng (IMD Band)</span>
-            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">{{ student.imd_band_num }}0%</span>
+            <span style="font-weight: 700; color: var(--secondary); font-size: 1.1rem;">Mức {{ student.imd_band_num + 1 }} / 10</span>
             {% if student.imd_band_num < 2 %}
             <span style="position: absolute; top: 15px; right: 15px; background: #fff5f5; color: #c92a2a; padding: 2px 6px; border-radius: 4px; font-size: 0.58rem; font-weight: 800;">Khó khăn</span>
             {% endif %}

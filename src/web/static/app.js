@@ -442,8 +442,8 @@ function showGuestResult(result, inputData) {
   const grid = document.getElementById('resDataTable');
   if (grid) {
     grid.innerHTML = '';
-    const eduLabels = ['Không bằng cấp', 'Dưới A Level', 'A Level/Tương đương', 'HE Qualification', 'Sau đại học'];
-    const ageLabels = ['0-35', '35-55', '55+'];
+    const eduLabels = ['Chưa tốt nghiệp THPT', 'Trung cấp nghề', 'Tốt nghiệp THPT', 'Đại học/Cao đẳng', 'Sau đại học'];
+    const ageLabels = ['0-35 tuổi', '35-55 tuổi', 'Trên 55 tuổi'];
 
     const clickVal = parseInt(inputData.total_clicks);
     let clickLabel = 'Trung bình';
@@ -452,20 +452,16 @@ function showGuestResult(result, inputData) {
     else if (clickVal >= 1500) clickLabel = 'Tích cực';
 
     const features = [
-      { label: 'Giới tính', val: inputData.gender_num === 0 ? 'Nam' : 'Nữ' },
-      { label: 'Độ tuổi', val: ageLabels[inputData.age_num] || '—' },
-      { label: 'Học vấn', val: eduLabels[inputData.education_num] || '—' },
-      { label: 'Kinh tế (IMD)', val: inputData.imd_band_num + '0%', risky: inputData.imd_band_num < 2 },
-      { label: 'Khuyết tật', val: inputData.disability_num === 0 ? 'Không' : 'Có' },
-      { label: 'Số lần học lại', val: inputData.num_of_prev_attempts, risky: inputData.num_of_prev_attempts > 0 },
-      { label: 'Số tín chỉ', val: inputData.studied_credits, risky: inputData.studied_credits > 120 },
-      { label: 'Đăng ký trước', val: Math.abs(inputData.reg_days_before) + ' ngày', risky: inputData.reg_days_before > -30 },
-      { label: 'Số bài đã nộp', val: inputData.n_submitted, risky: inputData.n_submitted < 3 },
-      { label: 'Số bài nộp muộn', val: inputData.n_late, risky: inputData.n_late > 0 },
-      { label: 'Độ trễ nộp bài', val: inputData.avg_submit_delay + ' ngày', risky: inputData.avg_submit_delay > 0 },
       { label: 'Điểm trung bình', val: inputData.avg_score.toFixed(2), risky: inputData.avg_score < 40 },
       { label: 'Điểm thấp nhất', val: inputData.min_score.toFixed(2), risky: inputData.min_score < 35 },
-      { label: 'Mức độ tương tác', val: clickLabel, risky: clickVal < 200 }
+      { label: 'Học vấn đầu vào', val: eduLabels[inputData.education_num] || '—' },
+      { label: 'Số lần học lại', val: inputData.num_of_prev_attempts, risky: inputData.num_of_prev_attempts > 0 },
+      { label: 'Mức độ tương tác', val: clickLabel, risky: clickVal < 200 },
+      { label: 'Số bài nộp muộn', val: inputData.n_late, risky: inputData.n_late > 0 },
+      { label: 'Số bài đã nộp', val: inputData.n_submitted, risky: inputData.n_submitted < 3 },
+      { label: 'Tỷ lệ chuyên cần', val: inputData.attendance_rate + '%', risky: inputData.attendance_rate < 30 },
+      { label: 'Phong độ học tập', val: inputData.std_score_eval == 5.0 ? 'Rất ổn định' : inputData.std_score_eval == 12.0 ? 'Trung bình' : inputData.std_score_eval == 15.0 ? 'Thất thường' : 'Sa sút', risky: inputData.std_score_eval >= 15.0 },
+      { label: 'Đăng ký trước', val: Math.abs(inputData.reg_days_before) + ' ngày', risky: inputData.reg_days_before > -30 }
     ];
 
     features.forEach(f => {

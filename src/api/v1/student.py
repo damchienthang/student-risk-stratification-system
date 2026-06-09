@@ -60,9 +60,9 @@ async def query_student(student_id: str, request: Request):
                     "num_of_prev_attempts": log.num_of_prev_attempts,
                     "studied_credits": log.studied_credits,
                     "total_clicks": log.total_clicks,
-                    "active_days": 50,
-                    "avg_clicks_day": log.total_clicks / 50 if log.total_clicks > 0 else 0,
-                    "max_clicks_day": (log.total_clicks / 50) * 2 if log.total_clicks > 0 else 0,
+                    "attendance_rate": 80,
+                    "avg_clicks_day": log.total_clicks / 48 if log.total_clicks > 0 else 0,
+                    "max_clicks_day": (log.total_clicks / 48) * 2 if log.total_clicks > 0 else 0,
                     "n_resources": 15,
                     "click_density": (log.total_clicks / 50) / 15 if log.total_clicks > 0 else 0,
                     "avg_score": log.avg_score,
@@ -106,9 +106,13 @@ async def predict_guest(guest: GuestStudentInput, request: Request):
     """Guest trial prediction logic with saving to DB."""
     predictor = get_predictor()
     
-    # Calculate derived VLE features
-    active_days = 50
-    avg_clicks_day = guest.total_clicks / active_days if guest.total_clicks > 0 else 0
+    # Calculate derived VLE features (Day 60 milestone)
+    active_days = int((guest.attendance_rate / 100.0) * 60)
+    if guest.total_clicks > 0 and active_days == 0:
+        active_days = 1
+    
+    avg_clicks_day = guest.total_clicks / active_days if active_days > 0 else 0
+    std_score = guest.std_score_eval
     
     full_data = {
         "gender_num": guest.gender_num,
@@ -117,7 +121,7 @@ async def predict_guest(guest: GuestStudentInput, request: Request):
         "age_num": guest.age_num,
         "disability_num": guest.disability_num,
         "num_of_prev_attempts": guest.num_of_prev_attempts,
-        "studied_credits": guest.studied_credits,
+        "studied_credits": 60, # Removed from UI, fixed internally
         "reg_days_before": guest.reg_days_before,
         "n_submitted": guest.n_submitted,
         "n_late": guest.n_late,
@@ -132,7 +136,7 @@ async def predict_guest(guest: GuestStudentInput, request: Request):
         "n_resources": 15,
         "click_density": avg_clicks_day / 15 if avg_clicks_day > 0 else 0,
         "avg_tma_score": guest.avg_score,
-        "std_score": (guest.avg_score - guest.min_score) / 2 if guest.avg_score > guest.min_score else 2.0,
+        "std_score": std_score,
         "unregistered": 0
     }
     
@@ -163,7 +167,7 @@ async def predict_guest(guest: GuestStudentInput, request: Request):
                 age_num=guest.age_num,
                 disability_num=guest.disability_num,
                 num_of_prev_attempts=guest.num_of_prev_attempts,
-                studied_credits=guest.studied_credits,
+                studied_credits=60, # Removed from UI
                 total_clicks=guest.total_clicks,
                 avg_score=guest.avg_score,
                 min_score=guest.min_score,

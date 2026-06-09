@@ -23,8 +23,7 @@ async def get_db_user(request: Request) -> Optional[User]:
 @router.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     user = await get_db_user(request)
-    return templates.TemplateResponse("pages/home/index.html", {
-        "request": request, 
+    return templates.TemplateResponse(request=request, name="pages/home/index.html", context={
         "user": user,
         "UserRole": UserRole
     })
@@ -32,15 +31,14 @@ async def home(request: Request):
 @router.get("/about", response_class=HTMLResponse)
 async def about(request: Request):
     user = await get_db_user(request)
-    return templates.TemplateResponse("pages/about/index.html", {"request": request, "user": user})
+    return templates.TemplateResponse(request=request, name="pages/about/index.html", context={"user": user})
 
 @router.get("/admin", response_class=HTMLResponse)
 async def admin_page(request: Request):
     user = await get_db_user(request)
     if not user or user.role != UserRole.ADMIN:
         return RedirectResponse(url="/")
-    return templates.TemplateResponse("pages/admin/dashboard.html", {
-        "request": request, 
+    return templates.TemplateResponse(request=request, name="pages/admin/dashboard.html", context={
         "user": user,
         "UserRole": UserRole
     })
@@ -61,8 +59,7 @@ async def student_page(request: Request):
         except Exception:
             pass
         
-    return templates.TemplateResponse("pages/student/dashboard.html", {
-        "request": request, 
+    return templates.TemplateResponse(request=request, name="pages/student/dashboard.html", context={
         "user": user,
         "UserRole": UserRole,
         "student": report["student"] if report else None,

@@ -33,8 +33,21 @@ async def get_analytics(
             if risk != "all":
                 statement = statement.where(InferenceLog.risk_label == risk)
             
-            total_count = len(session.exec(statement).all()) # Simplified for SQLite
-            logs = session.exec(statement.order_by(InferenceLog.timestamp.desc()).offset((page-1)*limit).limit(limit)).all()
+            all_guest_logs = session.exec(statement.order_by(InferenceLog.timestamp.desc())).all()
+            total_count = len(all_guest_logs)
+            
+            # Compute stats
+            avg_c = sum([l.total_clicks or 0 for l in all_guest_logs]) / total_count if total_count > 0 else 0
+            avg_s = sum([l.avg_score or 0 for l in all_guest_logs]) / total_count if total_count > 0 else 0
+            
+            risk_dist = [0, 0, 0, 0]
+            for l in all_guest_logs:
+                if l.risk_level is not None and 0 <= l.risk_level <= 3:
+                    risk_dist[l.risk_level] += 1
+                    
+            # Top at risk (level 2 and 3)
+            urgent_logs = [l for l in all_guest_logs if l.risk_level and l.risk_level >= 2]
+            top_urgent = sorted(urgent_logs, key=lambda x: getattr(x, 'avg_score') or 0)[:5]
             
             guest_list = [{
                 "id": f"GUEST_{l.id}",
@@ -44,10 +57,19 @@ async def get_analytics(
                 "risk_level": l.risk_level or 0,
                 "code_module": "Guest",
                 "code_presentation": l.timestamp
-            } for l in logs]
+            } for l in all_guest_logs[(page-1)*limit : page*limit]]
+            
+            top_at_risk = [{
+                "id_student": f"GUEST_{l.id}",
+                "avg_score": round(l.avg_score or 0, 2),
+                "code_module": "Guest",
+                "code_presentation": l.timestamp
+            } for l in top_urgent]
             
             return {
-                "summary": {"total_students": total_count, "avg_clicks": 0, "avg_score": 0},
+                "summary": {"total_students": total_count, "avg_clicks": round(avg_c, 1), "avg_score": round(avg_s, 2)},
+                "risk_distribution": risk_dist,
+                "top_at_risk": top_at_risk,
                 "all_students": guest_list,
                 "pagination": {"page": page, "limit": limit, "total_records": total_count, "total_pages": (total_count + limit - 1) // limit}
             }

@@ -204,6 +204,22 @@
       <p style="text-align: center; color: var(--text-dim); margin-bottom: 30px; font-size: 1.05rem; font-weight: 500;">
         Hãy hoàn thành các thông số dưới đây để AI tiến hành phân tích phân tầng rủi ro.</p>
 
+      <!-- PRESET REAL DATA BUTTONS -->
+      <div style="margin-bottom: 35px; text-align: center;">
+        <h4 style="font-size: 0.85rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.5px;">Tự động điền dữ liệu thực tế mẫu</h4>
+        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+          <button type="button" onclick="fillSampleData('excellent')" style="padding: 12px 20px; background: #ebfbee; border: 1px solid #b2f2bb; color: #2b8a3e; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 8px;">
+            🌟 SV Năng lực Cao (Nguyễn Văn A)
+          </button>
+          <button type="button" onclick="fillSampleData('risk')" style="padding: 12px 20px; background: #fff5f5; border: 1px solid #ffc9c9; color: #c92a2a; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 8px;">
+            ⚠️ SV Rủi ro Trượt (Trần Thị B)
+          </button>
+          <button type="button" onclick="fillSampleData('average')" style="padding: 12px 20px; background: #fff9db; border: 1px solid #ffec99; color: #e67700; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 8px;">
+            📊 SV Trung bình (Lê Văn C)
+          </button>
+        </div>
+      </div>
+
       <!-- 💡 LƯU Ý THUỘC TÍNH QUAN TRỌNG (FEATURE IMPORTANCE ALERT BOX) -->
       <div
         style="background: rgba(200, 16, 46, 0.03); border-left: 4px solid var(--primary); border-radius: 12px; padding: 20px; margin-bottom: 35px; text-align: left;">
@@ -256,206 +272,113 @@
         </div>
       </div>
 
-      <!-- Step Progress Wizard Bar -->
-      <div
-        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; position: relative; max-width: 650px; margin-left: auto; margin-right: auto;">
-        <div
-          style="position: absolute; top: 22px; left: 10%; right: 10%; height: 4px; background: #e2e8f0; z-index: 1; border-radius: 2px;">
-          <div id="step-progress-bar"
-            style="height: 100%; width: 0%; background: var(--primary); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 2px;">
-          </div>
-        </div>
-        <div class="step-indicator active" data-step="1" onclick="goToStep(1)"
-          style="display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; cursor: pointer; flex: 1;">
-          <div class="step-num-circle"
-            style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; border: 4px solid white; transition: all 0.3s;">
-            1</div>
-          <span
-            style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.5px;">Cá
-            nhân</span>
-        </div>
-        <div class="step-indicator" data-step="2" onclick="goToStep(2)"
-          style="display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; cursor: pointer; flex: 1;">
-          <div class="step-num-circle"
-            style="width: 44px; height: 44px; border-radius: 50%; background: #e2e8f0; color: #718096; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; border: 4px solid white; transition: all 0.3s;">
-            2</div>
-          <span
-            style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #718096; letter-spacing: 0.5px;">Học
-            tập</span>
-        </div>
-        <div class="step-indicator" data-step="3" onclick="goToStep(3)"
-          style="display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; cursor: pointer; flex: 1;">
-          <div class="step-num-circle"
-            style="width: 44px; height: 44px; border-radius: 50%; background: #e2e8f0; color: #718096; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; border: 4px solid white; transition: all 0.3s;">
-            3</div>
-          <span
-            style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #718096; letter-spacing: 0.5px;">Kết
-            quả & Tương tác</span>
-        </div>
-      </div>
+      <!-- Simple Guest Form -->
+      <form id="guestForm" onsubmit="event.preventDefault();" style="background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 40px; border: 1px solid var(--border);">
+        <h4 style="font-size:1.1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; display:flex; align-items:center; gap:8px;">
+          <span style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
+          THÔNG TIN HÀNH VI HỌC TẬP (CÁC YẾU TỐ QUYẾT ĐỊNH)
+        </h4>
 
-      <form id="guestForm" onsubmit="event.preventDefault();">
-        <!-- STEP 1: Demographic -->
-        <div class="step-panel" id="step-panel-1">
-          <h4
-            style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
-            <span
-              style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
-            I. Thông tin cá nhân & Nhân khẩu học
-          </h4>
-          <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 20px; text-align: left;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; text-align: left;">
+          <!-- CỘT 1: NĂNG LỰC & NỀN TẢNG -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <h5 style="color: var(--secondary); font-size: 0.9rem; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 5px;">I. NĂNG LỰC & NỀN TẢNG</h5>
+            
             <div class="form-group">
-              <label>GIỚI TÍNH</label>
-              <select name="gender_num" class="form-control">
-                <option value="0">Nam (M)</option>
-                <option value="1">Nữ (F)</option>
+              <label>ĐIỂM TRUNG BÌNH HIỆN TẠI (0-100)</label>
+              <input type="number" name="avg_score" class="form-control" value="70" min="0" max="100">
+              <small style="color:var(--text-dim); font-size:0.75rem; margin-top:4px; display:block;">Đánh giá học lực tổng quát của sinh viên.</small>
+            </div>
+
+            <div class="form-group">
+              <label>ĐIỂM BÀI THI THẤP NHẤT</label>
+              <input type="number" name="min_score" class="form-control" value="50" min="0" max="100">
+              <small style="color:var(--text-dim); font-size:0.75rem; margin-top:4px; display:block;">Giúp phát hiện lỗ hổng kiến thức nghiêm trọng.</small>
+            </div>
+
+            <div class="form-group">
+              <label>PHONG ĐỘ HỌC TẬP (BIẾN ĐỘNG ĐIỂM)</label>
+              <select name="std_score_eval" class="form-control">
+                <option value="5.0">Rất ổn định (Duy trì đều đặn)</option>
+                <option value="12.0" selected>Trung bình (Có biến động nhẹ)</option>
+                <option value="15.0">Thất thường (Lúc cao lúc thấp)</option>
+                <option value="25.0">Sa sút trầm trọng (Biến động lớn)</option>
               </select>
             </div>
+
             <div class="form-group">
-              <label>ĐỘ TUỔI</label>
-              <select name="age_num" class="form-control">
-                <option value="0">0-35 tuổi</option>
-                <option value="1">35-55 tuổi</option>
-                <option value="2">Trên 55 tuổi</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>TRÌNH ĐỘ HỌC VẤN</label>
+              <label>TRÌNH ĐỘ HỌC VẤN ĐẦU VÀO</label>
               <select name="education_num" class="form-control">
-                <option value="0">Không bằng cấp chính thức</option>
-                <option value="1">Dưới A Level</option>
-                <option value="2" selected>A Level hoặc tương đương</option>
-                <option value="3">Bằng cấp HE</option>
-                <option value="4">Sau đại học</option>
+                <option value="0">Chưa tốt nghiệp THPT</option>
+                <option value="1">Tốt nghiệp THCS / Trung cấp nghề</option>
+                <option value="2" selected>Tốt nghiệp THPT (Hệ phổ thông)</option>
+                <option value="3">Đang học Đại học / Cử nhân Cao đẳng</option>
+                <option value="4">Sau đại học (Thạc sĩ, Tiến sĩ)</option>
               </select>
             </div>
-            <div class="form-group">
-              <label>DIỆN KINH TẾ QUẬN HUYỆN (IMD)</label>
-              <select name="imd_band_num" class="form-control">
-                <option value="0">0-10% (Cực kỳ khó khăn)</option>
-                <option value="5" selected>40-50% (Trung bình)</option>
-                <option value="9">90-100% (Thu nhập cao)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>TÌNH TRẠNG KHUYẾT TẬT</label>
-              <select name="disability_num" class="form-control">
-                <option value="0">Không</option>
-                <option value="1">Có</option>
-              </select>
-            </div>
-          </div>
-        </div>
 
-        <!-- STEP 2: History & Registration -->
-        <div class="step-panel hidden" id="step-panel-2">
-          <h4
-            style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
-            <span
-              style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
-            II. Lịch sử & Lộ trình học tập
-          </h4>
-          <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 20px; text-align: left;">
             <div class="form-group">
-              <label style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <span>SỐ LẦN ĐÃ THI LẠI HỌC PHẦN</span>
-                <span class="badge badge-medium"
-                  style="font-size: 0.62rem; padding: 2px 6px; font-weight: 800; background: #fff9db; color: #947100; border-radius: 4px; line-height: 1;">Ảnh
-                  hưởng cao</span>
-              </label>
+              <label>SỐ LẦN ĐÃ HỌC LẠI MÔN NÀY</label>
               <input type="number" name="num_of_prev_attempts" class="form-control" value="0" min="0">
             </div>
-            <div class="form-group">
-              <label>SỐ TÍN CHỈ ĐANG ĐĂNG KÝ HỌC</label>
-              <input type="number" name="studied_credits" class="form-control" value="60" min="0">
-            </div>
-            <div class="form-group">
-              <label>SỐ NGÀY ĐĂNG KÝ TRƯỚC KHAI GIẢNG (REG DAYS)</label>
-              <input type="number" name="reg_days_before" class="form-control" value="-90">
-              <small
-                style="color:var(--text-dim); font-size:0.75rem; display:block; margin-top:6px; font-weight: 500;">* Giá
-                trị âm biểu thị số ngày đăng ký trước khai giảng</small>
-            </div>
           </div>
-        </div>
 
-        <!-- STEP 3: Assessment & VLE Engagement -->
-        <div class="step-panel hidden" id="step-panel-3">
-          <h4
-            style="font-size:1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
-            <span
-              style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
-            III. Kỷ luật, Kết quả học tập & Tương tác
-          </h4>
-          <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 30px; text-align: left;">
+          <!-- CỘT 2: THÁI ĐỘ & ÁP LỰC -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <h5 style="color: var(--secondary); font-size: 0.9rem; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 5px;">II. THÁI ĐỘ & ÁP LỰC HỌC TẬP</h5>
+
             <div class="form-group">
-              <label style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <span>ĐIỂM TRUNG BÌNH HỌC PHẦN (0-100)</span>
-                <span class="badge badge-high"
-                  style="font-size: 0.62rem; padding: 2px 6px; font-weight: 800; background: #fff5f5; color: #c92a2a; border-radius: 4px; line-height: 1;">Trọng
-                  số cực cao</span>
+              <label style="display:flex; justify-content:space-between;">
+                <span>TƯƠNG TÁC HỆ THỐNG LMS (CLICKS)</span>
+                <span id="click-val-badge" style="color:var(--primary); font-weight:800;">600 Clicks</span>
               </label>
-              <input type="number" name="avg_score" class="form-control" value="70" min="0" max="100">
+              <input type="range" name="total_clicks" value="600" min="50" max="3500" step="10"
+                oninput="document.getElementById('click-val-badge').textContent = this.value + ' Clicks';">
+              <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-dim); margin-top: 4px; font-weight: 700;">
+                <span>Rất ít</span><span>Trung bình</span><span>Rất tích cực</span>
+              </div>
             </div>
-            <div class="form-group">
-              <label>ĐIỂM THẤP NHẤT HỌC PHẦN</label>
-              <input type="number" name="min_score" class="form-control" value="50" min="0" max="100">
-            </div>
-            <div class="form-group">
-              <label>SỐ BÀI KIỂM TRA ĐÃ NỘP</label>
-              <input type="number" name="n_submitted" class="form-control" value="4" min="0">
-            </div>
-            <div class="form-group">
-              <label>SỐ BÀI NỘP TRỄ HẠN</label>
-              <input type="number" name="n_late" class="form-control" value="0" min="0">
-            </div>
-            <div class="form-group">
-              <label>ĐỘ TRỄ NỘP BÀI TRUNG BÌNH (NGÀY)</label>
-              <input type="number" name="avg_submit_delay" class="form-control" value="0">
-            </div>
-          </div>
 
-          <div class="form-group" style="text-align: left; margin-bottom: 20px;">
-            <label style="display:flex; justify-content:space-between; align-items: center;">
-              <span style="display: flex; align-items: center; gap: 8px;">
-                MỨC ĐỘ TƯƠNG TÁC HỌC TẬP TRỰC TUYẾN (VLE CLICKS)
-                <span class="badge"
-                  style="font-size: 0.62rem; padding: 2px 6px; font-weight: 800; background: var(--primary); color: white; border-radius: 4px; line-height: 1; text-transform: uppercase;">TRỌNG
-                  SỐ CAO NHẤT ★</span>
-              </span>
-              <span id="click-val-badge" style="color:var(--primary); font-weight:800; font-size:0.9rem;">600
-                Clicks</span>
-            </label>
-            <input type="range" name="total_clicks" value="600" min="150" max="3500" step="10"
-              oninput="document.getElementById('click-val-badge').textContent = this.value + ' Clicks';"
-              style="margin-top:10px;">
-            <div
-              style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-dim); margin-top: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
-              <span>Rất ít (150)</span>
-              <span>Trung bình</span>
-              <span>Tích cực</span>
-              <span>Rất tích cực (3500)</span>
+            <div class="form-group">
+              <label>SỐ BÀI TẬP ĐÃ NỘP TRỄ HẠN</label>
+              <input type="number" name="n_late" class="form-control" value="0" min="0" oninput="document.getElementById('hidden_avg_delay').value = this.value > 0 ? this.value * 2 : 0;">
+            </div>
+
+            <div class="form-group" style="display: flex; gap: 15px;">
+              <div style="flex: 1;">
+                <label>SỐ BÀI ĐÃ NỘP</label>
+                <input type="number" name="n_submitted" class="form-control" value="4" min="0">
+              </div>
+              <div style="flex: 1;">
+                <label>TỶ LỆ CHUYÊN CẦN (%)</label>
+                <input type="number" name="attendance_rate" class="form-control" value="80" min="0" max="100">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>THỜI ĐIỂM ĐĂNG KÝ MÔN</label>
+              <select name="reg_days_before" class="form-control">
+                <option value="-90" selected>Đăng ký sớm (Chủ động chuẩn bị)</option>
+                <option value="-10">Đăng ký sát ngày (Nước đến chân...)</option>
+                <option value="10">Đăng ký bổ sung (Trễ hạn)</option>
+              </select>
             </div>
           </div>
         </div>
 
-        <!-- Navigation Buttons inside Wizard -->
-        <div
-          style="display: flex; justify-content: space-between; gap: 15px; margin-top: 40px; border-top: 1px solid #f0f0f0; padding-top: 25px;">
-          <button type="button" id="prevStepBtn" onclick="navigateStep(-1)"
-            style="padding: 14px 28px; border-radius: 10px; border: 2px solid var(--border); background: white; font-weight: 700; cursor: pointer; color: var(--text-dim); transition: all 0.2s; opacity: 0.5; pointer-events: none;">
-            ← QUAY LẠI
-          </button>
-          <button type="button" id="nextStepBtn" onclick="navigateStep(1)"
-            style="padding: 14px 28px; border-radius: 10px; border: none; background: var(--primary); color: white; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(200, 16, 46, 0.2);">
-            TIẾP THEO →
-          </button>
+        <!-- Hidden Demographics & Technical Features -->
+        <div style="display:none;">
+          <input type="hidden" name="gender_num" value="0">
+          <input type="hidden" name="age_num" value="0">
+          <input type="hidden" name="imd_band_num" value="5">
+          <input type="hidden" name="disability_num" value="0">
+          <input type="hidden" name="avg_submit_delay" id="hidden_avg_delay" value="0">
+        </div>
+
+        <div style="margin-top: 40px; text-align: center;">
           <button type="button" id="submitPredictionBtn" onclick="submitGuestPrediction(event)"
-            style="display: none; padding: 14px 35px; border-radius: 10px; border: none; background: #27ae60; color: white; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);">
-            PHÂN TÍCH RỦI RO TOÀN DIỆN ✓
+            style="padding: 16px 40px; border-radius: 12px; border: none; background: var(--secondary); color: white; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(22, 33, 62, 0.3);">
+            🔍 CHẠY DỰ BÁO NHANH
           </button>
         </div>
       </form>
@@ -739,106 +662,53 @@
 
 {% block extra_js %}
 <script>
-  let currentStep = 1;
-  const totalSteps = 3;
-
-  function goToStep(step) {
-    if (step < 1 || step > totalSteps) return;
-
-    currentStep = step;
-
-    // Update panels visibility
-    for (let i = 1; i <= totalSteps; i++) {
-      const panel = document.getElementById(`step-panel-${i}`);
-      if (panel) {
-        if (i === step) {
-          panel.classList.remove('hidden');
-        } else {
-          panel.classList.add('hidden');
-        }
-      }
+  function fillSampleData(type) {
+    const form = document.getElementById('guestForm');
+    
+    if (type === 'excellent') {
+      form.num_of_prev_attempts.value = "0";
+      form.avg_score.value = "85";
+      form.min_score.value = "75";
+      form.std_score_eval.value = "5.0";
+      form.education_num.value = "3";
+      
+      form.total_clicks.value = "2800";
+      document.getElementById('click-val-badge').textContent = '2800 Clicks';
+      form.n_late.value = "0";
+      form.n_submitted.value = "6";
+      form.attendance_rate.value = "95";
+      form.reg_days_before.value = "-90";
+    } 
+    else if (type === 'risk') {
+      form.num_of_prev_attempts.value = "1"; 
+      form.avg_score.value = "35"; 
+      form.min_score.value = "20";
+      form.std_score_eval.value = "25.0";
+      form.education_num.value = "1";
+      
+      form.total_clicks.value = "160"; 
+      document.getElementById('click-val-badge').textContent = '160 Clicks';
+      form.n_late.value = "2"; 
+      form.n_submitted.value = "2";
+      form.attendance_rate.value = "20";
+      form.reg_days_before.value = "-10";
     }
-
-    // Update indicators
-    const indicators = document.querySelectorAll('.step-indicator');
-    indicators.forEach(ind => {
-      const s = parseInt(ind.getAttribute('data-step'));
-      const circle = ind.querySelector('.step-num-circle');
-      const label = ind.querySelector('span');
-
-      if (s === step) {
-        ind.classList.add('active');
-        if (circle) {
-          circle.style.background = 'var(--primary)';
-          circle.style.color = 'white';
-        }
-        if (label) {
-          label.style.color = 'var(--primary)';
-          label.style.fontWeight = '800';
-        }
-      } else if (s < step) {
-        ind.classList.remove('active');
-        if (circle) {
-          circle.style.background = '#27ae60'; // Completed green style
-          circle.style.color = 'white';
-        }
-        if (label) {
-          label.style.color = '#27ae60';
-          label.style.fontWeight = '700';
-        }
-      } else {
-        ind.classList.remove('active');
-        if (circle) {
-          circle.style.background = '#e2e8f0';
-          circle.style.color = '#718096';
-        }
-        if (label) {
-          label.style.color = '#718096';
-          label.style.fontWeight = '700';
-        }
-      }
-    });
-
-    // Update progress bar width
-    const progressLine = document.getElementById('step-progress-bar');
-    if (progressLine) {
-      const percentage = ((step - 1) / (totalSteps - 1)) * 100;
-      progressLine.style.width = `${percentage}%`;
+    else if (type === 'average') {
+      form.num_of_prev_attempts.value = "0";
+      form.avg_score.value = "55";
+      form.min_score.value = "45";
+      form.std_score_eval.value = "12.0";
+      form.education_num.value = "2";
+      
+      form.total_clicks.value = "850";
+      document.getElementById('click-val-badge').textContent = '850 Clicks';
+      form.n_late.value = "1";
+      form.n_submitted.value = "4";
+      form.attendance_rate.value = "60";
+      form.reg_days_before.value = "-90";
     }
-
-    // Update wizard action buttons
-    const prevBtn = document.getElementById('prevStepBtn');
-    const nextBtn = document.getElementById('nextStepBtn');
-    const submitBtn = document.getElementById('submitPredictionBtn');
-
-    if (prevBtn) {
-      if (step === 1) {
-        prevBtn.style.opacity = '0.5';
-        prevBtn.style.pointerEvents = 'none';
-      } else {
-        prevBtn.style.opacity = '1';
-        prevBtn.style.pointerEvents = 'auto';
-      }
-    }
-
-    if (nextBtn && submitBtn) {
-      if (step === totalSteps) {
-        nextBtn.style.display = 'none';
-        submitBtn.style.display = 'block';
-      } else {
-        nextBtn.style.display = 'block';
-        submitBtn.style.display = 'none';
-      }
-    }
+    
+    alert('Đã tải thành công dữ liệu mẫu ' + (type==='excellent' ? 'Sinh viên Khá/Giỏi' : type==='risk' ? 'Sinh viên Rủi ro' : 'Sinh viên Trung bình') + ' vào biểu mẫu!');
   }
-
-  function navigateStep(direction) {
-    goToStep(currentStep + direction);
-  }
-
-  // Automatically load Step 1 on start
-  document.addEventListener('DOMContentLoaded', () => {
-    goToStep(1);
-  });
 </script>
 {% endblock %}
