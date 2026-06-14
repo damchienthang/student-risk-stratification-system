@@ -3,7 +3,6 @@
 {% block title %}RiskSight — Hệ thống Phân tầng Rủi ro Sinh viên{% endblock %}
 {% block extra_css %}
 <style>
-  /* Premium modern styles */
   .gradient-text {
     background: linear-gradient(135deg, var(--primary) 0%, #ff4d6d 100%);
     -webkit-background-clip: text;
@@ -12,19 +11,19 @@
   }
 
   .hero-title {
-    font-size: 3.8rem;
+    font-size: 3.6rem;
     font-weight: 900;
-    margin-bottom: 25px;
-    line-height: 1.15;
+    margin-bottom: 22px;
+    line-height: 1.13;
     letter-spacing: -1.5px;
   }
 
   .hero-desc {
-    font-size: 1.25rem;
+    font-size: 1.18rem;
     color: var(--text-dim);
-    max-width: 850px;
-    margin: 0 auto 45px;
-    line-height: 1.7;
+    max-width: 820px;
+    margin: 0 auto 40px;
+    line-height: 1.75;
     font-weight: 500;
   }
 
@@ -39,11 +38,11 @@
 
   .form-control {
     width: 100%;
-    padding: 14px 18px;
+    padding: 13px 17px;
     border-radius: 10px;
     border: 1px solid var(--border);
     outline: none;
-    font-size: 0.95rem;
+    font-size: 0.93rem;
     font-weight: 600;
     color: var(--secondary);
     background: #f8fafc;
@@ -53,28 +52,20 @@
   .form-control:focus {
     border-color: var(--primary) !important;
     background: white;
-    box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.12) !important;
+    box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.10) !important;
   }
 
   .form-group label {
     display: flex;
     align-items: flex-end;
-    min-height: 34px;
-    font-size: 0.75rem;
+    min-height: 30px;
+    font-size: 0.73rem;
     font-weight: 800;
     color: var(--text-dim);
-    margin-bottom: 8px;
+    margin-bottom: 7px;
     text-transform: uppercase;
     letter-spacing: 1px;
     line-height: 1.3;
-  }
-
-  .step-num-circle {
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 1);
-  }
-
-  .step-indicator.active .step-num-circle {
-    box-shadow: 0 4px 15px rgba(200, 16, 46, 0.35), 0 0 0 4px rgba(255, 255, 255, 1) !important;
   }
 
   @keyframes fadeIn {
@@ -89,7 +80,6 @@
     }
   }
 
-  /* Range input customization */
   input[type=range] {
     -webkit-appearance: none;
     width: 100%;
@@ -102,21 +92,21 @@
 
   input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 8px;
+    height: 7px;
     cursor: pointer;
     background: #e2e8f0;
     border-radius: 4px;
   }
 
   input[type=range]::-webkit-slider-thumb {
-    height: 24px;
-    width: 24px;
+    height: 22px;
+    width: 22px;
     border-radius: 50%;
     background: var(--primary);
     cursor: pointer;
     -webkit-appearance: none;
-    margin-top: -8px;
-    box-shadow: 0 4px 10px rgba(200, 16, 46, 0.3);
+    margin-top: -7px;
+    box-shadow: 0 3px 8px rgba(200, 16, 46, 0.28);
     transition: transform 0.1s;
   }
 
@@ -129,9 +119,58 @@
   }
 
   .stat-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 45px rgba(200, 16, 46, 0.08) !important;
-    border-color: rgba(200, 16, 46, 0.25) !important;
+    transform: translateY(-7px);
+    box-shadow: 0 18px 40px rgba(200, 16, 46, 0.08) !important;
+    border-color: rgba(200, 16, 46, 0.22) !important;
+  }
+
+  /* Story bridge paragraph */
+  .story-bridge {
+    max-width: 820px;
+    margin: 0 auto 30px;
+    font-size: 1.0rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    font-weight: 500;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  /* Sample data buttons — text-based, no emoji */
+  .sample-btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.83rem;
+    border: 1px solid;
+  }
+
+  .sample-btn.high {
+    background: #ebfbee;
+    border-color: #b2f2bb;
+    color: #2b8a3e;
+  }
+
+  .sample-btn.risk {
+    background: #fff5f5;
+    border-color: #ffc9c9;
+    color: #c92a2a;
+  }
+
+  .sample-btn.avg {
+    background: #fff9db;
+    border-color: #ffec99;
+    color: #e67700;
+  }
+
+  .sample-btn:hover {
+    filter: brightness(0.96);
+    transform: translateY(-1px);
   }
 </style>
 {% endblock %}
@@ -139,163 +178,130 @@
 {% block content %}
 <!-- ── HERO ──────────────────────────────────────────────── -->
 <section class="hero" id="about"
-  style="padding: 120px 0 80px; background: linear-gradient(135deg, rgba(200, 16, 46, 0.04) 0%, rgba(26, 37, 48, 0.02) 100%), radial-gradient(at top right, rgba(200, 16, 46, 0.05) 0%, transparent 60%); text-align: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border);">
-  <!-- Glowing Background Blobs -->
+  style="padding: 72px 0 36px; background: linear-gradient(135deg, rgba(200,16,46,0.04) 0%, rgba(26,37,48,0.02) 100%), radial-gradient(at top right, rgba(200,16,46,0.05) 0%, transparent 60%); text-align: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border);">
+  <!-- Glowing blobs -->
   <div
-    style="position: absolute; width: 500px; height: 500px; background: rgba(200, 16, 46, 0.06); filter: blur(140px); border-radius: 50%; top: -150px; right: -100px; pointer-events: none; z-index: 0;">
+    style="position:absolute;width:480px;height:480px;background:rgba(200,16,46,0.055);filter:blur(130px);border-radius:50%;top:-140px;right:-90px;pointer-events:none;z-index:0;">
   </div>
   <div
-    style="position: absolute; width: 400px; height: 400px; background: rgba(45, 52, 70, 0.04); filter: blur(120px); border-radius: 50%; bottom: -100px; left: -100px; pointer-events: none; z-index: 0;">
+    style="position:absolute;width:360px;height:360px;background:rgba(45,52,70,0.035);filter:blur(110px);border-radius:50%;bottom:-90px;left:-90px;pointer-events:none;z-index:0;">
   </div>
 
-  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 5;">
+  <div class="container" style="max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:5;">
     <h1 class="hero-title">Phân Tầng Rủi Ro <span class="gradient-text">Học Tập Sinh Viên</span></h1>
     <p class="hero-desc">Ứng dụng trí tuệ nhân tạo chuyên sâu giúp nhận diện sớm các sinh viên có nguy cơ bỏ học hoặc
-      trượt môn, đồng thời đề xuất giải pháp can thiệp kịp thời.</p>
+      trượt môn, đồng thời đề xuất giải pháp can thiệp kịp thời từ mốc ngày thứ 60 của học kỳ.</p>
 
     {% if user and user.role != UserRole.GUEST %}
     <!-- Student Search (Official) -->
-    <div class="search-container" style="max-width: 800px; margin: 0 auto 30px; position: relative; padding: 0 20px;">
+    <div class="search-container" style="max-width:780px;margin:0 auto 28px;position:relative;padding:0 20px;">
       <h3
-        style="text-align: center; margin-bottom: 20px; color: var(--secondary); font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">
+        style="text-align:center;margin-bottom:18px;color:var(--secondary);font-size:1.0rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;">
         Tra cứu rủi ro học tập chính thức</h3>
       <div class="search-box"
-        style="display: flex; background: white; padding: 8px; border-radius: 100px; box-shadow: 0 15px 40px rgba(0,0,0,0.06); border: 2px solid var(--border); transition: all 0.3s; overflow: hidden;">
+        style="display:flex;background:white;padding:7px;border-radius:100px;box-shadow:0 14px 36px rgba(0,0,0,0.055);border:2px solid var(--border);transition:all 0.3s;overflow:hidden;">
         <input type="text" id="studentSearchInput" class="search-input"
           placeholder="Nhập mã sinh viên để truy vấn thông tin rủi ro (VD: 11391)..."
-          style="flex: 1; border: none; padding: 15px 30px; font-size: 1.05rem; outline: none; font-weight: 600; background: transparent; {{ 'color: var(--text-dim); cursor: not-allowed; background: #f9f9f9;' if user.role == UserRole.STUDENT else '' }}"
+          style="flex:1;border:none;padding:14px 28px;font-size:1.02rem;outline:none;font-weight:600;background:transparent;{{ 'color:var(--text-dim);cursor:not-allowed;background:#f9f9f9;' if user.role == UserRole.STUDENT else '' }}"
           value="{{ user.username if user.role == UserRole.STUDENT else '' }}" {{ 'disabled' if
           user.role==UserRole.STUDENT else '' }}>
 
         {% if user.role == UserRole.STUDENT %}
         <a href="/student" class="search-btn"
-          style="background: var(--primary); color: white; border: none; padding: 15px 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(200, 16, 46, 0.2);">XEM
-          KẾT QUẢ CỦA TÔI</a>
+          style="background:var(--primary);color:white;border:none;padding:14px 32px;border-radius:100px;font-weight:800;cursor:pointer;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 14px rgba(200,16,46,0.2);">XEM
+          KẾT QUẢ</a>
         {% elif user.role == UserRole.ADMIN %}
         <button class="search-btn" onclick="searchStudent()"
-          style="background: var(--primary); color: white; border: none; padding: 0 35px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; box-shadow: 0 5px 15px rgba(200, 16, 46, 0.2);">Tra
-          cứu ngay</button>
+          style="background:var(--primary);color:white;border:none;padding:0 32px;border-radius:100px;font-weight:800;cursor:pointer;text-transform:uppercase;box-shadow:0 5px 14px rgba(200,16,46,0.2);">Tra
+          cứu</button>
         {% endif %}
       </div>
       {% if user.role == UserRole.STUDENT %}
-      <p style="margin-top: 12px; font-size: 0.85rem; color: var(--text-dim); font-weight: 500;">* Bạn đang đăng nhập
-        với tư cách sinh viên. Kết quả rủi ro học tập của bạn được hiển thị bên dưới.</p>
+      <p style="margin-top:10px;font-size:0.83rem;color:var(--text-dim);font-weight:500;">Bạn đang đăng nhập với tư cách
+        sinh viên. Kết quả rủi ro học tập của bạn được hiển thị bên dưới.</p>
       {% endif %}
     </div>
 
-    <div style="text-align: center; margin: 45px 0;">
-      <span
-        style="background: var(--border); height: 1px; width: 120px; display: inline-block; vertical-align: middle;"></span>
-      <spanx`
-        style="margin: 0 20px; color: var(--text-dim); font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;">HOẶC
-        THỬ NGHIỆM</span>
-        <span
-          style="background: var(--border); height: 1px; width: 120px; display: inline-block; vertical-align: middle;"></span>
+    <div style="text-align:center;margin:36px 0;">
+      <span style="background:var(--border);height:1px;width:100px;display:inline-block;vertical-align:middle;"></span>
+      <span style="margin:0 18px;color:var(--text-dim);font-weight:800;font-size:0.82rem;letter-spacing:1px;">HOẶC THỬ
+        NGHIỆM</span>
+      <span style="background:var(--border);height:1px;width:100px;display:inline-block;vertical-align:middle;"></span>
     </div>
     {% endif %}
 
-    <!-- Guest Trial Section (Available for everyone NOT lecturer) -->
+    <!-- Guest Trial -->
     {% if not user or user.role != UserRole.ADMIN %}
     <div id="guest-trial"
-      style="max-width: 900px; margin: 0 auto; background: white; padding: 50px; border-radius: 20px; border: 1px solid rgba(224, 224, 224, 0.8); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.05); position: relative; z-index: 10;">
+      style="max-width:880px;margin:0 auto;background:white;padding:44px 48px;border-radius:18px;border:1px solid rgba(224,224,224,0.8);box-shadow:0 22px 55px rgba(0,0,0,0.045);position:relative;z-index:10;">
       <h3
-        style="text-align: center; margin-bottom: 12px; color: var(--secondary); font-size: 2.3rem; font-weight: 900; letter-spacing: -1px;">
+        style="text-align:center;margin-bottom:10px;color:var(--secondary);font-size:2.1rem;font-weight:900;letter-spacing:-0.8px;">
         Thử nghiệm dự báo rủi ro</h3>
-      <p style="text-align: center; color: var(--text-dim); margin-bottom: 30px; font-size: 1.05rem; font-weight: 500;">
-        Hãy hoàn thành các thông số dưới đây để AI tiến hành phân tích phân tầng rủi ro.</p>
+      <p style="text-align:center;color:var(--text-dim);margin-bottom:28px;font-size:1.0rem;font-weight:500;">Hoàn thành
+        các thông số dưới đây để AI tiến hành phân tích và phân tầng rủi ro.</p>
 
-      <!-- PRESET REAL DATA BUTTONS -->
-      <div style="margin-bottom: 35px; text-align: center;">
-        <h4 style="font-size: 0.85rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.5px;">Tự động điền dữ liệu thực tế mẫu</h4>
-        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-          <button type="button" onclick="fillSampleData('excellent')" style="padding: 12px 20px; background: #ebfbee; border: 1px solid #b2f2bb; color: #2b8a3e; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 8px;">
-            🌟 SV Năng lực Cao (Nguyễn Văn A)
-          </button>
-          <button type="button" onclick="fillSampleData('risk')" style="padding: 12px 20px; background: #fff5f5; border: 1px solid #ffc9c9; color: #c92a2a; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 8px;">
-            ⚠️ SV Rủi ro Trượt (Trần Thị B)
-          </button>
-          <button type="button" onclick="fillSampleData('average')" style="padding: 12px 20px; background: #fff9db; border: 1px solid #ffec99; color: #e67700; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 8px;">
-            📊 SV Trung bình (Lê Văn C)
-          </button>
-        </div>
-      </div>
 
-      <!-- 💡 LƯU Ý THUỘC TÍNH QUAN TRỌNG (FEATURE IMPORTANCE ALERT BOX) -->
+      <!-- Feature importance box — no emoji -->
       <div
-        style="background: rgba(200, 16, 46, 0.03); border-left: 4px solid var(--primary); border-radius: 12px; padding: 20px; margin-bottom: 35px; text-align: left;">
+        style="background:rgba(200,16,46,0.028);border-left:4px solid var(--primary);border-radius:10px;padding:18px 22px;margin-bottom:30px;text-align:left;">
         <h4
-          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3;">
+          style="font-size:0.9rem;font-weight:800;color:var(--secondary);margin-top:0;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;line-height:1.3;">
           Chỉ số ảnh hưởng lớn nhất đến dự đoán
         </h4>
-        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 15px; font-weight: 500;">
-          Dựa trên phân tích trọng số của mô hình <strong>LightGBM</strong>, kết quả rủi ro học tập của sinh viên chịu
-          ảnh hưởng sâu sắc nhất bởi 4 nhóm chỉ số dưới đây. Hãy lưu ý khi thay đổi các thông số thử nghiệm:
+        <p style="font-size:0.84rem;color:var(--text-dim);line-height:1.6;margin-bottom:13px;font-weight:500;">
+          Dựa trên phân tích trọng số mô hình <strong>LightGBM</strong>, kết quả rủi ro chịu ảnh hưởng sâu sắc nhất bởi
+          4 nhóm chỉ số sau:
         </p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 15px;">
-
-          <!-- Item 1: VLE Clicks -->
-          <div style="display: flex; gap: 10px; font-size: 0.82rem; line-height: 1.5;">
-            <div>
-              <strong style="color: var(--secondary);">Tương tác trực tuyến:</strong>
-              <span style="color: var(--text-dim); font-weight: 500;">Tần suất click học liệu. Lượng click <strong>dưới
-                  400</strong> đẩy nguy cơ rơi vào nhóm <strong>Cao / Nguy cấp</strong> lên gấp 3 lần.</span>
-            </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:12px;">
+          <div style="font-size:0.81rem;line-height:1.55;">
+            <strong style="color:var(--secondary);">Tương tác trực tuyến:</strong>
+            <span style="color:var(--text-dim);font-weight:500;"> Tần suất click học liệu. Lượng click <strong>dưới
+                400</strong> đẩy nguy cơ vào nhóm Cao/Nguy cấp lên gấp 3 lần.</span>
           </div>
-
-          <!-- Item 2: Avg Score -->
-          <div style="display: flex; gap: 10px; font-size: 0.82rem; line-height: 1.5;">
-            <div>
-              <strong style="color: var(--secondary);">Điểm trung bình học phần:</strong>
-              <span style="color: var(--text-dim); font-weight: 500;">Kết quả kiểm tra tích lũy. Điểm số <strong>dưới
-                  55/100</strong> là ngưỡng cảnh báo cực kỳ lớn đối với mô hình.</span>
-            </div>
+          <div style="font-size:0.81rem;line-height:1.55;">
+            <strong style="color:var(--secondary);">Điểm trung bình học phần:</strong>
+            <span style="color:var(--text-dim);font-weight:500;"> Kết quả kiểm tra tích lũy. Điểm <strong>dưới
+                55/100</strong> là ngưỡng cảnh báo cực kỳ lớn.</span>
           </div>
-
-          <!-- Item 3: Prev Attempts -->
-          <div style="display: flex; gap: 10px; font-size: 0.82rem; line-height: 1.5;">
-            <div>
-              <strong style="color: var(--secondary);">Số lần đã thi lại học phần:</strong>
-              <span style="color: var(--text-dim); font-weight: 500;">Lịch sử trượt môn. Từng trượt từ <strong>1 lần trở
-                  lên</strong> chịu tỷ lệ rủi ro trượt môn cao hơn 45% so với bạn học.</span>
-            </div>
+          <div style="font-size:0.81rem;line-height:1.55;">
+            <strong style="color:var(--secondary);">Số lần học lại học phần:</strong>
+            <span style="color:var(--text-dim);font-weight:500;"> Lịch sử trượt môn. Từng trượt <strong>1 lần trở
+                lên</strong> khiến tỷ lệ rủi ro cao hơn 45%.</span>
           </div>
-
-          <!-- Item 4: Submission Discipline -->
-          <div style="display: flex; gap: 10px; font-size: 0.82rem; line-height: 1.5;">
-            <div>
-              <strong style="color: var(--secondary);">Kỷ luật nộp bài tập:</strong>
-              <span style="color: var(--text-dim); font-weight: 500;">Nộp bài trễ hạn. Số ngày trễ trung bình
-                <strong>trên 3 ngày</strong> trực tiếp đẩy sinh viên vào ranh giới rủi ro.</span>
-            </div>
+          <div style="font-size:0.81rem;line-height:1.55;">
+            <strong style="color:var(--secondary);">Kỷ luật nộp bài tập:</strong>
+            <span style="color:var(--text-dim);font-weight:500;"> Số ngày trễ trung bình <strong>trên 3 ngày</strong>
+              trực tiếp đẩy sinh viên vào ranh giới rủi ro.</span>
           </div>
-
         </div>
       </div>
 
-      <!-- Simple Guest Form -->
-      <form id="guestForm" onsubmit="event.preventDefault();" style="background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 40px; border: 1px solid var(--border);">
-        <h4 style="font-size:1.1rem; color:var(--primary); text-transform:uppercase; margin-bottom:25px; border-bottom:2px solid var(--border); padding-bottom:12px; font-weight:800; display:flex; align-items:center; gap:8px;">
-          <span style="width:4px; height:18px; background:var(--primary); display:inline-block; border-radius:2px;"></span>
-          THÔNG TIN HÀNH VI HỌC TẬP (CÁC YẾU TỐ QUYẾT ĐỊNH)
+      <!-- Form -->
+      <form id="guestForm" onsubmit="event.preventDefault();"
+        style="background:white;border-radius:10px;padding:26px;box-shadow:0 3px 12px rgba(0,0,0,0.04);margin-bottom:36px;border:1px solid var(--border);">
+        <h4
+          style="font-size:1.05rem;color:var(--primary);text-transform:uppercase;margin-bottom:22px;border-bottom:2px solid var(--border);padding-bottom:10px;font-weight:800;display:flex;align-items:center;gap:8px;">
+          <span style="width:4px;height:16px;background:var(--primary);display:inline-block;border-radius:2px;"></span>
+          THÔNG TIN HÀNH VI HỌC TẬP
         </h4>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; text-align: left;">
-          <!-- CỘT 1: NĂNG LỰC & NỀN TẢNG -->
-          <div style="display: flex; flex-direction: column; gap: 20px;">
-            <h5 style="color: var(--secondary); font-size: 0.9rem; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 5px;">I. NĂNG LỰC & NỀN TẢNG</h5>
-            
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;text-align:left;">
+          <!-- CỘT 1 -->
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <h5
+              style="color:var(--secondary);font-size:0.88rem;font-weight:800;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:4px;">
+              I. NĂNG LỰC &amp; NỀN TẢNG</h5>
             <div class="form-group">
-              <label>ĐIỂM TRUNG BÌNH HIỆN TẠI (0-100)</label>
+              <label>ĐIỂM TRUNG BÌNH HIỆN TẠI (0–100)</label>
               <input type="number" name="avg_score" class="form-control" value="70" min="0" max="100">
-              <small style="color:var(--text-dim); font-size:0.75rem; margin-top:4px; display:block;">Đánh giá học lực tổng quát của sinh viên.</small>
+              <small style="color:var(--text-dim);font-size:0.73rem;margin-top:3px;display:block;">Đánh giá học lực tổng
+                quát.</small>
             </div>
-
             <div class="form-group">
               <label>ĐIỂM BÀI THI THẤP NHẤT</label>
               <input type="number" name="min_score" class="form-control" value="50" min="0" max="100">
-              <small style="color:var(--text-dim); font-size:0.75rem; margin-top:4px; display:block;">Giúp phát hiện lỗ hổng kiến thức nghiêm trọng.</small>
+              <small style="color:var(--text-dim);font-size:0.73rem;margin-top:3px;display:block;">Phát hiện lỗ hổng
+                kiến thức nghiêm trọng.</small>
             </div>
-
             <div class="form-group">
               <label>PHONG ĐỘ HỌC TẬP (BIẾN ĐỘNG ĐIỂM)</label>
               <select name="std_score_eval" class="form-control">
@@ -305,7 +311,6 @@
                 <option value="25.0">Sa sút trầm trọng (Biến động lớn)</option>
               </select>
             </div>
-
             <div class="form-group">
               <label>TRÌNH ĐỘ HỌC VẤN ĐẦU VÀO</label>
               <select name="education_num" class="form-control">
@@ -316,45 +321,42 @@
                 <option value="4">Sau đại học (Thạc sĩ, Tiến sĩ)</option>
               </select>
             </div>
-
             <div class="form-group">
               <label>SỐ LẦN ĐÃ HỌC LẠI MÔN NÀY</label>
               <input type="number" name="num_of_prev_attempts" class="form-control" value="0" min="0">
             </div>
           </div>
 
-          <!-- CỘT 2: THÁI ĐỘ & ÁP LỰC -->
-          <div style="display: flex; flex-direction: column; gap: 20px;">
-            <h5 style="color: var(--secondary); font-size: 0.9rem; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 5px;">II. THÁI ĐỘ & ÁP LỰC HỌC TẬP</h5>
-
+          <!-- CỘT 2 -->
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <h5
+              style="color:var(--secondary);font-size:0.88rem;font-weight:800;border-bottom:1px solid var(--border);padding-bottom:7px;margin-bottom:4px;">
+              II. THÁI ĐỘ &amp; ÁP LỰC</h5>
             <div class="form-group">
-              <label style="display:flex; justify-content:space-between;">
+              <label style="display:flex;justify-content:space-between;">
                 <span>TƯƠNG TÁC HỆ THỐNG LMS (CLICKS)</span>
-                <span id="click-val-badge" style="color:var(--primary); font-weight:800;">600 Clicks</span>
               </label>
-              <input type="range" name="total_clicks" value="600" min="50" max="3500" step="10"
-                oninput="document.getElementById('click-val-badge').textContent = this.value + ' Clicks';">
-              <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-dim); margin-top: 4px; font-weight: 700;">
+              <input type="range" name="total_clicks" value="600" min="50" max="3500" step="10">
+              <div
+                style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--text-dim);margin-top:3px;font-weight:700;">
                 <span>Rất ít</span><span>Trung bình</span><span>Rất tích cực</span>
               </div>
             </div>
-
             <div class="form-group">
               <label>SỐ BÀI TẬP ĐÃ NỘP TRỄ HẠN</label>
-              <input type="number" name="n_late" class="form-control" value="0" min="0" oninput="document.getElementById('hidden_avg_delay').value = this.value > 0 ? this.value * 2 : 0;">
+              <input type="number" name="n_late" class="form-control" value="0" min="0"
+                oninput="document.getElementById('hidden_avg_delay').value = this.value > 0 ? this.value * 2 : 0;">
             </div>
-
-            <div class="form-group" style="display: flex; gap: 15px;">
-              <div style="flex: 1;">
+            <div class="form-group" style="display:flex;gap:13px;">
+              <div style="flex:1;">
                 <label>SỐ BÀI ĐÃ NỘP</label>
                 <input type="number" name="n_submitted" class="form-control" value="4" min="0">
               </div>
-              <div style="flex: 1;">
+              <div style="flex:1;">
                 <label>TỶ LỆ CHUYÊN CẦN (%)</label>
                 <input type="number" name="attendance_rate" class="form-control" value="80" min="0" max="100">
               </div>
             </div>
-
             <div class="form-group">
               <label>THỜI ĐIỂM ĐĂNG KÝ MÔN</label>
               <select name="reg_days_before" class="form-control">
@@ -366,7 +368,7 @@
           </div>
         </div>
 
-        <!-- Hidden Demographics & Technical Features -->
+        <!-- Hidden -->
         <div style="display:none;">
           <input type="hidden" name="gender_num" value="0">
           <input type="hidden" name="age_num" value="0">
@@ -375,10 +377,10 @@
           <input type="hidden" name="avg_submit_delay" id="hidden_avg_delay" value="0">
         </div>
 
-        <div style="margin-top: 40px; text-align: center;">
+        <div style="margin-top:36px;text-align:center;">
           <button type="button" id="submitPredictionBtn" onclick="submitGuestPrediction(event)"
-            style="padding: 16px 40px; border-radius: 12px; border: none; background: var(--secondary); color: white; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 25px rgba(22, 33, 62, 0.3);">
-            🔍 CHẠY DỰ BÁO NHANH
+            style="padding:15px 40px;border-radius:10px;border:none;background:var(--secondary);color:white;font-weight:800;font-size:1.05rem;cursor:pointer;transition:all 0.3s;box-shadow:0 8px 22px rgba(22,33,62,0.28);">
+            CHẠY DỰ BÁO NHANH
           </button>
         </div>
       </form>
@@ -387,127 +389,119 @@
   </div>
 </section>
 
-<hr style="border: none; border-top: 1px solid var(--border); margin: 40px auto 10px; max-width: 1100px; opacity: 0.6; position: relative; z-index: 10;">
+<!-- ── KPI STATS ──────────────────────────────────────────── -->
+<section class="section" style="padding:32px 0 24px;background:white;position:relative;z-index:12;">
+  <div class="container" style="max-width:1200px;margin:0 auto;padding:0 20px;">
+    <p class="story-bridge">
+      Mô hình LightGBM của RiskSight được huấn luyện trên bộ dữ liệu OULAD (Open University Learning Analytics Dataset)
+      với hơn 32,000 sinh viên, cho thấy hiệu suất vượt trội so với các thuật toán truyền thống trong bài toán phân loại
+      rủi ro học tập đa lớp.
+    </p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));gap:22px;">
 
-<!-- ── SCIENTIFIC ACHIEVEMENTS (KPI STATS) ────────────────── -->
-<section class="section"
-  style="padding: 60px 0 40px; background: white; position: relative; z-index: 12; margin-top: -30px;">
-  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-    <!-- Grid 4 Stats Cards -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px;">
-
-      <!-- Card 1 -->
       <div class="stat-card"
-        style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid var(--primary);">
+        style="background:white;border:1px solid rgba(200,16,46,0.08);padding:28px 24px;border-radius:14px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.02);border-top:4px solid var(--primary);">
         <div
-          style="font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+          style="font-size:2.6rem;font-weight:900;color:var(--primary);margin-bottom:8px;font-family:'Outfit',sans-serif;">
           92.08%</div>
         <h4
-          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">
+          style="font-size:0.9rem;font-weight:800;color:var(--secondary);text-transform:uppercase;margin-bottom:10px;letter-spacing:0.5px;">
           Độ chính xác (Accuracy)</h4>
-        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Hiệu suất
-          dự báo rủi ro học tập chính xác vượt trội của thuật toán LightGBM tối ưu trên bộ dữ liệu kiểm thử OULAD.</p>
+        <p style="font-size:0.83rem;color:var(--text-dim);line-height:1.6;margin:0;font-weight:500;">Hiệu suất dự báo
+          rủi ro học tập vượt trội của thuật toán LightGBM tối ưu trên bộ dữ liệu kiểm thử OULAD.</p>
       </div>
 
-      <!-- Card 2 -->
       <div class="stat-card"
-        style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid #ff4d6d;">
-        <div
-          style="font-size: 2.8rem; font-weight: 900; color: #ff4d6d; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+        style="background:white;border:1px solid rgba(200,16,46,0.08);padding:28px 24px;border-radius:14px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.02);border-top:4px solid #ff4d6d;">
+        <div style="font-size:2.6rem;font-weight:900;color:#ff4d6d;margin-bottom:8px;font-family:'Outfit',sans-serif;">
           84.03%</div>
         <h4
-          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">
+          style="font-size:0.9rem;font-weight:800;color:var(--secondary);text-transform:uppercase;margin-bottom:10px;letter-spacing:0.5px;">
           Độ đo F1-Score</h4>
-        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Cân bằng
-          tối ưu giữa việc tránh bỏ sót sinh viên có nguy cơ thực tế và hạn chế tối đa các cảnh báo sai lệch.</p>
+        <p style="font-size:0.83rem;color:var(--text-dim);line-height:1.6;margin:0;font-weight:500;">Cân bằng tối ưu
+          giữa việc tránh bỏ sót sinh viên có nguy cơ thực tế và hạn chế cảnh báo sai lệch.</p>
       </div>
 
-      <!-- Card 3 -->
       <div class="stat-card"
-        style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid var(--secondary);">
+        style="background:white;border:1px solid rgba(200,16,46,0.08);padding:28px 24px;border-radius:14px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.02);border-top:4px solid var(--secondary);">
         <div
-          style="font-size: 2.8rem; font-weight: 900; color: var(--secondary); margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+          style="font-size:2.6rem;font-weight:900;color:var(--secondary);margin-bottom:8px;font-family:'Outfit',sans-serif;">
           98.68%</div>
         <h4
-          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">
+          style="font-size:0.9rem;font-weight:800;color:var(--secondary);text-transform:uppercase;margin-bottom:10px;letter-spacing:0.5px;">
           Chỉ số AUC-ROC</h4>
-        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Khả năng
-          phân tách xuất sắc giữa các mức rủi ro, hỗ trợ phân loại sinh viên chính xác tiệm cận tuyệt đối.</p>
+        <p style="font-size:0.83rem;color:var(--text-dim);line-height:1.6;margin:0;font-weight:500;">Khả năng phân tách
+          xuất sắc giữa các mức rủi ro, hỗ trợ phân loại sinh viên chính xác tiệm cận tuyệt đối.</p>
       </div>
 
-      <!-- Card 4 -->
       <div class="stat-card"
-        style="background: white; border: 1px solid rgba(200, 16, 46, 0.08); padding: 30px 25px; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); border-top: 4px solid #27ae60;">
-        <div
-          style="font-size: 2.8rem; font-weight: 900; color: #27ae60; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+        style="background:white;border:1px solid rgba(200,16,46,0.08);padding:28px 24px;border-radius:14px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.02);border-top:4px solid #27ae60;">
+        <div style="font-size:2.6rem;font-weight:900;color:#27ae60;margin-bottom:8px;font-family:'Outfit',sans-serif;">
           Day 60</div>
         <h4
-          style="font-size: 0.95rem; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px;">
+          style="font-size:0.9rem;font-weight:800;color:var(--secondary);text-transform:uppercase;margin-bottom:10px;letter-spacing:0.5px;">
           Mốc can thiệp sớm</h4>
-        <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Thời điểm
-          ngày thứ 60 của học kỳ được mô hình chọn để đưa ra các dự báo giúp hỗ trợ học tập kịp thời.</p>
+        <p style="font-size:0.83rem;color:var(--text-dim);line-height:1.6;margin:0;font-weight:500;">Thời điểm ngày thứ
+          60 của học kỳ — mô hình đưa ra dự báo để cố vấn kịp thời hỗ trợ sinh viên.</p>
       </div>
 
     </div>
   </div>
 </section>
 
-<hr style="border: none; border-top: 1px solid var(--border); margin: 30px auto 10px; max-width: 1100px; opacity: 0.6; position: relative; z-index: 10;">
+<hr style="border:none;border-top:1px solid var(--border);margin:0 auto;max-width:1100px;opacity:0.6;">
 
-<!-- ── HOW IT WORKS (QUY TRÌNH HỆ THỐNG) ─────────────────── -->
+<!-- ── HOW IT WORKS ──────────────────────────────────────── -->
 <section class="section"
-  style="padding: 80px 0; background: #fbfbfb; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; position: relative; z-index: 10;">
-  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-    <div class="section-header" style="text-align: center; margin-bottom: 60px;">
-      <h2 class="section-title"
-        style="font-size: 2.2rem; font-weight: 900; color: var(--secondary); margin-bottom: 15px;">Quy Trình Hoạt Động
-        Của <span class="text-primary" style="color: var(--primary);">RiskSight</span></h2>
-      <p class="section-sub"
-        style="font-size: 1.05rem; color: var(--text-dim); max-width: 700px; margin: 0 auto; line-height: 1.6;">Cách
-        thức hệ thống AI phân tích hành vi và bảo vệ kết quả học tập của sinh viên</p>
+  style="padding:40px 0;background:#fbfbfb;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;">
+  <div class="container" style="max-width:1200px;margin:0 auto;padding:0 20px;">
+    <div class="section-header" style="text-align:center;margin-bottom:16px;">
+      <h2 class="section-title" style="font-size:2.0rem;font-weight:900;color:var(--secondary);margin-bottom:12px;">Quy
+        Trình Hoạt Động Của <span style="color:var(--primary);">RiskSight</span></h2>
     </div>
+    <p class="story-bridge" style="margin-bottom:40px;">
+      Từ dữ liệu hành vi học tập số đến cảnh báo rủi ro cụ thể — RiskSight vận hành qua ba giai đoạn liên tiếp, mỗi giai
+      đoạn đều có thể giải thích được bằng ngôn ngữ tự nhiên, không phải hộp đen.
+    </p>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:36px;">
 
-      <!-- Step 1 -->
-      <div style="display: flex; gap: 20px; text-align: left;">
+      <div style="display:flex;gap:18px;text-align:left;">
         <div
-          style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 18px; background: rgba(200, 16, 46, 0.06); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;">
+          style="flex-shrink:0;width:56px;height:56px;border-radius:16px;background:rgba(200,16,46,0.055);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;">
           01</div>
         <div>
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px;">Thu Thập Tương
-            Tác Số</h3>
-          <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Tự động
-            ghi nhận và chuẩn hóa các tương tác trực tuyến (VLE Clicks), lịch sử học tập và tình hình chuyên cần nộp bài
-            kiểm tra đánh giá hàng tuần của sinh viên.</p>
+          <h3 style="font-size:1.15rem;font-weight:800;color:var(--secondary);margin-bottom:10px;">Thu Thập Tương Tác Số
+          </h3>
+          <p style="font-size:0.88rem;color:var(--text-dim);line-height:1.65;margin:0;font-weight:500;">Tự động ghi nhận
+            và chuẩn hóa các tương tác trực tuyến (VLE Clicks), lịch sử học tập và tình hình chuyên cần nộp bài kiểm tra
+            đánh giá hàng tuần của sinh viên.</p>
         </div>
       </div>
 
-      <!-- Step 2 -->
-      <div style="display: flex; gap: 20px; text-align: left;">
+      <div style="display:flex;gap:18px;text-align:left;">
         <div
-          style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 18px; background: rgba(200, 16, 46, 0.06); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;">
+          style="flex-shrink:0;width:56px;height:56px;border-radius:16px;background:rgba(200,16,46,0.055);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;">
           02</div>
         <div>
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px;">Dự Báo AI Phân
-            Tầng Chuyên Sâu</h3>
-          <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Mô hình
-            LightGBM tối ưu tiến hành phân tích các hành vi học tập đa chiều, tính toán rủi ro và phân nhóm sinh viên
-            vào 4 tầng rủi ro tương ứng.</p>
+          <h3 style="font-size:1.15rem;font-weight:800;color:var(--secondary);margin-bottom:10px;">Dự Báo AI Phân Tầng
+          </h3>
+          <p style="font-size:0.88rem;color:var(--text-dim);line-height:1.65;margin:0;font-weight:500;">Mô hình LightGBM
+            tối ưu phân tích các hành vi học tập đa chiều, tính toán rủi ro và phân nhóm sinh viên vào 4 tầng: Thấp,
+            Trung bình, Cao và Nguy cấp.</p>
         </div>
       </div>
 
-      <!-- Step 3 -->
-      <div style="display: flex; gap: 20px; text-align: left;">
+      <div style="display:flex;gap:18px;text-align:left;">
         <div
-          style="flex-shrink: 0; width: 60px; height: 60px; border-radius: 18px; background: rgba(200, 16, 46, 0.06); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900;">
+          style="flex-shrink:0;width:56px;height:56px;border-radius:16px;background:rgba(200,16,46,0.055);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;">
           03</div>
         <div>
-          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px;">Khuyến Nghị &
-            Can Thiệp Kịp Thời</h3>
-          <p style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">Hệ thống
-            chủ động đưa ra các cảnh báo chi tiết gửi tới Cố vấn học tập, đồng thời gợi ý lộ trình và giải pháp học tập
-            phù hợp để cải thiện kết quả.</p>
+          <h3 style="font-size:1.15rem;font-weight:800;color:var(--secondary);margin-bottom:10px;">Khuyến Nghị Can Thiệp
+          </h3>
+          <p style="font-size:0.88rem;color:var(--text-dim);line-height:1.65;margin:0;font-weight:500;">Hệ thống chủ
+            động đưa ra cảnh báo chi tiết gửi tới Cố vấn học tập, đồng thời gợi ý lộ trình và giải pháp học tập phù hợp
+            để cải thiện kết quả trước kỳ thi.</p>
         </div>
       </div>
 
@@ -515,88 +509,72 @@
   </div>
 </section>
 
-<!-- ── SEARCH RESULT PANEL ────────────────────────────────── -->
-<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+<!-- ── SEARCH RESULT PANEL ──────────────────────────────── -->
+<div class="container" style="max-width:1200px;margin:0 auto;padding:36px 20px;">
   <div id="studentDataPanel" class="student-data-panel hidden">
     <div class="panel-header"
-      style="background: var(--primary); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px 8px 0 0;">
-      <h3 style="color: white; margin: 0;">Kết quả dự đoán sinh viên #<span id="resStudentId"></span></h3>
+      style="background:var(--primary);color:white;padding:18px;display:flex;justify-content:space-between;align-items:center;border-radius:8px 8px 0 0;">
+      <h3 style="color:white;margin:0;">Kết quả dự đoán sinh viên #<span id="resStudentId"></span></h3>
       <button onclick="closeStudentPanel()"
-        style="background: none; border: none; color: white; cursor: pointer; font-size: 1.5rem;">✕</button>
+        style="background:none;border:none;color:white;cursor:pointer;font-size:1.4rem;">✕</button>
     </div>
     <div class="panel-content"
-      style="padding: 30px; background: white; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; box-shadow: var(--shadow-lg);">
+      style="padding:28px;background:white;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;box-shadow:var(--shadow-lg);">
 
-      <!-- Premium Risk Summary Card for search/guest -->
+      <!-- Risk Summary Card -->
       <div id="resRiskCard"
-        style="padding: 35px; border-radius: 20px; margin-bottom: 45px; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; border: 1px solid var(--border); box-shadow: 0 15px 35px rgba(0,0,0,0.02); transition: all 0.3s ease; text-align: left;">
-
-        <!-- Outer circular glowing ring for badge -->
-        <div style="display: flex; align-items: center; justify-content: center; position: relative;">
-          <!-- Subtle backdrop glow -->
+        style="padding:32px;border-radius:18px;margin-bottom:40px;display:flex;align-items:center;gap:36px;flex-wrap:wrap;border:1px solid var(--border);box-shadow:0 12px 30px rgba(0,0,0,0.02);transition:all 0.3s ease;text-align:left;">
+        <div style="display:flex;align-items:center;justify-content:center;position:relative;">
           <div id="resRiskBadgeGlow"
-            style="position: absolute; width: 140px; height: 140px; opacity: 0.15; filter: blur(20px); border-radius: 50%;">
-          </div>
+            style="position:absolute;width:130px;height:130px;opacity:0.14;filter:blur(18px);border-radius:50%;"></div>
           <div id="resRiskBadge"
-            style="color: white !important; font-size: 2.1rem; padding: 25px 45px; border-radius: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; z-index: 2; min-width: 170px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.25);">
-            UNKNOWN
-          </div>
+            style="color:white !important;font-size:1.9rem;padding:22px 40px;border-radius:18px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;z-index:2;min-width:160px;text-align:center;border:1px solid rgba(255,255,255,0.25);">
+            UNKNOWN</div>
         </div>
-
-        <div style="flex: 1; min-width: 300px; text-align: left;">
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-            <h4 style="margin: 0; font-size: 1.6rem; color: var(--secondary); font-weight: 800;">Mức độ rủi ro:</h4>
+        <div style="flex:1;min-width:280px;text-align:left;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+            <h4 style="margin:0;font-size:1.5rem;color:var(--secondary);font-weight:800;">Mức độ rủi ro:</h4>
             <span id="resRiskTitle"
-              style="font-weight: 900; font-size: 1.7rem; text-transform: uppercase; letter-spacing: 0.5px;">UNKNOWN</span>
+              style="font-weight:900;font-size:1.6rem;text-transform:uppercase;letter-spacing:0.5px;">UNKNOWN</span>
           </div>
-
           <p
-            style="margin: 0 0 18px; font-weight: 700; color: var(--text-dim); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+            style="margin:0 0 16px;font-weight:700;color:var(--text-dim);font-size:0.93rem;display:flex;align-items:center;gap:5px;">
             <span id="resRiskBullet">●</span> Độ tin cậy dự báo của AI:
-            <strong style="color: var(--secondary); font-size: 1.05rem; font-family: 'Outfit', sans-serif;"><span
+            <strong style="color:var(--secondary);font-size:1.02rem;font-family:'Outfit',sans-serif;"><span
                 id="resConfidence">0</span>%</strong>
           </p>
-
-          <!-- Premium Quote Recommendation box -->
           <div id="resRecommendationBox"
-            style="padding: 18px 24px; border-radius: 0 12px 12px 0; font-style: italic; color: var(--secondary); font-size: 0.92rem; font-weight: 600; line-height: 1.65; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015); border-top: 1px solid #f0f0f0; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; backdrop-filter: blur(5px); border-left: 5px solid var(--primary);">
+            style="padding:16px 20px;border-radius:0 10px 10px 0;font-style:italic;color:var(--secondary);font-size:0.9rem;font-weight:600;line-height:1.65;box-shadow:0 3px 12px rgba(0,0,0,0.012);border-top:1px solid #f0f0f0;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;border-left:5px solid var(--primary);">
             <span id="resRecommendation">Dữ liệu chưa sẵn sàng.</span>
           </div>
         </div>
       </div>
 
-      <h4 style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary);">Thống kê
-        dữ liệu chi tiết</h4>
+      <h4 style="margin-bottom:18px;text-transform:uppercase;font-size:0.88rem;color:var(--primary);">Thống kê dữ liệu
+        chi tiết</h4>
       <div class="data-table-grid" id="resDataTable"
-        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-        <!-- Content injected by JS -->
-      </div>
+        style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:18px;"></div>
 
-      <!-- Analysis Area -->
       <div id="resAnalysisArea" class="hidden"
-        style="margin-top: 40px; padding-top: 30px; border-top: 2px dashed var(--border);">
-        <h4
-          style="margin-bottom: 20px; text-transform: uppercase; font-size: 0.9rem; color: var(--primary); font-weight: 800;">
-          Phân tích các yếu tố ảnh hưởng
-        </h4>
-        <div id="resAnalysisContent" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
-          <!-- Explanations injected by JS -->
-        </div>
+        style="margin-top:36px;padding-top:28px;border-top:2px dashed var(--border);">
+        <h4 style="margin-bottom:18px;text-transform:uppercase;font-size:0.88rem;color:var(--primary);font-weight:800;">
+          Phân tích các yếu tố ảnh hưởng</h4>
+        <div id="resAnalysisContent" style="display:grid;grid-template-columns:1fr;gap:13px;"></div>
       </div>
 
-      <!-- ⚠️ KHUYẾN CÁO MIỄN TRỪ TRÁCH NHIỆM HỌC THUẬT (DISCLAIMER) -->
+      <!-- Disclaimer -->
       <div
-        style="margin-top: 40px; padding: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; display: flex; gap: 15px; align-items: flex-start; text-align: left; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);">
-        <span style="font-size: 1.4rem; line-height: 1; color: #e74c3c; margin-top: 2px;">⚠️</span>
+        style="margin-top:36px;padding:18px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;display:flex;gap:13px;align-items:flex-start;text-align:left;">
+        <span style="font-size:1.0rem;line-height:1;color:#555;margin-top:1px;flex-shrink:0;">!</span>
         <div>
           <strong
-            style="color: var(--secondary); font-size: 0.85rem; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Khuyến
+            style="color:var(--secondary);font-size:0.83rem;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;">Khuyến
             cáo:</strong>
-          <p style="font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; margin: 0; font-weight: 500;">
+          <p style="font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin:0;font-weight:500;">
             Kết quả dự báo trên đây là đánh giá khách quan được tính toán tự động bằng thuật toán học máy
-            <strong>LightGBM</strong> dựa trên dữ liệu tương tác học tập số. Đây chỉ là thông tin hỗ trợ mang tính chất
-            tham khảo dành cho giáo viên và cố vấn học tập, <strong>không đại diện hay phản ánh toàn
-              diện</strong> năng lực thực tế, trí tuệ cá nhân hay tiềm năng phát triển của sinh viên.
+            <strong>LightGBM</strong>. Đây chỉ là thông tin hỗ trợ mang tính chất tham khảo dành cho giáo viên và cố vấn
+            học tập, <strong>không đại diện toàn diện</strong> năng lực thực tế, trí tuệ cá nhân hay tiềm năng phát
+            triển của sinh viên.
           </p>
         </div>
       </div>
@@ -604,13 +582,13 @@
   </div>
 </div>
 
-
-<!-- ── MODEL COMPARISON ─────────────────────────────────────── -->
+<!-- ── MODEL COMPARISON ─────────────────────────────────── -->
 <section class="section section--dark" id="model">
-  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+  <div class="container" style="max-width:1200px;margin:0 auto;padding:0 20px;">
     <div class="section-header">
       <h2 class="section-title">So Sánh Hiệu Suất Mô Hình</h2>
-      <p class="section-sub">Chúng tôi đã thử nghiệm nhiều mô hình học máy để tìm ra thuật toán tối ưu nhất</p>
+      <p class="section-sub">Chúng tôi đã thử nghiệm và đánh giá 4 thuật toán học máy để lựa chọn mô hình tối ưu nhất
+        cho bài toán phân tầng rủi ro học tập 4 lớp.</p>
     </div>
     <div class="table-responsive">
       <table>
@@ -624,7 +602,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr style="background: rgba(160, 27, 33, 0.03);">
+          <tr style="background:rgba(160,27,33,0.03);">
             <td><strong class="text-primary">LightGBM</strong></td>
             <td>84.03%</td>
             <td>92.08%</td>
@@ -664,51 +642,40 @@
 <script>
   function fillSampleData(type) {
     const form = document.getElementById('guestForm');
-    
     if (type === 'excellent') {
       form.num_of_prev_attempts.value = "0";
       form.avg_score.value = "85";
       form.min_score.value = "75";
       form.std_score_eval.value = "5.0";
       form.education_num.value = "3";
-      
       form.total_clicks.value = "2800";
-      document.getElementById('click-val-badge').textContent = '2800 Clicks';
       form.n_late.value = "0";
       form.n_submitted.value = "6";
       form.attendance_rate.value = "95";
       form.reg_days_before.value = "-90";
-    } 
-    else if (type === 'risk') {
-      form.num_of_prev_attempts.value = "1"; 
-      form.avg_score.value = "35"; 
+    } else if (type === 'risk') {
+      form.num_of_prev_attempts.value = "1";
+      form.avg_score.value = "35";
       form.min_score.value = "20";
       form.std_score_eval.value = "25.0";
       form.education_num.value = "1";
-      
-      form.total_clicks.value = "160"; 
-      document.getElementById('click-val-badge').textContent = '160 Clicks';
-      form.n_late.value = "2"; 
+      form.total_clicks.value = "160";
+      form.n_late.value = "2";
       form.n_submitted.value = "2";
       form.attendance_rate.value = "20";
       form.reg_days_before.value = "-10";
-    }
-    else if (type === 'average') {
+    } else if (type === 'average') {
       form.num_of_prev_attempts.value = "0";
       form.avg_score.value = "55";
       form.min_score.value = "45";
       form.std_score_eval.value = "12.0";
       form.education_num.value = "2";
-      
       form.total_clicks.value = "850";
-      document.getElementById('click-val-badge').textContent = '850 Clicks';
       form.n_late.value = "1";
       form.n_submitted.value = "4";
       form.attendance_rate.value = "60";
       form.reg_days_before.value = "-90";
     }
-    
-    alert('Đã tải thành công dữ liệu mẫu ' + (type==='excellent' ? 'Sinh viên Khá/Giỏi' : type==='risk' ? 'Sinh viên Rủi ro' : 'Sinh viên Trung bình') + ' vào biểu mẫu!');
   }
 </script>
 {% endblock %}

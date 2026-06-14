@@ -46,7 +46,7 @@ class AuthService:
             user = session.exec(select(User).where(User.username == username)).first()
             if user and user.password_hash == hash_password(password):
                 if not user.is_active:
-                    return None # Account locked
+                    return {"error": "locked"} # Account locked
                 return {"role": user.role, "username": user.username, "is_external": user.is_external}
 
             # OULAD login fallback

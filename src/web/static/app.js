@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (err) {
     const errMap = {
       'auth_failed': { title: 'Đăng nhập thất bại', text: 'Sai tên đăng nhập hoặc mật khẩu.', type: 'error' },
+      'account_locked': { title: 'Tài khoản bị khóa', text: 'Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng liên hệ quản trị viên.', type: 'error' },
       'reg_failed': { title: 'Đăng ký thất bại', text: 'Tên đăng nhập hoặc email đã tồn tại.', type: 'error' }
     };
     const toastData = errMap[err] || { title: 'Lỗi', text: err, type: 'error' };

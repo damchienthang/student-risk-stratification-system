@@ -1,513 +1,439 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %}Về chúng tôi — RiskSight{% endblock %}
+{% block title %}Giới Thiệu — RiskSight{% endblock %}
 
 {% block extra_css %}
 <style>
-  /* ── GRAPHIC HERO & PATTERNS ────────────────────────────── */
+  /* ── HERO ──────────────────────────────────────────────── */
   .about-hero {
-    padding: 100px 0 120px;
+    padding: 80px 0 100px;
     text-align: center;
-    background: linear-gradient(135deg, var(--primary) 0%, #ff4d6d 100%);
+    background: linear-gradient(135deg, #111827 0%, #1e2a3a 60%, #1a2340 100%);
     color: white;
     position: relative;
     overflow: hidden;
+    border-bottom: 3px solid var(--primary);
   }
-
-  /* Plus-grid academic pattern overlay like Grade PTIT */
   .about-hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    opacity: 0.12;
-    background-image: radial-gradient(white 1.5px, transparent 0);
-    background-size: 24px 24px;
+    opacity: 0.06;
+    background-image: radial-gradient(rgba(200,16,46,0.8) 1.5px, transparent 0);
+    background-size: 26px 26px;
     pointer-events: none;
   }
-
   .about-hero-title {
-    font-size: 3.5rem;
+    font-size: 3.3rem;
     font-weight: 900;
-    margin-bottom: 20px;
-    letter-spacing: -1.5px;
+    margin-bottom: 18px;
+    letter-spacing: -1.2px;
     color: white;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
-
   .about-hero-desc {
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.95);
-    max-width: 800px;
+    font-size: 1.12rem;
+    color: rgba(255,255,255,0.93);
+    max-width: 780px;
     margin: 0 auto;
-    line-height: 1.7;
+    line-height: 1.75;
     font-weight: 500;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
 
-  /* ── STATS GRID ─────────────────────────────────────────── */
-  .about-stats-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
+  /* ── STATS ──────────────────────────────────────────────── */
   .about-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    margin-top: -60px;
+    gap: 26px;
+    margin-top: -56px;
     position: relative;
     z-index: 20;
   }
-
-  @media (max-width: 768px) {
-    .about-stats {
-      grid-template-columns: 1fr;
-    }
-  }
+  @media (max-width: 768px) { .about-stats { grid-template-columns: 1fr; } }
 
   .about-stat-card {
     background: white;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 20px;
-    padding: 30px 24px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 18px;
+    padding: 28px 22px;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.03);
     text-align: center;
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
-
   .about-stat-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(200, 16, 46, 0.08);
-    border-color: rgba(200, 16, 46, 0.15);
+    transform: translateY(-7px);
+    box-shadow: 0 18px 38px rgba(200,16,46,0.07);
+    border-color: rgba(200,16,46,0.14);
   }
-
   .about-stat-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: var(--primary);
-    /* Solid PTIT Red */
-    color: white;
-    /* Clean White Vector Icon */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    box-shadow: 0 4px 12px rgba(200, 16, 46, 0.2);
+    width: 54px; height: 54px; border-radius: 50%;
+    background: var(--primary); color: white;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+    box-shadow: 0 4px 12px rgba(200,16,46,0.18);
   }
+  .about-stat-num { font-size: 2.3rem; font-weight: 900; color: var(--secondary); line-height: 1.1; margin-bottom: 5px; font-family: 'Outfit', sans-serif; }
+  .about-stat-label { font-size: 0.87rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
-  .about-stat-num {
-    font-size: 2.5rem;
-    font-weight: 900;
-    color: var(--secondary);
-    line-height: 1.1;
-    margin-bottom: 6px;
-    font-family: 'Outfit', sans-serif;
-  }
-
-  .about-stat-label {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  /* ── INTRO SECTION ──────────────────────────────────────── */
-  .intro-box {
-    background: white;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.01);
+  /* ── CONTENT PROSE ─────────────────────────────────────── */
+  .prose-section {
     max-width: 900px;
-    margin: 60px auto 0;
-    text-align: center;
-  }
-
-  .about-pill-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 28px;
-    border-radius: 100px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-decoration: none;
-    transition: all 0.3s;
-    cursor: pointer;
-  }
-
-  .about-pill-red {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 4px 15px rgba(200, 16, 46, 0.2);
-  }
-
-  .about-pill-red:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-  }
-
-  .about-pill-outline {
-    border: 2px solid var(--border);
-    color: var(--text-dim);
-    background: white;
-  }
-
-  .about-pill-outline:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-    transform: translateY(-2px);
-  }
-
-  /* ── TWO-COLUMN FEATURES ────────────────────────────────── */
-  .features-container {
-    max-width: 1100px;
-    margin: 100px auto 0;
+    margin: 0 auto;
     padding: 0 20px;
   }
-
-  .feature-item {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 60px;
-    align-items: center;
-    margin-bottom: 80px;
-    text-align: left;
+  .prose-lead {
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: var(--secondary);
+    font-weight: 500;
+    margin-bottom: 20px;
   }
-
-  .feature-item:nth-child(even) {
-    grid-template-columns: 1fr 1.2fr;
+  .prose-body {
+    font-size: 0.97rem;
+    line-height: 1.82;
+    color: var(--text-dim);
+    font-weight: 500;
+    margin-bottom: 18px;
   }
+  .prose-body strong { color: var(--secondary); }
 
-  .feature-item:nth-child(even) .feature-text-block {
-    order: 2;
-  }
-
-  @media (max-width: 768px) {
-
-    .feature-item,
-    .feature-item:nth-child(even) {
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
-
-    .feature-item:nth-child(even) .feature-text-block {
-      order: unset;
-    }
-  }
-
-  .feature-tag-pill {
+  /* ── SECTION LABEL ─────────────────────────────────────── */
+  .section-label {
     display: inline-block;
-    padding: 6px 14px;
-    background: rgba(200, 16, 46, 0.06);
+    padding: 5px 13px;
+    background: rgba(200,16,46,0.06);
     border-radius: 100px;
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     font-weight: 800;
     color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 15px;
+    margin-bottom: 14px;
   }
-
-  .feature-title {
-    font-size: 1.8rem;
-    font-weight: 800;
+  .section-h2 {
+    font-size: 2.05rem;
+    font-weight: 900;
     color: var(--secondary);
-    margin-bottom: 18px;
-    line-height: 1.3;
+    margin-bottom: 14px;
+    line-height: 1.25;
   }
 
-  .feature-desc {
-    font-size: 0.95rem;
-    color: var(--text-dim);
-    line-height: 1.7;
-    margin-bottom: 25px;
+  /* ── DATA CALL-OUTS ────────────────────────────────────── */
+  .data-callout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin: 28px 0;
   }
-
-  .feature-img-card {
+  .data-callout-item {
     background: #f8fafc;
     border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  }
-
-  .feature-img-card img {
-    max-width: 100%;
-    height: auto;
+    border-left: 4px solid var(--primary);
     border-radius: 10px;
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 18px 20px;
   }
-
-  .feature-img-caption {
-    margin-top: 15px;
-    font-size: 0.8rem;
+  .data-callout-val {
+    font-size: 1.9rem;
+    font-weight: 900;
+    color: var(--secondary);
+    font-family: 'Outfit', sans-serif;
+    line-height: 1.1;
+    margin-bottom: 5px;
+  }
+  .data-callout-lbl {
+    font-size: 0.78rem;
     font-weight: 700;
     color: var(--text-dim);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
-  /* ── TIMELINE UPDATES ───────────────────────────────────── */
-  .timeline-box {
-    max-width: 800px;
-    margin: 50px auto 0;
-    padding: 0 20px;
+  /* ── FEATURE TWO-COLUMN ────────────────────────────────── */
+  .feature-item {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 52px;
+    align-items: center;
+    margin-bottom: 68px;
     text-align: left;
   }
-
-  .about-timeline {
-    position: relative;
-    padding-left: 35px;
-    border-left: 2px dashed rgba(200, 16, 46, 0.2);
-    margin-top: 40px;
+  .feature-item:nth-child(even) { grid-template-columns: 1fr 1.1fr; }
+  .feature-item:nth-child(even) .feature-text-block { order: 2; }
+  @media (max-width: 768px) {
+    .feature-item, .feature-item:nth-child(even) { grid-template-columns: 1fr; gap: 26px; }
+    .feature-item:nth-child(even) .feature-text-block { order: unset; }
   }
-
-  .about-timeline-item {
-    position: relative;
-    margin-bottom: 35px;
+  .feature-title { font-size: 1.65rem; font-weight: 800; color: var(--secondary); margin-bottom: 15px; line-height: 1.3; }
+  .feature-desc  { font-size: 0.93rem; color: var(--text-dim); line-height: 1.75; margin-bottom: 22px; font-weight: 500; }
+  .feature-img-card {
+    background: #f8fafc; border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.018);
   }
+  .feature-img-card img { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 3px 12px rgba(0,0,0,0.05); }
+  .feature-img-caption { margin-top: 12px; font-size: 0.78rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; text-align: center; }
 
-  .about-timeline-item::before {
-    content: '';
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--primary);
-    left: -43px;
-    top: 4px;
-    border: 3px solid white;
-    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
+  /* ── TEAM CARDS ─────────────────────────────────────────── */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
+    margin-top: 32px;
   }
-
-  .about-timeline-date {
-    display: inline-block;
-    padding: 4px 12px;
-    background: rgba(200, 16, 46, 0.08);
-    color: var(--primary);
-    border-radius: 100px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-  }
-
-  .about-timeline-title {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--secondary);
-    margin-bottom: 8px;
-  }
-
-  .about-timeline-desc {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-
-  /* ── THANK YOU BANNERS ──────────────────────────────────── */
-  .thankyou-card {
-    background: linear-gradient(135deg, var(--primary) 0%, #ff4d6d 100%);
-    color: white;
-    border-radius: 24px;
-    padding: 50px 40px;
+  .team-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 22px;
     text-align: center;
-    box-shadow: var(--shadow-lg);
-    max-width: 950px;
-    margin: 80px auto 0;
+    transition: all 0.3s;
+  }
+  .team-card:hover { transform: translateY(-5px); box-shadow: 0 15px 32px rgba(200,16,46,0.07); border-color: rgba(200,16,46,0.18); }
+  .team-avatar {
+    width: 62px; height: 62px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--secondary) 0%, #495057 100%);
+    color: white; font-size: 1.5rem; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .team-name { font-size: 1.0rem; font-weight: 800; color: var(--secondary); margin-bottom: 5px; }
+  .team-mssv { font-size: 0.78rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .team-role { font-size: 0.83rem; color: var(--text-dim); font-weight: 500; line-height: 1.5; }
+
+  /* ── METHODOLOGY ROW ──────────────────────────────────── */
+  .method-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-top: 28px;
+  }
+  .method-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 18px;
     position: relative;
     overflow: hidden;
   }
-
-  .thankyou-card::before {
+  .method-card::before {
     content: '';
     position: absolute;
-    width: 300px;
-    height: 300px;
-    background: rgba(255, 255, 255, 0.15);
-    filter: blur(100px);
+    top: 0; left: 0; width: 100%; height: 3px;
+    background: var(--primary);
+  }
+  .method-num { font-size: 2.0rem; font-weight: 900; color: rgba(200,16,46,0.10); font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 10px; }
+  .method-title { font-size: 0.9rem; font-weight: 800; color: var(--secondary); margin-bottom: 8px; }
+  .method-desc { font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; font-weight: 500; }
+
+  /* ── TIMELINE ───────────────────────────────────────────── */
+  .about-timeline {
+    position: relative;
+    padding-left: 33px;
+    border-left: 2px dashed rgba(200,16,46,0.2);
+    margin-top: 32px;
+  }
+  .about-timeline-item { position: relative; margin-bottom: 30px; }
+  .about-timeline-item::before {
+    content: '';
+    position: absolute;
+    width: 13px; height: 13px;
     border-radius: 50%;
-    top: -150px;
-    right: -100px;
+    background: var(--primary);
+    left: -40px; top: 5px;
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px rgba(200,16,46,0.14);
+  }
+  .about-timeline-date {
+    display: inline-block; padding: 3px 11px;
+    background: rgba(200,16,46,0.07); color: var(--primary);
+    border-radius: 100px; font-size: 0.73rem; font-weight: 800; margin-bottom: 9px;
+  }
+  .about-timeline-title { font-size: 1.1rem; font-weight: 800; color: var(--secondary); margin-bottom: 7px; }
+  .about-timeline-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; }
+
+  /* ── THANK YOU ──────────────────────────────────────────── */
+  .thankyou-card {
+    background: linear-gradient(135deg, #6b0f1a 0%, #8b1a24 50%, #a01f2d 100%);
+    color: white; border-radius: 22px; padding: 48px 40px;
+    text-align: center; box-shadow: var(--shadow-lg);
+    max-width: 920px; margin: 0 auto;
+    position: relative; overflow: hidden;
+  }
+  .thankyou-card::before {
+    content: ''; position: absolute;
+    width: 280px; height: 280px;
+    background: rgba(255,255,255,0.13); filter: blur(90px);
+    border-radius: 50%; top: -140px; right: -90px;
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- ── HERO SECTION (🎓 GRAPHIC HEADER WITH RADIAL PLUS GRID) ─ -->
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
 <section class="about-hero">
-  <div class="container" style="position: relative; z-index: 5;">
-    <!-- Large vector mortarboard icon (White) -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="white"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-      style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); margin-bottom: 25px;">
-      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-      <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
-    </svg>
+  <div class="container" style="position:relative;z-index:5;">
     <h1 class="about-hero-title">RiskSight System</h1>
     <p class="about-hero-desc">
-      Hệ thống phân tầng rủi ro học tập thông minh dựa trên Trí tuệ nhân tạo (AI). Nhận diện sớm nguy cơ học tập và đồng
-      hành cùng sinh viên PTIT vượt qua mọi chướng ngại vật môn học.
+      Hệ thống phân tầng rủi ro học tập thông minh dựa trên Trí tuệ nhân tạo. Nhận diện sớm nguy cơ trượt môn và đồng hành cùng sinh viên PTIT bằng phân tích dữ liệu hành vi học tập định lượng.
     </p>
   </div>
 </section>
 
 <!-- ── STATS GRID ─────────────────────────────────────────── -->
-<section class="about-stats-container">
+<section style="max-width:1200px;margin:0 auto;padding:0 20px;">
   <div class="about-stats">
-
-    <!-- Stat 1 -->
     <div class="about-stat-card">
       <div class="about-stat-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
         </svg>
       </div>
       <div class="about-stat-num">32,590+</div>
       <div class="about-stat-label">Sinh viên được phân tích</div>
     </div>
-
-    <!-- Stat 2 -->
     <div class="about-stat-card">
       <div class="about-stat-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="9" y="9" width="6" height="6" rx="1" />
-          <path d="M9 1H5a2 2 0 0 0-2 2v4" />
-          <path d="M15 1h4a2 2 0 0 1 2 2v4" />
-          <path d="M9 23H5a2 2 0 0 1-2-2v-4" />
-          <path d="M15 23h4a2 2 0 0 0 2-2v-4" />
-          <path d="M9 5h6" />
-          <path d="M9 19h6" />
-          <path d="M5 9v6" />
-          <path d="M19 9v6" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
         </svg>
       </div>
       <div class="about-stat-num">04</div>
       <div class="about-stat-label">Mô hình AI đối sánh</div>
     </div>
-
-    <!-- Stat 3 -->
     <div class="about-stat-card">
       <div class="about-stat-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-          <path d="M4 22h16" />
-          <path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34" />
-          <path d="M12 2a5 5 0 0 0-5 5v3c0 2.2 1.8 4 4 4h2c2.2 0 4-1.8 4-4V7a5 5 0 0 0-5-5z" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
         </svg>
       </div>
       <div class="about-stat-num">92.08%</div>
       <div class="about-stat-label">Độ chính xác dự báo</div>
     </div>
-
   </div>
 </section>
 
-<!-- ── ABOUT RISKSIGHT (INTRODUCTION & CONTACT ACTIONS) ───── -->
-<section class="section" style="padding: 60px 0 20px;">
+<!-- ── VẤN ĐỀ & BỐI CẢNH ──────────────────────────────── -->
+<section class="section" style="padding:64px 0 48px;">
   <div class="container">
-    <div class="intro-box">
-      <h2 style="font-size: 2rem; font-weight: 900; color: var(--secondary); margin-bottom: 20px;">Về Dự Án RiskSight
-      </h2>
-      <p style="font-size: 1.05rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 35px; font-weight: 500;">
-        RiskSight được phát triển bởi các kỹ sư công nghệ của Học viện Công nghệ Bưu chính Viễn thông. Chúng tôi thấu
-        hiểu rằng hành trình học đại học đầy rẫy những thử thách. Bằng việc phân tích các chỉ số tương tác số trên hệ
-        thống E-Learning và lịch sử thi cử của sinh viên, hệ thống sẽ đưa ra dự báo mức độ rủi ro trượt môn kịp thời và
-        gợi ý lộ trình cải thiện tốt nhất.
+    <div class="prose-section">
+      <span class="section-label">Bối cảnh nghiên cứu</span>
+      <h2 class="section-h2">Tại sao sinh viên bỏ học — và chúng ta có thể biết trước không?</h2>
+      <p class="prose-lead">
+        Tại Học viện Công nghệ Bưu chính Viễn thông (PTIT), cũng như tại hàng trăm trường đại học trên toàn cầu, tỷ lệ sinh viên không hoàn thành chương trình học vẫn là một bài toán chưa có lời giải thỏa đáng. Sinh viên rời trường không phải do thiếu năng lực — phần lớn là do những dấu hiệu cảnh báo sớm bị bỏ qua quá lâu.
+      </p>
+      <p class="prose-body">
+        Nghiên cứu từ OULAD (Open University Learning Analytics Dataset) — bộ dữ liệu học tập số lớn nhất Châu Âu với hơn 32,000 sinh viên — cho thấy: <strong>hơn 85% sinh viên có nguy cơ trượt môn đều để lại dấu vết rõ ràng trong hệ thống E-Learning trước khi sự cố xảy ra.</strong> Tần suất click học liệu giảm đột ngột, bài tập nộp trễ liên tiếp, điểm kiểm tra giữa kỳ thấp bất thường — tất cả đều là tín hiệu. Vấn đề là không ai đọc chúng kịp thời.
+      </p>
+      <p class="prose-body">
+        RiskSight ra đời để giải quyết chính xác bài toán này: <strong>biến dữ liệu hành vi học tập thành cảnh báo rủi ro sớm, có thể giải thích được, đủ nhanh để cố vấn học tập can thiệp trước khi quá muộn.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr style="border:none;border-top:1px solid var(--border);margin:0 auto;max-width:900px;opacity:0.5;">
+
+<!-- ── DỮ LIỆU & PHƯƠNG PHÁP ──────────────────────────── -->
+<section class="section" style="padding:52px 0;">
+  <div class="container">
+    <div class="prose-section">
+      <span class="section-label">Dữ liệu &amp; Phương pháp</span>
+      <h2 class="section-h2">Từ 32,590 sinh viên đến mô hình dự báo 4 tầng</h2>
+      <p class="prose-body">
+        Bộ dữ liệu OULAD được thu thập bởi Đại học Mở Vương quốc Anh (Open University, UK), bao gồm toàn bộ nhật ký tương tác trực tuyến, kết quả kiểm tra và thông tin nhân khẩu học của sinh viên qua nhiều học kỳ. Sau quy trình làm sạch và kỹ thuật đặc trưng (feature engineering), nhóm nghiên cứu rút trích <strong>12 thuộc tính đặc trưng</strong> có tính dự báo cao nhất, phân nhóm sinh viên thành 4 tầng rủi ro theo kết quả cuối kỳ.
       </p>
 
-      <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-        <span
-          style="font-size: 0.85rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Liên
-          hệ với chúng tôi để được hỗ trợ:</span>
-        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-          <a href="https://www.facebook.com/chien.thang.317677" target="_blank" class="about-pill-btn about-pill-red">
-            <span style="display: inline-flex; align-items: center; gap: 8px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-              Kết nối Fanpage Hỗ trợ
-            </span>
-          </a>
-          <a href="mailto:thangd595@gmail.com" class="about-pill-btn about-pill-outline">
-            <span style="display: inline-flex; align-items: center; gap: 8px;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-              thangd595@gmail.com
-            </span>
-          </a>
+      <div class="data-callout">
+        <div class="data-callout-item">
+          <div class="data-callout-val">32,590</div>
+          <div class="data-callout-lbl">Bản ghi sinh viên OULAD</div>
+        </div>
+        <div class="data-callout-item">
+          <div class="data-callout-val">12</div>
+          <div class="data-callout-lbl">Đặc trưng sau feature engineering</div>
+        </div>
+        <div class="data-callout-item">
+          <div class="data-callout-val">4</div>
+          <div class="data-callout-lbl">Tầng rủi ro phân loại</div>
+        </div>
+        <div class="data-callout-item">
+          <div class="data-callout-val">Day 60</div>
+          <div class="data-callout-lbl">Điểm cắt dự báo can thiệp sớm</div>
+        </div>
+      </div>
+
+      <p class="prose-body">
+        Quy trình xây dựng mô hình gồm 5 giai đoạn: <strong>(1)</strong> Phân tích phân phối lớp và phát hiện mất cân bằng dữ liệu, <strong>(2)</strong> Phân tích tương quan và loại bỏ đặc trưng dư thừa, <strong>(3)</strong> Áp dụng SMOTE để cân bằng tập huấn luyện, <strong>(4)</strong> Tối ưu siêu tham số bằng Grid Search 5-fold Cross-Validation, <strong>(5)</strong> Đánh giá cuối cùng trên tập kiểm thử độc lập.
+      </p>
+
+      <div class="method-row">
+        <div class="method-card">
+          <div class="method-num">01</div>
+          <div class="method-title">Phân tích &amp; Làm sạch dữ liệu</div>
+          <div class="method-desc">Xử lý giá trị thiếu, phát hiện ngoại lệ, chuẩn hóa kiểu dữ liệu và kỹ thuật đặc trưng từ nhật ký VLE.</div>
+        </div>
+        <div class="method-card">
+          <div class="method-num">02</div>
+          <div class="method-title">Cân bằng lớp với SMOTE</div>
+          <div class="method-desc">Tỷ lệ mất cân bằng nghiêm trọng giữa nhóm "Distinction" và "Withdrawn" được xử lý bằng oversampling tổng hợp.</div>
+        </div>
+        <div class="method-card">
+          <div class="method-num">03</div>
+          <div class="method-title">Đối sánh 4 mô hình</div>
+          <div class="method-desc">LightGBM, XGBoost, Random Forest và Logistic Regression được đánh giá toàn diện trên Accuracy, F1, AUC-ROC.</div>
+        </div>
+        <div class="method-card">
+          <div class="method-num">04</div>
+          <div class="method-title">Giải thích mô hình (XAI)</div>
+          <div class="method-desc">Feature Importance từ LightGBM xác định 4 nhóm chỉ số quyết định, cho phép giải thích kết quả với cố vấn học tập.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<hr style="border: none; border-top: 1px solid var(--border); margin: 30px auto 10px; max-width: 1100px; opacity: 0.6;">
+<hr style="border:none;border-top:1px solid var(--border);margin:0 auto;max-width:900px;opacity:0.5;">
 
-<!-- ── MAIN FEATURES (TWO-COLUMN RESPONSIVE LAYOUTS) ──────── -->
-<section class="section" style="padding: 60px 0; background: white;">
+<!-- ── TÍNH NĂNG ─────────────────────────────────────────── -->
+<section class="section" id="features" style="padding:52px 0;background:white;">
   <div class="container">
-
-    <div style="text-align: center; margin-bottom: 70px;">
-      <span class="feature-tag-pill">Chức năng</span>
-      <h2 style="font-size: 2.2rem; font-weight: 900; color: var(--secondary); margin-bottom: 15px;">Tính Năng Toàn Diện
-      </h2>
-      <p style="font-size: 1.05rem; color: var(--text-dim); max-width: 600px; margin: 0 auto; line-height: 1.6;">Giải
-        pháp thông minh hỗ trợ giảng viên can thiệp và giúp đỡ sinh viên kịp thời.</p>
+    <div style="text-align:center;margin-bottom:52px;">
+      <span class="section-label">Chức năng</span>
+      <h2 class="section-h2" style="text-align:center;">Tính Năng Toàn Diện</h2>
+      <p style="font-size:1.0rem;color:var(--text-dim);max-width:580px;margin:0 auto;line-height:1.65;font-weight:500;">Giải pháp thông minh hỗ trợ giảng viên can thiệp và giúp đỡ sinh viên kịp thời dựa trên dữ liệu thực.</p>
     </div>
 
-    <div class="features-container">
+    <div style="max-width:1060px;margin:0 auto;">
 
       <!-- Feature 1 -->
       <div class="feature-item">
         <div class="feature-text-block">
-          <span class="feature-tag-pill">Học Máy AI</span>
-          <h3 class="feature-title">Phân tầng rủi ro tự động (LightGBM)</h3>
+          <span class="section-label">Học máy AI</span>
+          <h3 class="feature-title">Phân tầng rủi ro tự động — LightGBM</h3>
           <p class="feature-desc">
-            Sử dụng mô hình LightGBM tối ưu nhất được huấn luyện trên bộ dữ liệu OULAD khổng lồ để phân cấp sinh viên
-            thành 4 tầng rủi ro: Thấp, Trung bình, Cao, và Nguy cấp với độ chính xác F1-Score đạt 84.03%.
+            Sử dụng mô hình LightGBM tối ưu được huấn luyện trên bộ dữ liệu OULAD để phân cấp sinh viên thành 4 tầng rủi ro: Thấp, Trung bình, Cao và Nguy cấp. Mô hình đạt F1-Score 84.03% và AUC-ROC 98.68% — vượt trội so với tất cả các thuật toán truyền thống trong cùng bài toán.
           </p>
-          <a href="/" class="about-pill-btn about-pill-red" style="padding: 10px 22px; font-size: 0.8rem;">Thử nghiệm
-            ngay →</a>
+          <a href="/" class="about-pill-btn about-pill-red" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:100px;font-weight:700;font-size:0.83rem;text-decoration:none;background:var(--primary);color:white;transition:all 0.3s;">Thử nghiệm ngay</a>
         </div>
         <div class="feature-img-card">
-          <img src="/visuals/03_confusion_matrix_best.png" alt="Confusion Matrix">
-          <span class="feature-img-caption">Ma trận nhầm lẫn tối ưu của mô hình</span>
+          <img src="/visuals/03_confusion_matrix_best.png" alt="Confusion Matrix — LightGBM" style="filter:grayscale(15%);">
+          <span class="feature-img-caption">Ma trận nhầm lẫn — Mô hình LightGBM tối ưu</span>
         </div>
       </div>
 
       <!-- Feature 2 -->
       <div class="feature-item">
         <div class="feature-text-block">
-          <span class="feature-tag-pill">Tương Tác Số</span>
-          <h3 class="feature-title">Giám sát tương tác hệ thống E-Learning (VLE)</h3>
+          <span class="section-label">Tương tác số</span>
+          <h3 class="feature-title">Giám sát hành vi E-Learning (VLE)</h3>
           <p class="feature-desc">
-            Phân tích chuyên sâu tần suất hoạt động trực tuyến (Clicks) của sinh viên. Hệ thống tự động nhận diện sự sụt
-            giảm trong việc tương tác trực tuyến nhằm cảnh báo nguy cơ thiếu tập trung học tập.
+            Phân tích chuyên sâu tần suất hoạt động trực tuyến của sinh viên trên hệ thống Virtual Learning Environment. Dữ liệu Click được chuẩn hóa và so sánh với ngưỡng rủi ro 400 lần — dưới ngưỡng này, xác suất rơi vào nhóm Cao hoặc Nguy cấp tăng gấp 3 lần.
           </p>
-          <a href="/login" class="about-pill-btn about-pill-outline" style="padding: 10px 22px; font-size: 0.8rem;">Đăng
-            nhập để xem →</a>
+          <a href="/login" class="about-pill-btn about-pill-outline" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:100px;font-weight:700;font-size:0.83rem;text-decoration:none;border:2px solid var(--border);color:var(--text-dim);background:white;transition:all 0.3s;">Đăng nhập để xem</a>
         </div>
         <div class="feature-img-card">
-          <img src="/visuals/02_04_vle_features.png" alt="VLE features">
+          <img src="/visuals/02_04_vle_features.png" alt="VLE Features Distribution" style="filter:grayscale(20%);">
           <span class="feature-img-caption">Phân phối lượng Clicks theo nhóm rủi ro</span>
         </div>
       </div>
@@ -515,16 +441,30 @@
       <!-- Feature 3 -->
       <div class="feature-item">
         <div class="feature-text-block">
-          <span class="feature-tag-pill">Can Thiệp</span>
+          <span class="section-label">Can thiệp</span>
           <h3 class="feature-title">Khuyến nghị lộ trình cá nhân hóa</h3>
           <p class="feature-desc">
-            Hệ thống không chỉ cảnh báo mà còn tự động tính toán các nguyên nhân cụ thể dẫn đến rủi ro trượt môn để đưa
-            ra khuyến nghị chỉ dẫn học tập riêng cho từng sinh viên, giúp cứu vãn điểm số kịp thời.
+            Hệ thống không chỉ cảnh báo mà còn tự động phân tích nguyên nhân cụ thể dẫn đến rủi ro dựa trên Feature Importance của mô hình — tần suất click thấp, nộp trễ hay điểm thấp — từ đó đưa ra khuyến nghị học tập riêng biệt cho từng sinh viên và báo cáo tổng hợp cho cố vấn.
           </p>
         </div>
         <div class="feature-img-card">
-          <img src="/visuals/03_feature_importance_best.png" alt="Feature Importance">
-          <span class="feature-img-caption">Tầm quan trọng đặc trưng trong mô hình AI</span>
+          <img src="/visuals/03_feature_importance_best.png" alt="Feature Importance" style="filter:grayscale(20%);">
+          <span class="feature-img-caption">Tầm quan trọng đặc trưng — Feature Importance</span>
+        </div>
+      </div>
+
+      <!-- Feature 4 — ROC Curve -->
+      <div class="feature-item">
+        <div class="feature-text-block">
+          <span class="section-label">Phân tích hiệu suất</span>
+          <h3 class="feature-title">Đường cong ROC đa lớp (One-vs-Rest)</h3>
+          <p class="feature-desc">
+            Biểu đồ ROC đa lớp xác nhận khả năng phân tách vượt trội của LightGBM trên toàn bộ 4 tầng rủi ro, với AUC trung bình đạt 98.68%. Chỉ số này cho thấy mô hình có thể phân biệt sinh viên rủi ro cao khỏi sinh viên an toàn với độ tin cậy cực kỳ cao, gần đạt phân loại hoàn hảo.
+          </p>
+        </div>
+        <div class="feature-img-card">
+          <img src="/visuals/03_roc_curve_ovr.png" alt="ROC Curve OvR" style="filter:grayscale(20%);">
+          <span class="feature-img-caption">Đường cong ROC đa lớp — AUC = 98.68%</span>
         </div>
       </div>
 
@@ -532,74 +472,128 @@
   </div>
 </section>
 
-<hr style="border: none; border-top: 1px solid var(--border); margin: 30px auto 10px; max-width: 1100px; opacity: 0.6;">
+<hr style="border:none;border-top:1px solid var(--border);margin:0 auto;max-width:900px;opacity:0.5;">
 
-<!-- ── SYSTEM UPDATES (TIMELINE CHRONOLOGY) ────────────────── -->
-<section class="section"
-  style="padding: 80px 0; background: #fbfbfb; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
+<!-- ── NHÓM NGHIÊN CỨU ──────────────────────────────────── -->
+<section class="section" style="padding:52px 0;background:#fafafa;">
   <div class="container">
-
-    <div style="text-align: center; margin-bottom: 60px;">
-      <span class="feature-tag-pill">Lộ Trình</span>
-      <h2 style="font-size: 2.2rem; font-weight: 900; color: var(--secondary); margin-bottom: 15px;">Cập Nhật Gần Đây
-      </h2>
-      <p style="font-size: 1.05rem; color: var(--text-dim); max-width: 600px; margin: 0 auto; line-height: 1.6;">Những
-        cột mốc phát triển nổi bật và cải tiến không ngừng của dự án.</p>
+    <div style="text-align:center;margin-bottom:40px;">
+      <span class="section-label">Nhóm thực hiện</span>
+      <h2 class="section-h2" style="text-align:center;">Đội Ngũ Nghiên Cứu</h2>
+      <p style="font-size:0.97rem;color:var(--text-dim);max-width:560px;margin:0 auto;line-height:1.65;font-weight:500;">Dự án được thực hiện bởi Nhóm 14 trong khuôn khổ môn học Thực tập Cơ sở — Học viện Công nghệ Bưu chính Viễn thông.</p>
     </div>
 
-    <div class="timeline-box">
-      <div class="about-timeline">
-
-        <!-- Node 1 -->
-        <div class="about-timeline-item">
-          <span class="about-timeline-date">17/05/2026</span>
-          <h3 class="about-timeline-title">Nâng cấp giao diện người dùng & Compact Mode</h3>
-          <p class="about-timeline-desc">
-            Tích hợp thanh đo chỉ số khoa học đề tài (KPI Cards), biểu mẫu thử nghiệm dự báo 3 bước (Wizard Form) trực
-            quan và tối giản kích thước chữ toàn diện giúp tăng 30% mật độ hiển thị hữu ích trên màn hình.
-          </p>
-        </div>
-
-        <!-- Node 2 -->
-        <div class="about-timeline-item">
-          <span class="about-timeline-date">12/05/2026</span>
-          <h3 class="about-timeline-title">Tích hợp bộ trực quan hóa dữ liệu trong Admin</h3>
-          <p class="about-timeline-desc">
-            Di chuyển và nâng cấp 6 biểu đồ phân tích tương tác và mô hình học máy nâng cao vào trang dành riêng cho
-            Giảng viên và Cố vấn học tập, hỗ trợ báo cáo và lập kế hoạch can thiệp.
-          </p>
-        </div>
-
-        <!-- Node 3 -->
-        <div class="about-timeline-item">
-          <span class="about-timeline-date">08/05/2026</span>
-          <h3 class="about-timeline-title">Ra mắt phiên bản Alpha & liên kết SQLite</h3>
-          <p class="about-timeline-desc">
-            Hoàn thiện liên kết dữ liệu thời gian thực giữa FastAPI Backend và cơ sở dữ liệu SQLite sinh viên OULAD.
-            Kiểm thử thành công thời gian phản hồi dự đoán dưới 100ms.
-          </p>
-        </div>
-
+    <div class="team-grid" style="max-width:800px;margin:0 auto;">
+      <div class="team-card">
+        <div class="team-avatar">ĐT</div>
+        <div class="team-name">Đàm Chiến Thắng</div>
+        <div class="team-mssv">B22DCCN702</div>
+        <div class="team-role">Full-stack Engineer · ML Pipeline · Backend FastAPI · Thiết kế hệ thống tổng thể</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">QT</div>
+        <div class="team-name">Đỗ Quốc Tấn</div>
+        <div class="team-mssv">B22DCCN626</div>
+        <div class="team-role">Data Engineer · Kỹ thuật đặc trưng · Phân tích OULAD · Báo cáo khoa học</div>
       </div>
     </div>
-  </div>
-</section>
 
-<hr style="border: none; border-top: 1px solid var(--border); margin: 30px auto 10px; max-width: 1100px; opacity: 0.6;">
-
-<!-- ── THANK YOU CARD & FOOTER NOTE ───────────────────────── -->
-<section class="section" style="padding: 80px 0; background: white;">
-  <div class="container">
-    <div class="thankyou-card">
-      <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 20px; color: white;">Đồng Hành Cùng Sinh Viên
-      </h2>
-      <p
-        style="font-size: 1.1rem; line-height: 1.8; max-width: 750px; margin: 0 auto 30px; font-weight: 500; opacity: 0.95;">
-        Cảm ơn bạn đã tin tưởng và đồng hành cùng hệ thống RiskSight. Chúng tôi không ngừng nỗ lực nghiên cứu, cải
-        tiến mô hình học máy và giao diện để bảo vệ tốt nhất cho sự thành công học tập của sinh viên. Hãy cùng RiskSight
-        hướng tới tương lai học tập thông minh và an toàn hơn!
+    <div style="max-width:800px;margin:28px auto 0;background:white;border:1px solid var(--border);border-radius:12px;padding:22px 26px;">
+      <p style="font-size:0.9rem;color:var(--text-dim);line-height:1.7;margin:0;font-weight:500;">
+        <strong style="color:var(--secondary);">Giáo viên hướng dẫn:</strong> Dự án được thực hiện dưới sự hướng dẫn của Bộ môn Khoa học Máy tính, Khoa Công nghệ Thông tin, Học viện Công nghệ Bưu chính Viễn thông (PTIT). Địa chỉ: Km10, Đường Nguyễn Trãi, Quận Hà Đông, Hà Nội.
       </p>
     </div>
   </div>
 </section>
+
+<hr style="border:none;border-top:1px solid var(--border);margin:0 auto;max-width:900px;opacity:0.5;">
+
+<!-- ── TIMELINE ───────────────────────────────────────────── -->
+<section class="section" style="padding:52px 0;background:white;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:40px;">
+      <span class="section-label">Lộ trình</span>
+      <h2 class="section-h2" style="text-align:center;">Cập Nhật Gần Đây</h2>
+      <p style="font-size:0.97rem;color:var(--text-dim);max-width:560px;margin:0 auto;line-height:1.65;font-weight:500;">Những cột mốc phát triển và cải tiến không ngừng của dự án từ giai đoạn Alpha đến phiên bản hiện tại.</p>
+    </div>
+
+    <div style="max-width:720px;margin:0 auto;padding:0 20px;">
+      <div class="about-timeline">
+
+        <div class="about-timeline-item">
+          <span class="about-timeline-date">14/06/2026</span>
+          <h3 class="about-timeline-title">Nâng cấp giao diện — Story-driven UX</h3>
+          <p class="about-timeline-desc">Cải thiện toàn diện mật độ nội dung, xóa bỏ khoảng trắng thừa, bổ sung đoạn văn dẫn dắt câu chuyện giữa các section. Trang Giới thiệu được viết lại với đầy đủ bối cảnh nghiên cứu, phương pháp, dữ liệu và đội ngũ. Thêm ROC curve và ảnh phân tích dữ liệu thực tế.</p>
+        </div>
+
+        <div class="about-timeline-item">
+          <span class="about-timeline-date">17/05/2026</span>
+          <h3 class="about-timeline-title">Nâng cấp KPI Cards &amp; Biểu mẫu thử nghiệm</h3>
+          <p class="about-timeline-desc">Tích hợp thanh đo chỉ số khoa học đề tài (KPI Cards), biểu mẫu thử nghiệm dự báo trực quan, và tối giản kích thước chữ toàn diện giúp tăng 30% mật độ hiển thị hữu ích trên màn hình.</p>
+        </div>
+
+        <div class="about-timeline-item">
+          <span class="about-timeline-date">12/05/2026</span>
+          <h3 class="about-timeline-title">Tích hợp bộ trực quan hóa dữ liệu Admin</h3>
+          <p class="about-timeline-desc">Di chuyển và nâng cấp 6 biểu đồ phân tích tương tác và mô hình học máy nâng cao vào trang dành riêng cho Giảng viên và Cố vấn học tập, hỗ trợ báo cáo và lập kế hoạch can thiệp.</p>
+        </div>
+
+        <div class="about-timeline-item">
+          <span class="about-timeline-date">08/05/2026</span>
+          <h3 class="about-timeline-title">Ra mắt phiên bản Alpha &amp; liên kết SQLite</h3>
+          <p class="about-timeline-desc">Hoàn thiện liên kết dữ liệu thời gian thực giữa FastAPI Backend và cơ sở dữ liệu SQLite sinh viên OULAD. Kiểm thử thành công thời gian phản hồi dự đoán dưới 100ms.</p>
+        </div>
+
+        <div class="about-timeline-item">
+          <span class="about-timeline-date">03/2026</span>
+          <h3 class="about-timeline-title">Khởi động nghiên cứu &amp; Phân tích OULAD</h3>
+          <p class="about-timeline-desc">Bắt đầu khảo sát tài liệu học thuật về Learning Analytics và Early Intervention Systems. Tải và phân tích bộ dữ liệu OULAD từ UCI Repository, thiết lập quy trình ETL và phân tích khám phá EDA ban đầu.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr style="border:none;border-top:1px solid var(--border);margin:0 auto;max-width:900px;opacity:0.5;">
+
+<!-- ── LIÊN HỆ & THANK YOU ───────────────────────────────── -->
+<section class="section" style="padding:52px 0;background:#fafafa;">
+  <div class="container">
+    <div style="max-width:820px;margin:0 auto;text-align:center;">
+      <span class="section-label">Liên hệ</span>
+      <h2 class="section-h2" style="text-align:center;">Hợp tác &amp; Hỗ trợ</h2>
+      <p class="prose-body" style="text-align:center;">
+        RiskSight là dự án nghiên cứu học thuật mở. Nếu bạn là giáo viên, cố vấn học tập hoặc nghiên cứu viên muốn áp dụng phương pháp này cho cơ sở giáo dục của mình, nhóm nghiên cứu sẵn sàng hỗ trợ tư vấn và chia sẻ tài liệu.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
+        <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+          <a href="https://www.facebook.com/chien.thang.317677" target="_blank"
+            style="display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:100px;font-weight:700;font-size:0.88rem;text-decoration:none;background:var(--primary);color:white;box-shadow:0 4px 14px rgba(200,16,46,0.2);transition:all 0.3s;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Kết nối Fanpage Hỗ trợ
+          </a>
+          <a href="mailto:thangd595@gmail.com"
+            style="display:inline-flex;align-items:center;gap:8px;padding:11px 26px;border-radius:100px;font-weight:700;font-size:0.88rem;text-decoration:none;border:2px solid var(--border);color:var(--text-dim);background:white;transition:all 0.3s;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            thangd595@gmail.com
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THANK YOU BANNER ─────────────────────────────────── -->
+<section class="section" style="padding:52px 0 64px;background:white;">
+  <div class="container">
+    <div class="thankyou-card">
+      <h2 style="font-size:1.9rem;font-weight:900;margin-bottom:18px;color:white;">Đồng Hành Cùng Sinh Viên</h2>
+      <p style="font-size:1.05rem;line-height:1.8;max-width:720px;margin:0 auto;font-weight:500;opacity:0.95;">
+        Không có sinh viên nào nên thất bại chỉ vì thiếu thông tin. RiskSight được xây dựng với niềm tin rằng dữ liệu học tập, khi được phân tích đúng cách, có thể trở thành người bạn đồng hành thầm lặng — luôn sẵn sàng báo hiệu trước để cố vấn kịp thời giúp đỡ sinh viên tìm lại đúng hướng.
+      </p>
+    </div>
+  </div>
+</section>
+
 {% endblock %}

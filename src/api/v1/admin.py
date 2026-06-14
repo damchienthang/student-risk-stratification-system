@@ -8,6 +8,7 @@ from src.core.security import get_current_user, is_admin, hash_password
 from src.services.admin_service import admin_service
 from src.models.user import User
 from src.models.student_risk import StudentRisk, InferenceLog
+from src.services.email_service import send_warning_email
 
 router = APIRouter()
 
@@ -234,3 +235,34 @@ async def create_user(request: Request):
         session.add(new_user)
         session.commit()
         return {"message": "Success"}
+
+@router.post("/send-email")
+async def send_student_warning_email(request: Request):
+    """
+    Gửi email cảnh báo rủi ro học tập cho sinh viên (dùng cho Demo).
+    Body: { to_email, student_id, recommendation, risk_label }
+    """
+    user = get_current_user(request)
+    if not is_admin(user):
+        raise HTTPException(status_code=403, detail="Unauthorized")
+    
+    body = await request.json()
+    to_email = body.get("to_email", "").strip()
+    student_id = str(body.get("student_id", "")).strip()
+    recommendation = body.get("recommendation", "Không có khuyến nghị cụ thể.")
+    risk_label = body.get("risk_label", "Unknown")
+    
+    if not to_email or not student_id:
+        raise HTTPException(status_code=400, detail="Thiếu thông tin email hoặc mã sinh viên.")
+
+    success = send_warning_email(
+        to_email=to_email,
+        student_id=student_id,
+        recommendation=recommendation,
+        risk_label=risk_label
+    )
+    
+    if success:
+        return {"status": "success", "message": f"Đã gửi email cảnh báo tới {to_email} thành công."}
+    else:
+        raise HTTPException(status_code=500, detail="Gửi email thất bại. Vui lòng kiểm tra lại cấu hình SMTP trong file .env.")

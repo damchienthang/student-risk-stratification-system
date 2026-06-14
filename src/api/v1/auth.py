@@ -48,6 +48,9 @@ async def login(
 ):
     user = auth_service.authenticate_user(username, password)
     if user:
+        if user.get("error") == "locked":
+            return RedirectResponse(url="/?error=account_locked", status_code=303)
+
         if user["role"] == UserRole.ADMIN:
             response = RedirectResponse(url="/admin?msg=login_success", status_code=303)
         elif user["role"] == UserRole.STUDENT:

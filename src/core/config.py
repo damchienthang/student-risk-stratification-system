@@ -19,6 +19,10 @@ class Settings:
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 1 week
     
+    # SMTP Settings cho Demo Email
+    SMTP_EMAIL: str = os.getenv("SMTP_EMAIL", "")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
+    
     # Database
     DB_DIR = BASE_DIR / "data" / "processed"
     DATABASE_URL: str = f"sqlite:///{DB_DIR}/database.db"
