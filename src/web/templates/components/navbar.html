@@ -15,15 +15,9 @@
 
     <!-- NAVIGATE CĂN PHẢI -->
     <nav class="nav" style="display: flex; gap: 30px; align-items: center; margin-left: auto;">
-      <a href="/" class="nav-link"
-        style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">TRANG
-        CHỦ</a>
-      <a href="/#model" class="nav-link"
-        style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">MÔ
-        HÌNH</a>
-      <a href="/about" class="nav-link"
-        style="text-decoration: none; color: var(--text); font-weight: 700; font-size: 0.9rem; transition: color 0.2s;">GIỚI
-        THIỆU</a>
+      <a href="/" class="nav-link">TRANG CHỦ</a>
+      <a href="/#model" class="nav-link">MÔ HÌNH</a>
+      <a href="/about" class="nav-link">GIỚI THIỆU</a>
       <div id="authNavArea" style="display: flex; align-items: center; gap: 15px; margin-left: 10px;">
         {% if user %}
         <div class="user-dropdown">
@@ -76,6 +70,50 @@
     background: #f8f9fa;
     color: var(--primary);
   }
+
+  /* Nav Link Styles & Click Effects */
+  .nav-link {
+    text-decoration: none;
+    color: var(--text) !important;
+    font-weight: 700;
+    font-size: 0.9rem;
+    position: relative;
+    padding: 8px 4px;
+    display: inline-block;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-link:hover {
+    color: var(--primary) !important;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .nav-link.active {
+    color: var(--primary) !important;
+  }
+
+  .nav-link.active::after {
+    width: 100%;
+  }
+
+  /* Press / Click Feedback */
+  .nav-link:active {
+    transform: scale(0.92);
+  }
 </style>
 
 <script>
@@ -87,5 +125,19 @@
   document.addEventListener('click', () => {
     const dropdown = document.querySelector('.dropdown-content');
     if (dropdown) dropdown.style.display = 'none';
+  });
+
+  // Highlight active link based on current path
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentPath = window.location.pathname;
+    const currentHash = window.location.hash;
+    document.querySelectorAll('.nav-link').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === currentPath || (href.startsWith('/#') && currentHash && href.endsWith(currentHash))) {
+        link.classList.add('active');
+      } else if (currentPath === '/' && href === '/') {
+        link.classList.add('active');
+      }
+    });
   });
 </script>
