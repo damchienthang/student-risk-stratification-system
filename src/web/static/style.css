@@ -335,7 +335,7 @@ tr:hover td { background: var(--bg-subtle); }
 /* ── FOOTER ─────────────────────────────────────────────── */
 .footer { padding: 48px 0; background: #0f1623; color: white; text-align: center; }
 .footer-logo { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; display: block; color: var(--primary); }
-.footer-text { font-size: var(--text-sm); opacity: 0.65; max-width: 560px; margin: 0 auto; line-height: 1.7; }
+.footer-text { color: #ffffff; font-size: var(--text-sm); opacity: 1; max-width: 560px; margin: 0 auto; line-height: 1.7; }
 
 /* ── UTILITIES ──────────────────────────────────────────── */
 .text-primary { color: var(--primary) !important; }
