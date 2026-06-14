@@ -586,7 +586,7 @@ function renderAnalysis(features) {
     const bgCol = item.type === 'danger' ? '#fff5f5' : (item.type === 'warning' ? '#fffbf2' : '#f6ffed');
 
     div.style.padding = '15px 20px';
-    div.style.borderRadius = '8px';
+    div.style.borderRadius = 'var(--radius-sm)';
     div.style.background = bgCol;
     div.style.borderLeft = `5px solid ${borderCol}`;
     div.style.marginBottom = '5px';

@@ -7,7 +7,7 @@
     <title>RiskSight — Admin Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/admin_style.css">
+    <link rel="stylesheet" href="/static/admin_style.css?v=2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -18,7 +18,7 @@
             <div class="sidebar-header">
                 <div class="sidebar-brand">
                     <div
-                        style="background: var(--primary); width: 40px; height: 4px; margin-bottom: 12px; border-radius: 2px;">
+                        style="background: var(--primary); width: 30px; height: 3px; margin-bottom: 10px; border-radius: 2px;">
                     </div>
                     <h1>RiskSight</h1>
                     <p>SYSTEM ADMINISTRATION</p>
@@ -44,7 +44,8 @@
                 </button>
             </nav>
             <div class="sidebar-footer">
-                <a href="/api/v1/auth/logout" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');" class="nav-item logout-btn">
+                <a href="/api/v1/auth/logout" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');"
+                    class="nav-item logout-btn">
                     <span>Đăng xuất</span>
                 </a>
             </div>
@@ -72,10 +73,14 @@
             <div class="content-body">
                 <!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
                 <section id="section-overview" class="content-section active">
-                    <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
-                        <div style="display: flex; align-items: center; gap: 12px; background: white; padding: 10px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid var(--border);">
-                            <label style="font-size: 0.85rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; margin: 0;">Nguồn dữ liệu:</label>
-                            <select id="overviewSourceSelect" class="select-field" onchange="syncSource(this.value)" style="width: auto; height: 36px; padding: 0 30px 0 15px; font-size: 0.9rem; border: none; background: #f8fafc; font-weight: 600;">
+                    <div style="display: flex; justify-content: left; margin-bottom: 12px;">
+                        <div
+                            style="display: flex; align-items: center; gap: 8px; background: white; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+                            <label
+                                style="font-size: 0.85rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; margin: 0;">Nguồn
+                                dữ liệu:</label>
+                            <select id="overviewSourceSelect" class="select-field" onchange="syncSource(this.value)"
+                                style="width: auto; font-size: 0.9rem; border: none; background: #f8fafc; font-weight: 600;">
                                 <option value="official">Sinh viên chính quy (OULAD)</option>
                                 <option value="guest">Khách dùng thử (Guest)</option>
                             </select>
@@ -110,7 +115,8 @@
                                 <span class="card-title">Can thiệp khẩn cấp</span>
                             </div>
                             <div class="card-body" style="padding: 0;" id="overviewUrgentList">
-                                <p style="padding: 40px; text-align: center; color: var(--text-light);">Đang tải danh sách...</p>
+                                <p style="padding: 40px; text-align: center; color: var(--text-light);">Đang tải danh
+                                    sách...</p>
                             </div>
                         </div>
 
@@ -149,33 +155,44 @@
 
                 <!-- ═══════════════════════ STUDENTS ═══════════════════════ -->
                 <section id="section-students" class="content-section">
-                    <div class="search-bar" style="margin-bottom: 32px; gap: 15px;">
+                    <div class="search-bar" style="margin-bottom: 16px; gap: 10px;">
                         <input type="text" id="adminSearchInput" class="input-field"
                             placeholder="Tra cứu nhanh mã sinh viên (VD: 11391)..."
                             onkeydown="if(event.key==='Enter') adminSearchStudent()">
                         <button onclick="adminSearchStudent()" class="btn btn-primary"
-                            style="padding: 0 40px; height: 56px; border-radius: 12px; font-size: 1rem;">Tìm
+                            style="padding: 8px 20px; height: auto; border-radius: var(--radius-sm); font-size: 0.9rem;">Tìm
                             kiếm</button>
                     </div>
                     <div id="adminSearchResult" style="margin-bottom: 24px;"></div>
 
                     <div class="table-container">
-                        <div class="table-controls" style="padding: 30px 40px; justify-content: space-between; align-items: flex-end;">
-                            <div style="display: flex; gap: 32px; flex-wrap: wrap;">
-                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 220px;">
-                                    <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Nguồn dữ liệu</label>
-                                    <select id="sourceSelect" class="select-field" onchange="syncSource(this.value)" style="width: 100%;">
+                        <div class="table-controls"
+                            style="padding: 12px 16px; justify-content: space-between; align-items: flex-end;">
+                            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                                <div style="display: flex; flex-direction: column; gap: 6px; min-width: 180px;">
+                                    <label
+                                        style="font-size: 0.75rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Nguồn
+                                        dữ liệu</label>
+                                    <select id="sourceSelect" class="select-field" onchange="syncSource(this.value)"
+                                        style="width: 100%;">
                                         <option value="official">Sinh viên chính quy (OULAD)</option>
                                         <option value="guest">Khách dùng thử (Guest)</option>
                                     </select>
                                 </div>
                                 <div style="display: none;">
-                                    <select id="moduleSelect" class="select-field"><option value="all">all</option></select>
-                                    <select id="semesterSelect" class="select-field"><option value="all">all</option></select>
+                                    <select id="moduleSelect" class="select-field">
+                                        <option value="all">all</option>
+                                    </select>
+                                    <select id="semesterSelect" class="select-field">
+                                        <option value="all">all</option>
+                                    </select>
                                 </div>
-                                <div style="display: flex; flex-direction: column; gap: 12px; min-width: 220px;">
-                                    <label style="font-size: 0.9rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Mức độ rủi ro</label>
-                                    <select id="riskSelect" class="select-field" onchange="updateDashboard()" style="width: 100%;">
+                                <div style="display: flex; flex-direction: column; gap: 6px; min-width: 180px;">
+                                    <label
+                                        style="font-size: 0.75rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1.5px;">Mức
+                                        độ rủi ro</label>
+                                    <select id="riskSelect" class="select-field" onchange="updateDashboard()"
+                                        style="width: 100%;">
                                         <option value="all">Tất cả mức rủi ro</option>
                                         <option value="Low">Rủi ro thấp (Low Risk)</option>
                                         <option value="Medium">Rủi ro trung bình (Medium Risk)</option>
@@ -211,58 +228,77 @@
                         <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: 20px;">
                             <span class="card-title">Phân Tích Dữ Liệu Học Thuật & Trực Quan Hóa Mô Hình AI</span>
                             <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 5px; font-weight: 500;">
-                                Báo cáo chi tiết cấu trúc phân phối rủi ro, tương tác hệ thống (VLE), và hiệu năng phân lớp của mô hình LightGBM tối ưu.
+                                Báo cáo chi tiết cấu trúc phân phối rủi ro, tương tác hệ thống (VLE), và hiệu năng phân
+                                lớp của mô hình LightGBM tối ưu.
                             </p>
                         </div>
-                        <div class="card-body" style="padding: 30px 40px;">
+                        <div class="card-body" style="padding: 16px 20px;">
                             <div class="analytics-grid">
-                                
+
                                 <!-- Card 1 -->
-                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                <div class="analytics-card"
+                                    style="border: 1px solid var(--border); padding: 10px; border-radius: var(--radius-sm); background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
                                     <img src="/visuals/01_class_distribution.png"
                                         onclick="openModal(this.src, 'Phân phối các mức độ rủi ro')"
-                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
-                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Phân phối các mức độ rủi ro</p>
+                                        style="border-radius: var(--radius-sm); border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p
+                                        style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">
+                                        Phân phối các mức độ rủi ro</p>
                                 </div>
 
                                 <!-- Card 2 -->
-                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                <div class="analytics-card"
+                                    style="border: 1px solid var(--border); padding: 10px; border-radius: var(--radius-sm); background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
                                     <img src="/visuals/02_04_vle_features.png"
                                         onclick="openModal(this.src, 'Tương tác hệ thống (VLE) theo nhóm rủi ro')"
-                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
-                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Tương tác hệ thống (VLE)</p>
+                                        style="border-radius: var(--radius-sm); border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p
+                                        style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">
+                                        Tương tác hệ thống (VLE)</p>
                                 </div>
 
                                 <!-- Card 3 -->
-                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                <div class="analytics-card"
+                                    style="border: 1px solid var(--border); padding: 10px; border-radius: var(--radius-sm); background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
                                     <img src="/visuals/02_05_assessment_features.png"
                                         onclick="openModal(this.src, 'Kết quả kiểm tra theo nhóm rủi ro')"
-                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
-                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Kết quả kiểm tra & đánh giá</p>
+                                        style="border-radius: var(--radius-sm); border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p
+                                        style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">
+                                        Kết quả kiểm tra & đánh giá</p>
                                 </div>
 
                                 <!-- Card 4 -->
-                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                <div class="analytics-card"
+                                    style="border: 1px solid var(--border); padding: 10px; border-radius: var(--radius-sm); background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
                                     <img src="/visuals/03_feature_importance_best.png"
                                         onclick="openModal(this.src, 'Top đặc trưng quan trọng nhất')"
-                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
-                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Các yếu tố quan trọng hàng đầu</p>
+                                        style="border-radius: var(--radius-sm); border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p
+                                        style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">
+                                        Các yếu tố quan trọng hàng đầu</p>
                                 </div>
 
                                 <!-- Card 5 -->
-                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                <div class="analytics-card"
+                                    style="border: 1px solid var(--border); padding: 10px; border-radius: var(--radius-sm); background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
                                     <img src="/visuals/03_confusion_matrix_best.png"
                                         onclick="openModal(this.src, 'Ma trận nhầm lẫn (Confusion Matrix)')"
-                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
-                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Ma trận nhầm lẫn LightGBM</p>
+                                        style="border-radius: var(--radius-sm); border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p
+                                        style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">
+                                        Ma trận nhầm lẫn LightGBM</p>
                                 </div>
 
                                 <!-- Card 6 -->
-                                <div class="analytics-card" style="border: 1px solid var(--border); padding: 15px; border-radius: 12px; background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
+                                <div class="analytics-card"
+                                    style="border: 1px solid var(--border); padding: 10px; border-radius: var(--radius-sm); background: #F8FAFC; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.01);">
                                     <img src="/visuals/02_07_correlation.png"
                                         onclick="openModal(this.src, 'Ma trận tương quan giữa các đặc trưng')"
-                                        style="border-radius: 8px; border: 1px solid var(--border); width: 100%; height: auto;">
-                                    <p style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">Ma trận tương quan đặc trưng</p>
+                                        style="border-radius: var(--radius-sm); border: 1px solid var(--border); width: 100%; height: auto;">
+                                    <p
+                                        style="margin-top:15px; font-weight:700; text-align:center; color: var(--text-main); font-size: 0.9rem;">
+                                        Ma trận tương quan đặc trưng</p>
                                 </div>
 
                             </div>
@@ -279,13 +315,13 @@
                                 style="padding: 8px 16px; font-size: 0.8rem;">+ Thêm tài khoản</button>
                         </div>
                         <div id="addUserForm"
-                            style="display:none; padding:20px; background:var(--bg); border-bottom:1px solid var(--border);">
+                            style="display:none; padding:12px; background:var(--bg); border-bottom:1px solid var(--border-light);">
                             <div
-                                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; align-items:end;">
+                                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:8px; align-items:end;">
                                 <input type="text" id="newUsername" class="input-field" placeholder="Tên đăng nhập">
                                 <input type="password" id="newPassword" class="input-field" placeholder="Mật khẩu">
                                 <input type="text" id="newFullname" class="input-field" placeholder="Họ tên">
-                                <select id="newRole" class="select-field" style="height:48px;">
+                                <select id="newRole" class="select-field">
                                     <option value="lecturer">Giảng viên</option>
                                     <option value="student">Sinh viên</option>
                                 </select>
@@ -316,43 +352,50 @@
     <div id="imgModal"
         style="position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:1000; display:none; align-items:center; justify-content:center; padding:40px;"
         onclick="closeModal()">
-        <div style="background:white; border-radius:12px; padding:20px; max-width:900px; width:100%; position:relative;"
+        <div style="background:white; border-radius:var(--radius-sm); padding:16px; max-width:900px; width:100%; position:relative;"
             onclick="event.stopPropagation()">
             <h3 id="modalTitle" style="margin-bottom:15px;"></h3>
-            <img id="modalImg" src="" style="width:100%; border-radius:8px;">
+            <img id="modalImg" src="" style="width:100%; border-radius:var(--radius-sm);">
         </div>
     </div>
 
     <!-- EMAIL MODAL -->
     <div id="emailModal"
         style="position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:1100; display:none; align-items:center; justify-content:center; padding:20px;">
-        <div style="background:white; border-radius:16px; padding:36px; max-width:500px; width:100%; box-shadow: 0 25px 60px rgba(0,0,0,0.2); position: relative;">
-            <button onclick="closeEmailModal()" style="position:absolute; top:16px; right:20px; background:none; border:none; font-size:1.4rem; cursor:pointer; color:#aaa; line-height:1;">✕</button>
-            <h3 style="margin-bottom:6px; color: #c92a2a; font-size:1.2rem;">Gửi Email Cảnh Báo</h3>
-            <p id="emailModalStudentInfo" style="font-size:0.85rem; color:var(--text-light); margin-bottom:20px; font-weight:500;"></p>
-            <div style="background:#fff5f5; border-left:3px solid #c92a2a; border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:0.85rem; color:#555; font-style:italic;" id="emailModalRec"></div>
-            <label style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-light); letter-spacing:1px; display:block; margin-bottom:6px;">Địa chỉ Email người nhận</label>
+        <div
+            style="background:white; border-radius:var(--radius-sm); padding:24px; max-width:500px; width:100%; box-shadow: 0 25px 60px rgba(0,0,0,0.2); position: relative;">
+            <button onclick="closeEmailModal()"
+                style="position:absolute; top:16px; right:20px; background:none; border:none; font-size:1.4rem; cursor:pointer; color:#aaa; line-height:1;">✕</button>
+            <h3 style="margin-bottom:6px; color: var(--primary); font-size:1.2rem;">Gửi Email Cảnh Báo</h3>
+            <p id="emailModalStudentInfo"
+                style="font-size:0.85rem; color:var(--text-light); margin-bottom:20px; font-weight:500;"></p>
+            <div style="background:var(--bg-alt); border-left:3px solid var(--primary); border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:16px; font-size:0.85rem; color:var(--text-muted); font-style:italic;"
+                id="emailModalRec"></div>
+            <label
+                style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; display:block; margin-bottom:6px;">Địa
+                chỉ Email người nhận</label>
             <input id="emailRecipientInput" type="email" placeholder="example@email.com"
-                style="width:100%; padding:12px 16px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:0.95rem; outline:none; box-sizing:border-box; transition:border 0.2s;"
-                onfocus="this.style.borderColor='#c92a2a'" onblur="this.style.borderColor='#e2e8f0'">
-            <div style="display:flex; gap:10px; margin-top:20px;">
+                style="width:100%; padding:10px 14px; border:1px solid var(--border-light); border-radius:var(--radius-sm); font-size:0.95rem; outline:none; box-sizing:border-box; transition:border 0.2s;"
+                onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border-light)'">
+            <div style="display:flex; gap:10px; margin-top:16px;">
                 <button id="emailSendBtn" onclick="submitSendEmail()"
-                    style="flex:1; padding:13px; background:#c92a2a; color:white; border:none; border-radius:10px; font-weight:800; cursor:pointer; font-size:0.95rem; transition:all 0.2s;"
+                    style="flex:1; padding:10px; background:var(--primary); color:white; border:none; border-radius:var(--radius-sm); font-weight:800; cursor:pointer; font-size:0.95rem; transition:all 0.2s;"
                     onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
                     Gửi Ngay
                 </button>
                 <button onclick="closeEmailModal()"
-                    style="flex:1; padding:13px; background:#f1f3f5; color:#555; border:none; border-radius:10px; font-weight:700; cursor:pointer; font-size:0.95rem;">
+                    style="flex:1; padding:10px; background:var(--bg-subtle); color:var(--text-muted); border:none; border-radius:var(--radius-sm); font-weight:700; cursor:pointer; font-size:0.95rem;">
                     Hủy
                 </button>
             </div>
-            <p id="emailStatusMsg" style="margin-top:14px; text-align:center; font-size:0.85rem; font-weight:700; display:none;"></p>
+            <p id="emailStatusMsg"
+                style="margin-top:14px; text-align:center; font-size:0.85rem; font-weight:700; display:none;"></p>
         </div>
     </div>
 
     <script>
         const RISK_LABELS = { Low: 'Rủi ro thấp', Medium: 'Trung bình', High: 'Rủi ro cao', 'Very High': 'Nguy cấp' };
-        const COLORS = { Low: '#10B981', Medium: '#F59E0B', High: '#F97316', 'Very High': '#EF4444' };
+        const COLORS = { Low: '#64748b', Medium: '#94a3b8', High: '#fca5a5', 'Very High': '#991b1b' };
 
         function showSection(id, el) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
@@ -401,17 +444,17 @@
                 }
                 if (d.top_at_risk) {
                     document.getElementById('overviewUrgentList').innerHTML = d.top_at_risk.slice(0, 5).map(s => `
-                        <div class="urgent-item" style="padding: 20px 24px;">
+                        <div class="urgent-item" style="padding: 10px 14px;">
                             <div class="urgent-avatar">${s.id_student.toString().slice(-2)}</div>
                             <div class="urgent-info">
                                 <span class="urgent-name">MSSV: #${s.id_student}</span>
                                 <span class="urgent-meta">${s.code_module} — ${s.code_presentation}</span>
                             </div>
-                            <div class="urgent-score" style="margin-right: 20px;">
+                            <div class="urgent-score" style="margin-right: 12px;">
                                 <span class="score-val" style="font-size: 1.1rem;">${s.avg_score.toFixed(1)}</span>
                                 <span style="font-size: 0.6rem; font-weight: 700; color: var(--text-light); text-transform: uppercase;">Điểm trung bình</span>
                             </div>
-                            <button class="btn btn-outline" style="padding: 8px 16px; font-size: 0.75rem; border-radius: 8px;" onclick="quickView('${s.id_student}')">CHI TIẾT</button>
+                            <button class="btn btn-outline" style="padding: 8px 16px; font-size: 0.75rem; border-radius: var(--radius-sm);" onclick="quickView('${s.id_student}')">CHI TIẾT</button>
                         </div>
                     `).join('');
                 }
@@ -428,7 +471,7 @@
                     labels: ['Thấp', 'Trung bình', 'Cao', 'Nguy cấp'],
                     datasets: [{
                         data: data,
-                        backgroundColor: ['#10B981', '#F59E0B', '#F97316', '#EF4444'],
+                        backgroundColor: ['#64748b', '#94a3b8', '#fca5a5', '#991b1b'],
                         borderWidth: 0,
                         hoverOffset: 15
                     }]
@@ -446,7 +489,7 @@
 
         function renderRiskBarCharts(scoreData, clicksData) {
             const labels = ['Thấp', 'Trung bình', 'Cao', 'Nguy cấp'];
-            const colors = ['#10B981', '#F59E0B', '#F97316', '#EF4444'];
+            const colors = ['#64748b', '#94a3b8', '#fca5a5', '#991b1b'];
             const barOpts = (label, suffix) => ({
                 responsive: true, maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
@@ -460,7 +503,7 @@
             if (scoreBarChart) scoreBarChart.destroy();
             scoreBarChart = new Chart(sCtx, {
                 type: 'bar',
-                data: { labels, datasets: [{ data: scoreData, backgroundColor: colors, borderRadius: 5, borderSkipped: false }] },
+                data: { labels, datasets: [{ data: scoreData, backgroundColor: colors, borderRadius: 0, borderSkipped: false }] },
                 options: barOpts('Điểm TB', ' đ')
             });
 
@@ -468,7 +511,7 @@
             if (clicksBarChart) clicksBarChart.destroy();
             clicksBarChart = new Chart(cCtx, {
                 type: 'bar',
-                data: { labels, datasets: [{ data: clicksData, backgroundColor: colors, borderRadius: 5, borderSkipped: false }] },
+                data: { labels, datasets: [{ data: clicksData, backgroundColor: colors, borderRadius: 0, borderSkipped: false }] },
                 options: barOpts('Clicks', '')
             });
         }
@@ -505,17 +548,17 @@
             }
             const html = `
                 <div class="pagination" style="padding: 0; gap: 10px;">
-                    <button class="page-btn" ${p.page <= 1 ? 'disabled' : ''} onclick="loadStudentList(${p.page - 1})" style="padding: 10px 18px; border-radius: 8px;">←</button>
+                    <button class="page-btn" ${p.page <= 1 ? 'disabled' : ''} onclick="loadStudentList(${p.page - 1})" style="padding: 6px 12px; border-radius: var(--radius-sm);">←</button>
                     <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-main); padding: 0 10px;">TRANG ${p.page} / ${p.total_pages}</span>
-                    <button class="page-btn" ${p.page >= p.total_pages ? 'disabled' : ''} onclick="loadStudentList(${p.page + 1})" style="padding: 10px 18px; border-radius: 8px;">→</button>
+                    <button class="page-btn" ${p.page >= p.total_pages ? 'disabled' : ''} onclick="loadStudentList(${p.page + 1})" style="padding: 6px 12px; border-radius: var(--radius-sm);">→</button>
                 </div>
             `;
             conts.forEach(c => c.innerHTML = html);
         }
 
-        function updateDashboard() { 
+        function updateDashboard() {
             loadOverview();
-            loadStudentList(1); 
+            loadStudentList(1);
         }
 
         function syncSource(val) {
@@ -580,19 +623,19 @@
                         else if (key === 'gender_num' && val != null) val = val === 0 ? 'Nam' : 'Nữ';
                         else if (typeof val === 'number' && !Number.isInteger(val)) val = val.toFixed(2);
                         itemsHtml += `
-                            <div style="padding: 14px; background: #F8FAFC; border-radius: 10px; border: 1px solid var(--border);">
+                            <div style="padding: 10px; background: #F8FAFC; border-radius: var(--radius-sm); border: 1px solid var(--border);">
                                 <span style="display: block; font-size: 0.65rem; font-weight: 800; color: var(--text-light); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">${label}</span>
                                 <span style="font-weight: 700; color: var(--text-main); font-size: 1rem;">${val ?? '—'}</span>
                             </div>
                         `;
                     }
                     groupsHtml += `
-                        <div style="margin-bottom: 30px;">
-                            <h4 style="font-size: 0.75rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="font-size: 0.75rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
                                 <span style="width: 30px; height: 2px; background: var(--primary); opacity: 0.3;"></span>
                                 ${group.title}
                             </h4>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px;">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px;">
                                 ${itemsHtml}
                             </div>
                         </div>
@@ -604,54 +647,54 @@
                     const safeRec = encodeURIComponent(p.recommendation || 'Không có khuyến nghị cụ thể.');
                     actionsHtml = `
                         <button onclick="openEmailModal('${s.id_student}', decodeURIComponent('${safeRec}'), '${p.risk_label}')"
-                            style="padding: 10px 15px; background: #c92a2a; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                            style="padding: 8px 12px; background: #c92a2a; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Gửi Email Cảnh Báo
                         </button>
-                        <button onclick="alert('Đã tạo lịch hẹn tư vấn học thuật với sinh viên vào tuần tới.')" style="padding: 10px 15px; background: #e67700; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="alert('Đã tạo lịch hẹn tư vấn học thuật với sinh viên vào tuần tới.')" style="padding: 8px 12px; background: #e67700; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Lên Lịch Tư Vấn
                         </button>
-                        <button onclick="alert('Sinh viên đã được đưa vào danh sách theo dõi đặc biệt.')" style="padding: 10px 15px; background: #1864ab; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="alert('Sinh viên đã được đưa vào danh sách theo dõi đặc biệt.')" style="padding: 8px 12px; background: #1864ab; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Theo Dõi Đặc Biệt
                         </button>
                     `;
                 } else if (p.risk_label === 'Medium' || p.risk_level === 1) {
                     actionsHtml = `
-                        <button onclick="alert('Đã gửi thông báo nhắc nhở tự động qua VLE.')" style="padding: 10px 15px; background: #e67700; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="alert('Đã gửi thông báo nhắc nhở tự động qua VLE.')" style="padding: 8px 12px; background: #e67700; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Gửi Nhắc Nhở
                         </button>
-                        <button onclick="alert('Đã gửi tài liệu hướng dẫn ôn tập bổ sung.')" style="padding: 10px 15px; background: #1864ab; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="alert('Đã gửi tài liệu hướng dẫn ôn tập bổ sung.')" style="padding: 8px 12px; background: #1864ab; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Gửi Tài Liệu Ôn Tập
                         </button>
                     `;
                 } else {
                     actionsHtml = `
-                        <button onclick="alert('Đã gửi email khích lệ tinh thần học tập của sinh viên.')" style="padding: 10px 15px; background: #2b8a3e; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="alert('Đã gửi email khích lệ tinh thần học tập của sinh viên.')" style="padding: 8px 12px; background: #2b8a3e; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Gửi Lời Khen Ngợi
                         </button>
                     `;
                 }
 
                 panel.innerHTML = `
-                    <div class="card" style="border-left: 8px solid ${COLORS[p.risk_label]}; overflow: hidden; animation: slideIn 0.3s ease-out; box-shadow: var(--shadow-lg);">
-                        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; padding: 30px; background: white; border-bottom: 1px solid var(--border);">
+                    <div class="card" style="border-left: 5px solid ${COLORS[p.risk_label]}; overflow: hidden; animation: slideIn 0.3s ease-out; box-shadow: var(--shadow-lg);">
+                        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; padding: 16px 20px; background: white; border-bottom: 1px solid var(--border-light);">
                             <div>
                                 <h3 style="font-size:1.6rem; font-weight:900; letter-spacing: -0.5px; margin-bottom: 4px;">Hồ sơ sinh viên #${s.id_student}</h3>
                                 <p style="font-size:0.9rem; color:var(--text-muted); font-weight: 500;">Dữ liệu chi tiết được phân nhóm theo đặc trưng hệ thống</p>
                             </div>
                             <div style="text-align:right;">
                                 <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-light); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">PHÂN LOẠI RỦI RO</div>
-                                <span class="badge" style="background:${COLORS[p.risk_label]}; color:white; font-size:1.1rem; padding:12px 24px; font-weight: 900; box-shadow: 0 6px 15px ${COLORS[p.risk_label]}44; border-radius: 12px;">
+                                <span class="badge" style="background:${COLORS[p.risk_label]}; color:white; font-size:1.1rem; padding:8px 16px; font-weight: 900; border-radius: var(--radius-sm);">
                                     ${RISK_LABELS[p.risk_label].toUpperCase()} (${p.confidence.toFixed(1)}%)
                                 </span>
                             </div>
                         </div>
-                        <div style="padding: 30px;">
+                        <div style="padding: 16px 20px;">
                             ${groupsHtml}
-                            <div style="margin-top: 10px; padding: 24px; background: var(--primary-light); border-radius: 16px; border: 1px solid rgba(200, 16, 46, 0.15); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                            <div style="margin-top: 10px; padding: 14px; background: var(--primary-light); border-radius: var(--radius-sm); border: 1px solid rgba(200, 16, 46, 0.15); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
                                 <h4 style="color: var(--primary); font-size: 0.85rem; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px;">Khuyến nghị can thiệp</h4>
                                 <p style="font-size: 1.05rem; line-height: 1.7; color: var(--secondary); font-weight: 500; font-style: italic;">"${p.recommendation || 'Không có khuyến nghị cụ thể.'}"</p>
                             </div>
-                            <div style="margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid var(--border);">
+                            <div style="margin-top: 20px; padding: 12px; background: #f8fafc; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
                                 <h4 style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; color: var(--secondary);">Xử lý hành động</h4>
                                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                                     ${actionsHtml}
@@ -771,6 +814,8 @@
 
         document.addEventListener('DOMContentLoaded', loadOverview);
     </script>
+    <div id="toast-container"></div>
+    <script src="/static/app.js?v=4"></script>
 </body>
 
 </html>

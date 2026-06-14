@@ -1,6 +1,5 @@
-<!-- ── HEADER ──────────────────────────────────────────── -->
 <header class="header"
-  style="background: white; border-bottom: 3px solid var(--primary); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100vw; left: 0; right: 0;">
+  style="background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); width: 100vw; left: 0; right: 0;">
   <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 4%;">
     <!-- LOGO CĂN TRÁI -->
     <a href="/" class="logo"
@@ -29,12 +28,12 @@
         {% if user %}
         <div class="user-dropdown">
           <button class="user-btn" onclick="toggleDropdown(event)"
-            style="background: var(--bg-alt); border: 1px solid var(--border); padding: 10px 25px; border-radius: 50px; display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 700; transition: all 0.2s;">
+            style="background: var(--bg-alt); border: 1px solid var(--border); padding: 10px 25px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 700; transition: all 0.2s;">
             <span class="user-name">{{ user.full_name or user.username }}</span>
             <span class="dropdown-arrow" style="font-size: 0.6rem; opacity: 0.5;">▼</span>
           </button>
           <div class="dropdown-content"
-            style="display: none; position: absolute; right: 0; background: white; min-width: 220px; box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15); border-radius: 12px; padding: 12px 0; z-index: 9999; border: 1px solid var(--border); margin-top: 10px;">
+            style="display: none; position: absolute; right: 0; background: white; min-width: 220px; box-shadow: var(--shadow-md); border-radius: var(--radius-sm); padding: 12px 0; z-index: 9999; border: 1px solid var(--border); margin-top: 10px;">
             {% if user.role == 'lecturer' %}
             <a href="/admin"
               style="color: var(--text); padding: 12px 25px; text-decoration: none; display: block; font-size: 0.95rem; font-weight: 600;">Bảng
@@ -53,7 +52,7 @@
         </div>
         {% else %}
         <button onclick="toggleLoginModal()" class="login-trigger-btn"
-          style="background: var(--primary); color: white; border: none; padding: 12px 35px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 20px rgba(200, 16, 46, 0.25); font-size: 0.9rem; letter-spacing: 0.5px;">ĐĂNG
+          style="background: var(--primary); color: white; border: none; padding: 12px 35px; border-radius: var(--radius-sm); font-weight: 800; cursor: pointer; transition: all 0.3s; font-size: 0.9rem; letter-spacing: 0.5px;">ĐĂNG
           NHẬP</button>
         {% endif %}
       </div>
