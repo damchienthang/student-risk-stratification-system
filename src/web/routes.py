@@ -24,13 +24,6 @@ async def get_db_user(request: Request) -> Optional[User]:
 async def home(request: Request):
     user = await get_db_user(request)
     
-    # Auto-redirect to dashboard if already logged in
-    if user:
-        if user.role == UserRole.ADMIN:
-            return RedirectResponse(url="/admin")
-        elif user.role in [UserRole.STUDENT, UserRole.GUEST]:
-            return RedirectResponse(url="/student")
-            
     return templates.TemplateResponse(request=request, name="pages/home/index.html", context={
         "user": user,
         "UserRole": UserRole

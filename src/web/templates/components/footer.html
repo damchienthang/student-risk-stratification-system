@@ -1,18 +1,17 @@
-<!-- ── FOOTER ─────────────────────────────────────────────── -->
 <style>
   .footer {
     background: #030f34 !important;
     /* Deep Premium Midnight Slate */
-    padding: 60px 0 40px !important;
+    padding: 24px 0 16px !important;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .footer-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1.5fr;
-    gap: 40px;
+    gap: 28px;
     text-align: left;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 
   @media (max-width: 768px) {
@@ -24,9 +23,9 @@
 
   .footer-heading {
     color: #fff;
-    font-size: 1.1rem;
-    font-weight: 800;
-    margin-bottom: 20px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
@@ -38,14 +37,14 @@
   }
 
   .footer-links li {
-    margin-bottom: 12px;
+    margin-bottom: 5px;
   }
 
   .footer-links a {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     transition: color 0.3s;
-    font-size: 0.95rem;
+    font-size: 0.78rem;
   }
 
   .footer-links a:hover {
@@ -54,8 +53,8 @@
 
   .footer-contact {
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.95rem;
-    line-height: 1.8;
+    font-size: 0.78rem;
+    line-height: 1.6;
   }
 
   .footer-contact strong {
@@ -64,25 +63,25 @@
 
   .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 25px;
+    padding-top: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.85rem;
+    font-size: 0.72rem;
     color: rgba(255, 255, 255, 0.5);
   }
 
   @media (max-width: 768px) {
     .footer-bottom {
       flex-direction: column;
-      gap: 15px;
+      gap: 10px;
     }
   }
 
   .footer-bottom-links a {
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
-    margin-left: 15px;
+    margin-left: 12px;
     transition: color 0.3s;
   }
 
@@ -91,12 +90,17 @@
   }
 
   .footer-brand {
-    font-size: 1.8rem;
-    font-weight: 900;
+    font-size: 1.2rem;
+    font-weight: 800;
     color: var(--primary);
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     display: inline-block;
     letter-spacing: 1px;
+  }
+
+  .footer-text {
+    font-size: 0.78rem !important;
+    color: rgba(255, 255, 255, 0.6) !important;
   }
 </style>
 
@@ -105,9 +109,9 @@
     <div class="footer-grid">
       <!-- Column 1: Brand -->
       <div>
-        <span class="footer-brand" style="color: var(--primary); font-weight: 900;">Risk<span
-            style="font-weight: 800;">Sight</span></span>
-        <p class="footer-text" style="max-width: 80%; margin: 0; text-align: left; opacity: 1; line-height: 1.7;">
+        <span class="footer-brand" style="color: var(--primary); font-weight: 800;">Risk<span
+            style="font-weight: 700;">Sight</span></span>
+        <p class="footer-text" style="max-width: 85%; margin: 0; text-align: left; opacity: 1; line-height: 1.6;">
           Hệ thống trí tuệ nhân tạo phân tầng rủi ro học tập sinh viên. Được thực hiện bởi Nhóm 14 - Học viện Công nghệ
           Bưu chính Viễn thông. Ứng dụng mô hình LightGBM tối ưu để hỗ trợ phát hiện sớm và cá nhân hóa trải nghiệm học
           tập.
@@ -129,20 +133,20 @@
       <div>
         <h4 class="footer-heading">Liên Hệ & Hỗ Trợ</h4>
         <div class="footer-contact">
-          <div style="margin-bottom: 8px;"><strong>Trụ sở:</strong> Km10, Đường Nguyễn Trãi, Q.Hà Đông, Hà Nội</div>
-          <div style="margin-bottom: 8px;"><strong>Email hỗ trợ:</strong> thangd595@gmail.com</div>
-          <div style="margin-bottom: 8px;"><strong>Hotline:</strong> (84+) 825 - 558 - 468</div>
-          <div style="margin-top: 20px; display: flex; gap: 15px;">
+          <div style="margin-bottom: 4px;"><strong>Trụ sở:</strong> Km10, Đường Nguyễn Trãi, Q.Hà Đông, Hà Nội</div>
+          <div style="margin-bottom: 4px;"><strong>Email hỗ trợ:</strong> thangd595@gmail.com</div>
+          <div style="margin-bottom: 4px;"><strong>Hotline:</strong> (84+) 825 - 558 - 468</div>
+          <div style="margin-top: 10px; display: flex; gap: 8px;">
             <a href="javascript:void(0)"
-              style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; color: white; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: background 0.3s;"
+              style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; color: white; text-decoration: none; font-weight: bold; font-size: 0.72rem; transition: background 0.3s;"
               onmouseover="this.style.background='var(--primary)'"
               onmouseout="this.style.background='rgba(255,255,255,0.1)'">FB</a>
             <a href="javascript:void(0)"
-              style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; color: white; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: background 0.3s;"
+              style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; color: white; text-decoration: none; font-weight: bold; font-size: 0.72rem; transition: background 0.3s;"
               onmouseover="this.style.background='var(--primary)'"
               onmouseout="this.style.background='rgba(255,255,255,0.1)'">IN</a>
             <a href="javascript:void(0)"
-              style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; color: white; text-decoration: none; font-weight: bold; font-size: 0.85rem; transition: background 0.3s;"
+              style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: rgba(255,255,255,0.1); border-radius: 50%; color: white; text-decoration: none; font-weight: bold; font-size: 0.72rem; transition: background 0.3s;"
               onmouseover="this.style.background='var(--primary)'"
               onmouseout="this.style.background='rgba(255,255,255,0.1)'">TW</a>
           </div>

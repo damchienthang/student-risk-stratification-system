@@ -1,59 +1,102 @@
 <!-- Unified Auth Modals (Single Login Form) -->
 <style>
+  /* Override modal overlay specifically for login modal */
+  #loginModal {
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Make the modal box itself softer and more premium with spring entrance */
+  #loginModal .modal-box {
+    animation: authModalEntrance 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 20px !important;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    background: #ffffff !important;
+  }
+
+  @keyframes authModalEntrance {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
   .auth-form-group {
     margin-bottom: 20px;
   }
 
   .auth-label {
     display: block;
-    font-size: 1rem;
-    font-weight: 800;
+    font-size: 0.82rem;
+    font-weight: 700;
     margin-bottom: 8px;
     color: var(--text-dim);
     text-transform: uppercase;
+    letter-spacing: 0.8px;
   }
 
   .auth-input {
     width: 100%;
-    padding: 16px 18px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 1.05rem;
+    padding: 14px 18px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
     font-weight: 500;
-    background: #f9fafb;
-    transition: all 0.3s;
+    color: var(--secondary);
+    background: #f8fafc;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .auth-input::placeholder {
+    color: #94a3b8;
+  }
+
+  .auth-input:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
   }
 
   .auth-input:focus {
     background: white;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
+    box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.08);
     outline: none;
   }
 
   .auth-btn {
     width: 100%;
-    padding: 16px;
+    padding: 14px;
     border: none;
-    border-radius: var(--radius-sm);
+    border-radius: 10px;
     font-weight: 800;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     cursor: pointer;
     text-transform: uppercase;
-    transition: all 0.2s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 0.5px;
   }
 
   .auth-btn-primary {
     background: var(--primary);
     color: white;
-    box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+    box-shadow: 0 4px 12px rgba(200, 16, 46, 0.2);
   }
 
   .auth-btn-primary:hover {
     background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(200, 16, 46, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(200, 16, 46, 0.3);
+  }
+
+  .auth-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(200, 16, 46, 0.2);
   }
 
   .auth-btn-secondary {
@@ -62,8 +105,13 @@
   }
 
   .auth-btn-secondary:hover {
-    background: #1a1e21;
-    transform: translateY(-2px);
+    background: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
+  }
+
+  .auth-btn-secondary:active {
+    transform: translateY(0);
   }
 
   .auth-link {
@@ -76,20 +124,76 @@
 
   .auth-link:hover {
     text-decoration: underline;
+    color: var(--primary-dark);
+  }
+
+  .auth-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(15, 23, 42, 0.05);
+    border: none;
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 10;
+    outline: none;
+  }
+
+  .auth-modal-close:hover {
+    background: rgba(200, 16, 46, 0.1);
+    color: var(--primary);
+    transform: rotate(90deg);
+  }
+
+  .auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .auth-header h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .auth-header p {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .auth-footer-text {
+    text-align: center;
+    margin-top: 26px;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.5;
   }
 </style>
 
 <div class="modal-overlay" id="loginModal" onclick="closeAllModals()">
 
   <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 460px; padding: 0; overflow: hidden;">
-    <button class="modal-close" onclick="closeAllModals()"
-      style="z-index: 10; top: 15px; right: 15px; background: rgba(0,0,0,0.05); width: 36px; height: 36px; font-size: 1.1rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0.6;">✕</button>
+    <button class="auth-modal-close" onclick="closeAllModals()">✕</button>
 
     <!-- LOGIN VIEW -->
     <div id="view-login" style="padding: 45px 40px;">
-      <div style="text-align: center; margin-bottom: 35px;">
-        <h3 style="font-size: 1.8rem; font-weight: 900; color: var(--primary);">ĐĂNG NHẬP</h3>
-        <p style="font-size: 1.05rem; color: var(--text-dim); margin-top: 8px;">Hệ thống phân tầng rủi ro học tập</p>
+      <div class="auth-header">
+        <h3 style="color: var(--primary);">ĐĂNG NHẬP</h3>
+        <p>Hệ thống phân tầng rủi ro học tập</p>
       </div>
 
       <!-- FORM -->
@@ -113,7 +217,7 @@
       </form>
 
       <!-- Register Link -->
-      <div style="text-align: center; margin-top: 30px; font-size: 1.05rem;">
+      <div class="auth-footer-text">
         Sinh viên / Khách chưa có tài khoản? <br>
         <a href="javascript:void(0)" onclick="switchView('view-register')" class="auth-link"
           style="display: inline-block; margin-top: 10px; font-size: 1rem;">Đăng ký ngay</a>
@@ -122,10 +226,9 @@
 
     <!-- REGISTER VIEW -->
     <div id="view-register" class="hidden" style="padding: 45px 40px;">
-      <div style="text-align: center; margin-bottom: 35px;">
-        <h3 style="font-size: 1.8rem; font-weight: 900; color: var(--secondary);">ĐĂNG KÝ TÀI KHOẢN</h3>
-        <p style="font-size: 1.05rem; color: var(--text-dim); margin-top: 8px;">Dành cho tài khoản trải nghiệm
-        </p>
+      <div class="auth-header">
+        <h3 style="color: var(--secondary);">ĐĂNG KÝ TÀI KHOẢN</h3>
+        <p>Dành cho tài khoản trải nghiệm</p>
       </div>
 
       <form action="/api/v1/auth/register" method="POST">
@@ -151,7 +254,7 @@
         </div>
 
         <button type="submit" class="auth-btn auth-btn-secondary" style="margin-bottom: 20px;">Tạo Tài Khoản</button>
-        <div style="text-align: center; font-size: 1.05rem;">
+        <div class="auth-footer-text">
           Đã có tài khoản? <a href="javascript:void(0)" onclick="switchView('view-login')" class="auth-link"
             style="font-size: 1rem;">Đăng nhập</a>
         </div>
@@ -160,9 +263,9 @@
 
     <!-- FORGOT PASSWORD VIEW -->
     <div id="view-forgot" class="hidden" style="padding: 40px 40px;">
-      <div style="text-align: center; margin-bottom: 25px;">
-        <h3 style="font-size: 1.4rem; font-weight: 900; color: var(--secondary);">QUÊN MẬT KHẨU</h3>
-        <p style="font-size: 1rem; color: var(--text-dim); margin-top: 5px;">Vui lòng nhập Email để khôi phục</p>
+      <div class="auth-header">
+        <h3 style="color: var(--secondary);">QUÊN MẬT KHẨU</h3>
+        <p>Vui lòng nhập Email để khôi phục</p>
       </div>
 
       <form action="/api/v1/auth/forgot-password" method="POST">
@@ -177,7 +280,7 @@
         </div>
 
         <button type="submit" class="auth-btn auth-btn-primary" style="margin-bottom: 15px;">Đổi Mật Khẩu</button>
-        <div style="text-align: center; font-size: 1rem;">
+        <div class="auth-footer-text">
           <a href="javascript:void(0)" onclick="switchView('view-login')" class="auth-link">Quay lại đăng nhập</a>
         </div>
       </form>

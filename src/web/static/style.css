@@ -71,13 +71,13 @@
 
 /* ── BASE ─────────────────────────────────────────────────── */
 html {
-  font-size: 16px;
+  font-size: 15px;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
   font-size: var(--text-base);
@@ -96,18 +96,18 @@ body {
 /* Display headings — Plus Jakarta Sans */
 h1,
 h2 {
-  font-family: 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Lexend', sans-serif;
   color: var(--secondary);
   font-weight: 800;
   line-height: 1.18;
 }
 
-/* Sub-headings — Be Vietnam Pro */
+/* Sub-headings - Lexend */
 h3,
 h4,
 h5,
 h6 {
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: 'Lexend', sans-serif;
   color: var(--secondary);
   font-weight: 700;
   line-height: 1.35;
@@ -159,7 +159,7 @@ p {
 }
 
 .num-display {
-  font-family: 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Lexend', sans-serif;
   font-weight: 900;
   letter-spacing: -1px;
   line-height: 1;
@@ -281,7 +281,7 @@ p {
   color: var(--secondary);
   background: transparent;
   min-width: 0;
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: 'Lexend', sans-serif;
 }
 
 .search-input::placeholder {
@@ -301,7 +301,7 @@ p {
   font-size: var(--text-sm);
   letter-spacing: 0.6px;
   white-space: nowrap;
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: 'Lexend', sans-serif;
 }
 
 .search-btn:hover {
@@ -311,11 +311,11 @@ p {
 
 /* ── SECTIONS ───────────────────────────────────────────── */
 .section {
-  padding: 40px 0;
+  padding: 80px 0;
 }
 
 .section--dark {
-  padding: 40px 0;
+  padding: 80px 0;
   background: var(--bg-alt);
 }
 
@@ -590,7 +590,7 @@ tr:hover td {
 
 /* ── FOOTER ─────────────────────────────────────────────── */
 .footer {
-  padding: 48px 0;
+  padding: 36px 0;
   background: #0f1623;
   color: white;
   text-align: center;
@@ -598,7 +598,7 @@ tr:hover td {
 
 .footer-logo {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.35rem;
   font-weight: 800;
   margin-bottom: 10px;
   display: block;
