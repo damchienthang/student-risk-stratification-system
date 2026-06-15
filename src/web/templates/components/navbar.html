@@ -16,7 +16,7 @@
     <!-- NAVIGATE CĂN PHẢI -->
     <nav class="nav" style="display: flex; gap: 22px; align-items: center; margin-left: auto;">
       <a href="/" class="nav-link">TRANG CHỦ</a>
-      <a href="/#model" class="nav-link">MÔ HÌNH</a>
+      <a href="/model" class="nav-link">MÔ HÌNH</a>
       <a href="/about" class="nav-link">GIỚI THIỆU</a>
       <div id="authNavArea" style="display: flex; align-items: center; gap: 15px; margin-left: 10px;">
         {% if user %}
@@ -157,9 +157,12 @@
     const currentHash = window.location.hash;
     document.querySelectorAll('.nav-link').forEach(link => {
       const href = link.getAttribute('href');
-      if (href === currentPath || (href.startsWith('/#') && currentHash && href.endsWith(currentHash))) {
+      link.classList.remove('active');
+      if (href === currentPath) {
         link.classList.add('active');
       } else if (currentPath === '/' && href === '/') {
+        link.classList.add('active');
+      } else if (href.startsWith('/#') && currentHash && href.endsWith(currentHash)) {
         link.classList.add('active');
       }
     });

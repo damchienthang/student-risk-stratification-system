@@ -708,56 +708,23 @@
   </div>
 </div>
 
-<!-- ── MODEL COMPARISON ─────────────────────────────────── -->
-<section class="section section--dark" id="model">
-  <div class="container" style="max-width:1200px;margin:0 auto;padding:0 20px;">
-    <div class="section-header">
-      <h2 class="section-title">So Sánh Hiệu Suất Mô Hình</h2>
-      <p class="section-sub">Chúng tôi đã thử nghiệm và đánh giá 4 thuật toán học máy để lựa chọn mô hình tối ưu nhất
-        cho bài toán phân tầng rủi ro học tập 4 lớp.</p>
-    </div>
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr>
-            <th>Mô hình</th>
-            <th>F1-Score</th>
-            <th>Accuracy</th>
-            <th>AUC Score</th>
-            <th>Trạng thái</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="background:rgba(160,27,33,0.03);">
-            <td><strong class="text-primary">LightGBM</strong></td>
-            <td>84.03%</td>
-            <td>92.08%</td>
-            <td>98.68%</td>
-            <td><span class="badge badge-low">TỐI ƯU NHẤT</span></td>
-          </tr>
-          <tr>
-            <td>XGBoost</td>
-            <td>83.56%</td>
-            <td>91.93%</td>
-            <td>98.72%</td>
-            <td><span class="badge badge-medium">HIỆU NĂNG CAO</span></td>
-          </tr>
-          <tr>
-            <td>Random Forest</td>
-            <td>83.31%</td>
-            <td>91.55%</td>
-            <td>98.45%</td>
-            <td><span class="badge badge-medium">ỔN ĐỊNH</span></td>
-          </tr>
-          <tr>
-            <td>Logistic Regression</td>
-            <td>70.41%</td>
-            <td>83.31%</td>
-            <td>96.24%</td>
-            <td><span class="badge badge-high">CƠ BẢN</span></td>
-          </tr>
-        </tbody>
-      </table>
+<!-- ── MODEL BANNER ───────────────────────────────────── -->
+<section class="section section--dark" style="padding: 64px 0;">
+  <div class="container" style="max-width:960px; margin: 0 auto; padding: 0 20px;">
+    <div style="background: linear-gradient(135deg, #0b1329 0%, #1a2a4a 100%); border-radius: 16px; padding: 40px; text-align: center; box-shadow: var(--shadow-lg); border: 1px solid rgba(255, 255, 255, 0.05); position: relative; overflow: hidden;">
+      <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(200, 16, 46, 0.08); border-radius: 50%; filter: blur(30px); pointer-events: none;"></div>
+      <div style="position: absolute; bottom: -50px; left: -50px; width: 150px; height: 150px; background: rgba(200, 16, 46, 0.08); border-radius: 50%; filter: blur(30px); pointer-events: none;"></div>
+      
+      <span class="hero-badge" style="background: rgba(200, 16, 46, 0.15); color: #ff4d6d; margin-bottom: 16px;">Đánh Giá Mô Hình &amp; Thuật Toán</span>
+      <h3 style="color: white; font-size: 1.8rem; font-weight: 800; margin-bottom: 16px; font-family: 'Plus Jakarta Sans', sans-serif;">Kiến Trúc Học Máy &amp; Chỉ Số Khoa Học</h3>
+      <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem; line-height: 1.7; max-width: 680px; margin: 0 auto 28px; font-weight: 500;">
+        Chúng tôi đã nghiên cứu, thử nghiệm đối sánh 4 mô hình học máy (LightGBM, XGBoost, Random Forest, Logistic Regression) và áp dụng giải pháp cân bằng lớp SMOTE. Khám phá toàn bộ cơ chế hoạt động, ma trận nhầm lẫn và đường cong hiệu năng chi tiết tại trang chuyên biệt.
+      </p>
+      <div>
+        <a href="/model" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.8px; transition: all 0.3s; box-shadow: 0 4px 14px rgba(200, 16, 46, 0.3);" onmouseover="this.style.background='var(--primary-dark)'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='var(--primary)'; this.style.transform='translateY(0)';">
+          Xem Chi Tiết Đánh Giá Mô Hình
+        </a>
+      </div>
     </div>
   </div>
 </section>

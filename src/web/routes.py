@@ -34,6 +34,11 @@ async def about(request: Request):
     user = await get_db_user(request)
     return templates.TemplateResponse(request=request, name="pages/about/index.html", context={"user": user})
 
+@router.get("/model", response_class=HTMLResponse)
+async def model_page(request: Request):
+    user = await get_db_user(request)
+    return templates.TemplateResponse(request=request, name="pages/model/index.html", context={"user": user})
+
 @router.get("/admin", response_class=HTMLResponse)
 async def admin_page(request: Request):
     user = await get_db_user(request)
