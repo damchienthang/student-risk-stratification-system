@@ -8,8 +8,8 @@
   .about-hero {
     padding: 48px 0 64px;
     text-align: center;
-    background: #0f172a;
-    color: white;
+    background: linear-gradient(180deg, #fff2f4 0%, #fffafd 60%, #ffffff 100%);
+    color: var(--text-dim);
     position: relative;
     overflow: hidden;
     border-bottom: 1px solid var(--border);
@@ -19,11 +19,11 @@
     font-weight: 900;
     margin-bottom: 18px;
     letter-spacing: -1.2px;
-    color: white;
+    color: var(--secondary);
   }
   .about-hero-desc {
     font-size: var(--text-lg);
-    color: rgba(255,255,255,0.93);
+    color: var(--text-dim);
     max-width: 780px;
     margin: 0 auto;
     line-height: 1.75;
@@ -244,12 +244,12 @@
 
   /* ── THANK YOU ──────────────────────────────────────────── */
   .thankyou-card {
-    background: #4a0e17; /* Đỏ rượu trầm sang trọng, không chói mắt */
-    color: white; border-radius: var(--radius); padding: 32px 24px;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+    color: var(--text-dim); border-radius: var(--radius); padding: 32px 24px;
     text-align: center; box-shadow: var(--shadow-sm);
     max-width: 920px; margin: 0 auto;
     position: relative; overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,16,46,0.1);
   }
 </style>
 {% endblock %}
@@ -275,7 +275,7 @@
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
         </svg>
       </div>
-      <div class="about-stat-num">32,590+</div>
+      <div class="about-stat-num">32,593</div>
       <div class="about-stat-label">Sinh viên được phân tích</div>
     </div>
     <div class="about-stat-card">
@@ -293,7 +293,7 @@
           <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
         </svg>
       </div>
-      <div class="about-stat-num">92.08%</div>
+      <div class="about-stat-num">93.00%</div>
       <div class="about-stat-label">Độ chính xác dự báo</div>
     </div>
   </div>
@@ -325,18 +325,18 @@
   <div class="container">
     <div class="prose-section">
       <span class="section-label">Dữ liệu &amp; Phương pháp</span>
-      <h2 class="section-h2">Từ 32,590 sinh viên đến mô hình dự báo 4 tầng</h2>
+      <h2 class="section-h2">Từ 32,593 sinh viên đến mô hình dự báo 4 tầng</h2>
       <p class="prose-body">
-        Bộ dữ liệu OULAD được thu thập bởi Đại học Mở Vương quốc Anh (Open University, UK), bao gồm toàn bộ nhật ký tương tác trực tuyến, kết quả kiểm tra và thông tin nhân khẩu học của sinh viên qua nhiều học kỳ. Sau quy trình làm sạch và kỹ thuật đặc trưng (feature engineering), nhóm nghiên cứu rút trích <strong>12 thuộc tính đặc trưng</strong> có tính dự báo cao nhất, phân nhóm sinh viên thành 4 tầng rủi ro theo kết quả cuối kỳ.
+        Bộ dữ liệu OULAD được thu thập bởi Đại học Mở Vương quốc Anh (Open University, UK), bao gồm toàn bộ nhật ký tương tác trực tuyến, kết quả kiểm tra và thông tin nhân khẩu học của sinh viên qua nhiều học kỳ. Sau quy trình làm sạch và kỹ thuật đặc trưng (feature engineering), nhóm nghiên cứu tổng hợp <strong>23 đặc trưng đầu vào</strong> có tính dự báo cao nhất, phân nhóm sinh viên thành 4 tầng rủi ro theo kết quả cuối kỳ.
       </p>
 
       <div class="data-callout">
         <div class="data-callout-item">
-          <div class="data-callout-val">32,590</div>
+          <div class="data-callout-val">32,593</div>
           <div class="data-callout-lbl">Bản ghi sinh viên OULAD</div>
         </div>
         <div class="data-callout-item">
-          <div class="data-callout-val">12</div>
+          <div class="data-callout-val">23</div>
           <div class="data-callout-lbl">Đặc trưng sau feature engineering</div>
         </div>
         <div class="data-callout-item">
@@ -398,7 +398,7 @@
           <span class="section-label">Học máy AI</span>
           <h3 class="feature-title">Phân tầng rủi ro tự động — LightGBM</h3>
           <p class="feature-desc">
-            Sử dụng mô hình LightGBM tối ưu được huấn luyện trên bộ dữ liệu OULAD để phân cấp sinh viên thành 4 tầng rủi ro: Thấp, Trung bình, Cao và Nguy cấp. Mô hình đạt F1-Score 84.03% và AUC-ROC 98.68% — vượt trội so với tất cả các thuật toán truyền thống trong cùng bài toán.
+            Sử dụng mô hình LightGBM tối ưu được huấn luyện trên bộ dữ liệu OULAD để phân cấp sinh viên thành 4 tầng rủi ro: Thấp, Trung bình, Cao và Nguy cấp. Mô hình đạt F1-Score (Macro) 84.45% và AUC-ROC 98.87% trên tập kiểm thử độc lập — vượt trội so với tất cả các thuật toán truyền thống trong cùng bài toán.
           </p>
           <a href="/" class="about-pill-btn about-pill-red" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:100px;font-weight:700;font-size:0.83rem;text-decoration:none;background:var(--primary);color:white;transition:all 0.3s;">Thử nghiệm ngay</a>
         </div>
@@ -445,7 +445,7 @@
           <span class="section-label">Phân tích hiệu suất</span>
           <h3 class="feature-title">Đường cong ROC đa lớp (One-vs-Rest)</h3>
           <p class="feature-desc">
-            Biểu đồ ROC đa lớp xác nhận khả năng phân tách vượt trội của LightGBM trên toàn bộ 4 tầng rủi ro, với AUC trung bình đạt 98.68%. Chỉ số này cho thấy mô hình có thể phân biệt sinh viên rủi ro cao khỏi sinh viên an toàn với độ tin cậy cực kỳ cao, gần đạt phân loại hoàn hảo.
+            Biểu đồ ROC đa lớp xác nhận khả năng phân tách vượt trội của LightGBM trên toàn bộ 4 tầng rủi ro, với AUC trung bình đạt 98.87%. Chỉ số này cho thấy mô hình có thể phân biệt sinh viên rủi ro cao khỏi sinh viên an toàn với độ tin cậy cực kỳ cao, gần đạt phân loại hoàn hảo.
           </p>
         </div>
         <div class="feature-img-card">
@@ -466,27 +466,27 @@
     <div style="text-align:center;margin-bottom:40px;">
       <span class="section-label">Nhóm thực hiện</span>
       <h2 class="section-h2" style="text-align:center;">Đội Ngũ Nghiên Cứu</h2>
-      <p style="font-size:0.97rem;color:var(--text-dim);max-width:560px;margin:0 auto;line-height:1.65;font-weight:500;">Dự án được thực hiện bởi Nhóm 14 trong khuôn khổ môn học Thực tập Cơ sở — Học viện Công nghệ Bưu chính Viễn thông.</p>
+      <p style="font-size:0.97rem;color:var(--text-dim);max-width:560px;margin:0 auto;line-height:1.65;font-weight:500;">Dự án được thực hiện bởi Nhóm 17 trong khuôn khổ môn học Thực tập Cơ sở — Học viện Công nghệ Bưu chính Viễn thông.</p>
     </div>
 
     <div class="team-grid" style="max-width:800px;margin:0 auto;">
       <div class="team-card">
         <div class="team-avatar">ĐT</div>
         <div class="team-name">Đàm Chiến Thắng</div>
-        <div class="team-mssv">B22DCCN702</div>
+        <div class="team-mssv">B23DCKH106</div>
         <div class="team-role">Full-stack Engineer · ML Pipeline · Backend FastAPI · Thiết kế hệ thống tổng thể</div>
       </div>
       <div class="team-card">
         <div class="team-avatar">QT</div>
         <div class="team-name">Đỗ Quốc Tấn</div>
-        <div class="team-mssv">B22DCCN626</div>
+        <div class="team-mssv">B23DCKH104</div>
         <div class="team-role">Data Engineer · Kỹ thuật đặc trưng · Phân tích OULAD · Báo cáo khoa học</div>
       </div>
     </div>
 
     <div style="max-width:800px;margin:20px auto 0;background:white;border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 20px;">
       <p style="font-size:0.9rem;color:var(--text-dim);line-height:1.7;margin:0;font-weight:500;">
-        <strong style="color:var(--secondary);">Giáo viên hướng dẫn:</strong> Dự án được thực hiện dưới sự hướng dẫn của Bộ môn Khoa học Máy tính, Khoa Công nghệ Thông tin, Học viện Công nghệ Bưu chính Viễn thông (PTIT). Địa chỉ: Km10, Đường Nguyễn Trãi, Quận Hà Đông, Hà Nội.
+        <strong style="color:var(--secondary);">Giáo viên hướng dẫn:</strong> TS. Nguyễn Thị Mai Trang, Bộ môn Khoa học Máy tính, Khoa Công nghệ Thông tin, Học viện Công nghệ Bưu chính Viễn thông (PTIT). Địa chỉ: Km10, Đường Nguyễn Trãi, Quận Hà Đông, Hà Nội.
       </p>
     </div>
   </div>
@@ -574,8 +574,8 @@
 <section class="section" style="background:white;">
   <div class="container">
     <div class="thankyou-card">
-      <h2 style="font-size:1.9rem;font-weight:900;margin-bottom:18px;color:white;">Đồng Hành Cùng Sinh Viên</h2>
-      <p style="font-size:1.05rem;line-height:1.8;max-width:720px;margin:0 auto;font-weight:500;opacity:0.95;">
+      <h2 style="font-size:1.9rem;font-weight:900;margin-bottom:18px;color:var(--primary);">Đồng Hành Cùng Sinh Viên</h2>
+      <p style="font-size:1.05rem;line-height:1.8;max-width:720px;margin:0 auto;font-weight:500;color:var(--text-dim);">
         Không có sinh viên nào nên thất bại chỉ vì thiếu thông tin. RiskSight được xây dựng với niềm tin rằng dữ liệu học tập, khi được phân tích đúng cách, có thể trở thành người bạn đồng hành thầm lặng — luôn sẵn sàng báo hiệu trước để cố vấn kịp thời giúp đỡ sinh viên tìm lại đúng hướng.
       </p>
     </div>

@@ -8,22 +8,24 @@
   .model-hero {
     padding: 64px 0 80px;
     text-align: center;
-    background: #0b1329; /* Deep Space Slate */
-    color: white;
+    background: linear-gradient(180deg, #fff2f4 0%, #fffafd 60%, #ffffff 100%);
+    color: var(--text-dim);
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border);
   }
+
   .model-hero-title {
     font-size: var(--text-5xl);
     font-weight: 900;
     margin-bottom: 20px;
     letter-spacing: -1.2px;
-    color: white;
+    color: var(--secondary);
   }
+
   .model-hero-desc {
     font-size: var(--text-lg);
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-dim);
     max-width: 820px;
     margin: 0 auto;
     line-height: 1.8;
@@ -33,29 +35,35 @@
   /* ── TECHNICAL STATS ───────────────────────────────────── */
   .model-stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     margin-top: -40px;
     position: relative;
     z-index: 20;
   }
-  @media (max-width: 992px) { .model-stats { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 576px) { .model-stats { grid-template-columns: 1fr; } }
+
+  @media (max-width: 768px) {
+    .model-stats {
+      grid-template-columns: 1fr;
+    }
+  }
 
   .model-stat-card {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     padding: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
     text-align: center;
     transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
+
   .model-stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(200, 16, 46, 0.08);
     border-color: rgba(200, 16, 46, 0.16);
   }
+
   .model-stat-num {
     font-size: 2.2rem;
     font-weight: 900;
@@ -64,6 +72,7 @@
     margin-bottom: 6px;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
+
   .model-stat-label {
     font-size: 0.72rem;
     color: var(--text-muted);
@@ -78,10 +87,12 @@
     margin: 0 auto;
     padding: 0 24px;
   }
+
   .prose-header {
     text-align: center;
     margin-bottom: 48px;
   }
+
   .section-label {
     display: inline-block;
     padding: 5px 14px;
@@ -94,6 +105,7 @@
     text-transform: uppercase;
     letter-spacing: 0.8px;
   }
+
   .section-h2 {
     font-size: var(--text-3xl);
     font-weight: 800;
@@ -101,6 +113,7 @@
     margin-bottom: 16px;
     letter-spacing: -0.8px;
   }
+
   .prose-lead {
     font-size: var(--text-lg);
     line-height: 1.85;
@@ -108,12 +121,14 @@
     font-weight: 500;
     margin-bottom: 24px;
   }
+
   .prose-body {
     font-size: var(--text-base);
     line-height: 1.8;
     color: var(--text-dim);
     margin-bottom: 20px;
   }
+
   .prose-body strong {
     color: var(--secondary);
   }
@@ -125,7 +140,12 @@
     gap: 24px;
     margin-top: 32px;
   }
-  @media (max-width: 768px) { .algo-grid { grid-template-columns: 1fr; } }
+
+  @media (max-width: 768px) {
+    .algo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 
   .algo-card {
     background: white;
@@ -136,26 +156,35 @@
     overflow: hidden;
     transition: all 0.3s;
   }
+
   .algo-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; width: 4px; height: 100%;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
     background: #cbd5e1;
   }
+
   .algo-card.best::before {
     background: var(--primary);
   }
+
   .algo-card:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow);
     border-color: #cbd5e1;
   }
+
   .algo-card.best:hover {
     border-color: rgba(200, 16, 46, 0.2);
   }
+
   .algo-badge {
     position: absolute;
-    top: 20px; right: 20px;
+    top: 20px;
+    right: 20px;
     padding: 3px 10px;
     border-radius: 100px;
     font-size: 0.68rem;
@@ -163,26 +192,31 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
+
   .algo-badge.best-badge {
     background: var(--primary-soft);
     color: var(--primary);
   }
+
   .algo-badge.standard-badge {
     background: var(--bg-subtle);
     color: var(--text-muted);
   }
+
   .algo-title {
     font-size: var(--text-xl);
     font-weight: 800;
     color: var(--secondary);
     margin-bottom: 12px;
   }
+
   .algo-desc {
     font-size: 0.88rem;
     color: var(--text-dim);
     line-height: 1.65;
     margin-bottom: 16px;
   }
+
   .algo-params {
     list-style: none;
     padding: 0;
@@ -190,6 +224,7 @@
     border-top: 1px dashed #e2e8f0;
     padding-top: 12px;
   }
+
   .algo-params li {
     font-size: 0.82rem;
     color: var(--text-muted);
@@ -197,6 +232,7 @@
     display: flex;
     justify-content: space-between;
   }
+
   .algo-params li strong {
     color: var(--text-dim);
   }
@@ -209,12 +245,14 @@
     padding: 24px;
     margin: 32px 0;
   }
+
   .concept-box-title {
     font-size: var(--text-lg);
     font-weight: 700;
     color: var(--secondary);
     margin-bottom: 10px;
   }
+
   .concept-box-desc {
     font-size: var(--text-base);
     color: var(--text-dim);
@@ -229,7 +267,12 @@
     gap: 32px;
     margin-top: 36px;
   }
-  @media (max-width: 992px) { .visuals-layout { grid-template-columns: 1fr; } }
+
+  @media (max-width: 992px) {
+    .visuals-layout {
+      grid-template-columns: 1fr;
+    }
+  }
 
   .visuals-card {
     background: white;
@@ -240,12 +283,14 @@
     flex-direction: column;
     box-shadow: var(--shadow-sm);
   }
+
   .visuals-card img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
     border: 1px solid #f1f5f9;
   }
+
   .visuals-caption {
     margin-top: 14px;
     font-size: 0.76rem;
@@ -267,6 +312,7 @@
     box-shadow: var(--shadow-sm);
     border: 1px solid #e2e8f0;
   }
+
   .model-table th {
     background: #0f172a;
     color: white;
@@ -276,15 +322,18 @@
     letter-spacing: 0.8px;
     padding: 14px 20px;
   }
+
   .model-table td {
     padding: 14px 20px;
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.88rem;
     color: var(--text);
   }
+
   .model-table tr:last-child td {
     border-bottom: none;
   }
+
   .model-table tr.highlighted-row td {
     background: rgba(200, 16, 46, 0.02);
   }
@@ -298,7 +347,8 @@
   <div class="container" style="position:relative;z-index:5;">
     <h1 class="model-hero-title">Đánh Giá Mô Hình AI &amp; Thuật Toán</h1>
     <p class="model-hero-desc">
-      Khám phá thiết kế thuật toán học máy, các chỉ số đánh giá chuyên sâu và cơ chế hoạt động của mô hình tối ưu LightGBM trong phân tầng rủi ro học tập sinh viên.
+      Khám phá thiết kế thuật toán học máy, các chỉ số đánh giá chuyên sâu và cơ chế hoạt động của mô hình tối ưu
+      LightGBM trong phân tầng rủi ro học tập sinh viên.
     </p>
   </div>
 </section>
@@ -307,20 +357,16 @@
 <section style="max-width:1200px;margin:0 auto;padding:0 20px;margin-bottom:64px;">
   <div class="model-stats">
     <div class="model-stat-card">
-      <div class="model-stat-num">92.08%</div>
-      <div class="model-stat-label">Độ chính xác (Accuracy)</div>
+      <div class="model-stat-num">93.00%</div>
+      <div class="model-stat-label">Độ chính xác (Accuracy - Test Set)</div>
     </div>
     <div class="model-stat-card">
-      <div class="model-stat-num">84.03%</div>
-      <div class="model-stat-label">F1-Score Macro</div>
+      <div class="model-stat-num">84.45%</div>
+      <div class="model-stat-label">F1-Score Macro (Test Set)</div>
     </div>
     <div class="model-stat-card">
-      <div class="model-stat-num">98.68%</div>
-      <div class="model-stat-label">Chỉ số AUC-ROC</div>
-    </div>
-    <div class="model-stat-card">
-      <div class="model-stat-num">100ms</div>
-      <div class="model-stat-label">Thời gian phản hồi</div>
+      <div class="model-stat-num">98.87%</div>
+      <div class="model-stat-label">Chỉ số AUC-ROC (Test Set)</div>
     </div>
   </div>
 </section>
@@ -332,24 +378,35 @@
       <span class="section-label">Bối Cảnh &amp; Khái Niệm</span>
       <h2 class="section-h2">Phân Tầng Rủi Ro Học Tập (Academic Risk Stratification)</h2>
       <p class="prose-lead">
-        Phân tầng rủi ro là việc phân loại sinh viên thành các nhóm rủi ro khác nhau dựa trên nguy cơ trượt môn hoặc bỏ học để giáo viên có kế hoạch hỗ trợ phù hợp.
+        Phân tầng rủi ro là việc phân loại sinh viên thành các nhóm rủi ro khác nhau dựa trên nguy cơ trượt môn hoặc bỏ
+        học để giáo viên có kế hoạch hỗ trợ phù hợp.
       </p>
       <p class="prose-body">
-        Trong hệ thống giáo dục đại học, bài toán dự báo rủi ro thường đối mặt với sự phức tạp của hành vi học tập và sự biến động lớn giữa các cá nhân. Thay vì sử dụng mô hình hồi quy để dự báo điểm số cuối cùng (vốn nhạy cảm và khó đưa ra hành động can thiệp), RiskSight tiếp cận theo bài toán <strong>phân loại đa lớp (Multi-class Classification)</strong>.
+        Trong hệ thống giáo dục đại học, bài toán dự báo rủi ro thường đối mặt với sự phức tạp của hành vi học tập và sự
+        biến động lớn giữa các cá nhân. Thay vì sử dụng mô hình hồi quy để dự báo điểm số cuối cùng (vốn nhạy cảm và khó
+        đưa ra hành động can thiệp), RiskSight tiếp cận theo bài toán <strong>phân loại đa lớp (Multi-class
+          Classification)</strong>.
       </p>
-      
+
       <div class="concept-box">
         <div class="concept-box-title">Khái niệm 4 tầng rủi ro học tập trong RiskSight:</div>
         <p class="concept-box-desc">
-          • <strong>Rủi ro Thấp (Low Risk):</strong> Sinh viên tham gia đầy đủ, điểm đánh giá cao và có xác suất trượt cực kỳ thấp.<br>
-          • <strong>Rủi ro Trung bình (Medium Risk):</strong> Bắt đầu xuất hiện các chỉ số cảnh báo như chuyên cần đi xuống hoặc điểm kiểm tra sát nút.<br>
-          • <strong>Rủi ro Cao (High Risk):</strong> Sinh viên mất gốc kiến thức hoặc tương tác trực tuyến giảm nghiêm trọng, cần can thiệp khẩn cấp.<br>
-          • <strong>Rủi ro Nguy cấp (Very High Risk):</strong> Tỷ lệ trượt môn hoặc rút lui (withdrawn) cực kỳ cao do bỏ học liệu hoặc điểm số dưới mức trung bình kéo dài.
+          • <strong>Rủi ro Thấp (Low Risk):</strong> Sinh viên tham gia đầy đủ, điểm đánh giá cao và có xác suất trượt
+          cực kỳ thấp.<br>
+          • <strong>Rủi ro Trung bình (Medium Risk):</strong> Bắt đầu xuất hiện các chỉ số cảnh báo như chuyên cần đi
+          xuống hoặc điểm kiểm tra sát nút.<br>
+          • <strong>Rủi ro Cao (High Risk):</strong> Sinh viên mất gốc kiến thức hoặc tương tác trực tuyến giảm nghiêm
+          trọng, cần can thiệp khẩn cấp.<br>
+          • <strong>Rủi ro Nguy cấp (Very High Risk):</strong> Tỷ lệ trượt môn hoặc rút lui (withdrawn) cực kỳ cao do bỏ
+          học liệu hoặc điểm số dưới mức trung bình kéo dài.
         </p>
       </div>
 
       <p class="prose-body">
-        Ngưỡng dự báo được thiết lập tại <strong>Day 60</strong> của học kỳ. Điểm mốc thời gian này được lựa chọn để đảm bảo mô hình có đủ dữ liệu hành vi ban đầu (60 ngày tương tác trực tuyến và điểm số của các bài đánh giá đầu tiên) nhưng vẫn đủ sớm để cố vấn học tập có thể liên hệ và triển khai các chương trình gia sư, tư vấn lộ trình cá nhân hóa cho sinh viên trước khi kỳ thi cuối kỳ diễn ra.
+        Ngưỡng dự báo được thiết lập tại <strong>Day 60</strong> của học kỳ. Điểm mốc thời gian này được lựa chọn để đảm
+        bảo mô hình có đủ dữ liệu hành vi ban đầu (60 ngày tương tác trực tuyến và điểm số của các bài đánh giá đầu
+        tiên) nhưng vẫn đủ sớm để cố vấn học tập có thể liên hệ và triển khai các chương trình gia sư, tư vấn lộ trình
+        cá nhân hóa cho sinh viên trước khi kỳ thi cuối kỳ diễn ra.
       </p>
     </div>
   </div>
@@ -364,7 +421,8 @@
       <span class="section-label">Kiến Trúc Mô Hình</span>
       <h2 class="section-h2">Đối Sánh 4 Thuật Toán Học Máy</h2>
       <p class="prose-body">
-        Để tìm ra giải pháp tối ưu nhất, chúng tôi đã tiến hành thử nghiệm song song 4 thuật toán phân loại phổ biến trên cùng một tập dữ liệu huấn luyện đã được làm sạch và cân bằng lớp.
+        Để tìm ra giải pháp tối ưu nhất, chúng tôi đã tiến hành thử nghiệm song song 4 thuật toán phân loại phổ biến
+        trên cùng một tập dữ liệu huấn luyện đã được làm sạch và cân bằng lớp.
       </p>
 
       <div class="algo-grid">
@@ -373,10 +431,14 @@
           <span class="algo-badge best-badge">Tối ưu nhất</span>
           <h3 class="algo-title">LightGBM</h3>
           <p class="algo-desc">
-            Thuật toán phân loại cấu trúc cây quyết định tăng cường độ dốc (Gradient Boosting) cực nhanh và hiệu quả phát triển bởi Microsoft.
+            Thuật toán phân loại cấu trúc cây quyết định tăng cường độ dốc (Gradient Boosting) cực nhanh và hiệu quả
+            phát triển bởi Microsoft.
           </p>
           <p class="algo-desc" style="font-size:0.82rem; color:var(--text-muted);">
-            <strong>Cơ chế độc bản:</strong> Khác với XGBoost phát triển cây theo cấp độ (Level-wise), LightGBM phát triển cây theo chiều dọc (Leaf-wise), tối ưu hóa lá có độ mất mát lớn nhất. Sử dụng kỹ thuật GOSS (Gradient-based One-Side Sampling) để lọc các mẫu có độ dốc nhỏ, và EFB (Exclusive Feature Bundling) để gộp các đặc trưng thưa thớt, giúp huấn luyện nhanh hơn gấp 10 lần và tiết kiệm RAM.
+            <strong>Cơ chế độc bản:</strong> Khác với XGBoost phát triển cây theo cấp độ (Level-wise), LightGBM phát
+            triển cây theo chiều dọc (Leaf-wise), tối ưu hóa lá có độ mất mát lớn nhất. Sử dụng kỹ thuật GOSS
+            (Gradient-based One-Side Sampling) để lọc các mẫu có độ dốc nhỏ, và EFB (Exclusive Feature Bundling) để gộp
+            các đặc trưng thưa thớt, giúp huấn luyện nhanh hơn gấp 10 lần và tiết kiệm RAM.
           </p>
           <ul class="algo-params">
             <li>Số lượng cây quyết định (n_estimators): <strong>300</strong></li>
@@ -390,10 +452,13 @@
           <span class="algo-badge standard-badge">Hiệu năng cao</span>
           <h3 class="algo-title">XGBoost</h3>
           <p class="algo-desc">
-            Mô hình Gradient Boosting kinh điển tối ưu hóa việc phân bố dữ liệu song song và kiểm soát overfitting rất tốt.
+            Mô hình Gradient Boosting kinh điển tối ưu hóa việc phân bố dữ liệu song song và kiểm soát overfitting rất
+            tốt.
           </p>
           <p class="algo-desc" style="font-size:0.82rem; color:var(--text-muted);">
-            <strong>Cơ chế:</strong> Sử dụng kỹ thuật phát triển cây theo chiều ngang (Level-wise), kiểm soát độ sâu nghiêm ngặt giúp hạn chế tối đa hiện tượng học vẹt (overfitting). Tuy nhiên, thời gian huấn luyện lâu hơn đáng kể khi kích thước tập dữ liệu tăng cao.
+            <strong>Cơ chế:</strong> Sử dụng kỹ thuật phát triển cây theo chiều ngang (Level-wise), kiểm soát độ sâu
+            nghiêm ngặt giúp hạn chế tối đa hiện tượng học vẹt (overfitting). Tuy nhiên, thời gian huấn luyện lâu hơn
+            đáng kể khi kích thước tập dữ liệu tăng cao.
           </p>
           <ul class="algo-params">
             <li>Số lượng cây (n_estimators): <strong>300</strong></li>
@@ -410,7 +475,9 @@
             Mô hình học máy dạng rừng ngẫu nhiên dựa trên phương pháp kết hợp kết quả của nhiều cây độc lập (Bagging).
           </p>
           <p class="algo-desc" style="font-size:0.82rem; color:var(--text-muted);">
-            <strong>Cơ chế:</strong> Tạo ra tập hợp hàng trăm cây quyết định độc lập trên các tập con của dữ liệu. Mỗi cây bỏ phiếu và kết quả cuối cùng là trung bình cộng phiếu bầu. Thuật toán này bền bỉ trước nhiễu nhưng file lưu trữ mô hình có kích thước rất lớn (>100MB).
+            <strong>Cơ chế:</strong> Tạo ra tập hợp hàng trăm cây quyết định độc lập trên các tập con của dữ liệu. Mỗi
+            cây bỏ phiếu và kết quả cuối cùng là trung bình cộng phiếu bầu. Thuật toán này bền bỉ trước nhiễu nhưng file
+            lưu trữ mô hình có kích thước rất lớn (>100MB).
           </p>
           <ul class="algo-params">
             <li>Số lượng cây quyết định: <strong>300</strong></li>
@@ -427,7 +494,9 @@
             Mô hình hồi quy tuyến tính ứng dụng hàm Sigmoid để phân loại xác suất đa lớp (One-vs-Rest).
           </p>
           <p class="algo-desc" style="font-size:0.82rem; color:var(--text-muted);">
-            <strong>Cơ chế:</strong> Đóng vai trò là mốc cơ sở (baseline) tuyến tính để đối chiếu hiệu suất của các mô hình phi tuyến. Thuật toán có tốc độ tính toán tức thời nhưng bỏ sót các mối quan hệ phi tuyến phức tạp giữa hành vi và rủi ro.
+            <strong>Cơ chế:</strong> Đóng vai trò là mốc cơ sở (baseline) tuyến tính để đối chiếu hiệu suất của các mô
+            hình phi tuyến. Thuật toán có tốc độ tính toán tức thời nhưng bỏ sót các mối quan hệ phi tuyến phức tạp giữa
+            hành vi và rủi ro.
           </p>
           <ul class="algo-params">
             <li>Hệ số điều hòa (C): <strong>1.0</strong></li>
@@ -445,9 +514,10 @@
   <div class="container">
     <div class="prose-section">
       <span class="section-label">Đánh Giá Hiệu Suất</span>
-      <h2 class="section-h2">Kết Quả Đối Sánh Mô Hình Trên Tập Kiểm Thử độc lập</h2>
+      <h2 class="section-h2">Kết Quả Đối Sánh Mô Hình Trên Tập Validation (Kiểm Thử Huấn Luyện)</h2>
       <p class="prose-body">
-        Kết quả đánh giá khách quan của 4 mô hình được huấn luyện trên cùng một điều kiện dữ liệu và đánh giá trên tập kiểm thử độc lập (chiếm 20% dữ liệu ban đầu, hoàn toàn không tham gia vào quá trình huấn luyện và tối ưu siêu tham số):
+        Kết quả đánh giá của 4 mô hình được huấn luyện trên cùng một điều kiện dữ liệu và đánh giá trên tập Validation
+        (tập kiểm thử chéo trong quá trình huấn luyện và tối ưu siêu tham số để lựa chọn thuật toán tốt nhất):
       </p>
 
       <table class="model-table">
@@ -495,7 +565,11 @@
       <div class="concept-box" style="margin-top:24px;">
         <div class="concept-box-title">Tại sao F1-Score (Macro) là chỉ số quyết định lựa chọn mô hình?</div>
         <p class="concept-box-desc">
-          Tập dữ liệu gốc OULAD bị mất cân bằng lớp cực kỳ nghiêm trọng (ví dụ: nhóm sinh viên rủi ro Cao chỉ chiếm 1.9%). Nếu chỉ sử dụng độ chính xác toàn cục (Accuracy), mô hình chỉ cần dự báo tất cả là "Very High Risk" hoặc "Low Risk" cũng có thể đạt độ chính xác >85% nhưng hoàn toàn vô dụng trên thực tế. Chỉ số <strong>F1-Macro</strong> tính trung bình cộng F1-Score của cả 4 lớp riêng biệt, đảm bảo mô hình nhận diện tốt cả những nhóm thiểu số như rủi ro Cao.
+          Tập dữ liệu gốc OULAD bị mất cân bằng lớp cực kỳ nghiêm trọng (ví dụ: nhóm sinh viên rủi ro Cao chỉ chiếm
+          1.9%). Nếu chỉ sử dụng độ chính xác toàn cục (Accuracy), mô hình chỉ cần dự báo tất cả là "Very High Risk"
+          hoặc "Low Risk" cũng có thể đạt độ chính xác >85% nhưng hoàn toàn vô dụng trên thực tế. Chỉ số
+          <strong>F1-Macro</strong> tính trung bình cộng F1-Score của cả 4 lớp riêng biệt, đảm bảo mô hình nhận diện tốt
+          cả những nhóm thiểu số như rủi ro Cao.
         </p>
       </div>
     </div>
@@ -509,13 +583,20 @@
       <span class="section-label">Xử Lý Dữ Liệu</span>
       <h2 class="section-h2">Xử Lý Mất Cân Bằng Dữ Liệu Với SMOTE</h2>
       <p class="prose-body">
-        Trong học máy, sự chênh lệch lớn giữa số lượng mẫu của các lớp dễ dẫn đến hiện tượng mô hình bị thiên lệch (bias) về phía lớp đa số và bỏ qua các dấu hiệu của lớp thiểu số. Nhóm rủi ro Cao (High Risk) chỉ có 613 mẫu (1.9%), so với 17,208 mẫu của nhóm rủi ro Nguy cấp (Very High Risk).
+        Trong học máy, sự chênh lệch lớn giữa số lượng mẫu của các lớp dễ dẫn đến hiện tượng mô hình bị thiên lệch
+        (bias) về phía lớp đa số và bỏ qua các dấu hiệu của lớp thiểu số. Nhóm rủi ro Cao (High Risk) chỉ có 613 mẫu
+        (1.9%), so với 17,208 mẫu của nhóm rủi ro Nguy cấp (Very High Risk).
       </p>
       <p class="prose-body">
-        Để giải quyết triệt để bài toán này, RiskSight áp dụng kỹ thuật <strong>SMOTE (Synthetic Minority Oversampling Technique)</strong> trên tập dữ liệu huấn luyện. Thay vì sao chép lặp lại các mẫu có sẵn (dẫn đến overfitting), SMOTE tìm kiếm các láng giềng gần nhất (k-nearest neighbors) của lớp thiểu số, vẽ các đường nối trong không gian đặc trưng đa chiều, và tạo ra các mẫu sinh viên giả lập hoàn toàn mới nằm dọc theo các đường nối này.
+        Để giải quyết triệt để bài toán này, RiskSight áp dụng kỹ thuật <strong>SMOTE (Synthetic Minority Oversampling
+          Technique)</strong> trên tập dữ liệu huấn luyện. Thay vì sao chép lặp lại các mẫu có sẵn (dẫn đến
+        overfitting), SMOTE tìm kiếm các láng giềng gần nhất (k-nearest neighbors) của lớp thiểu số, vẽ các đường nối
+        trong không gian đặc trưng đa chiều, và tạo ra các mẫu sinh viên giả lập hoàn toàn mới nằm dọc theo các đường
+        nối này.
       </p>
       <p class="prose-body">
-        Nhờ đó, mô hình học được ranh giới quyết định (decision boundary) chính xác hơn, cải thiện đáng kể khả năng nhận diện sinh viên thực sự có rủi ro cao mà không ảnh hưởng tới kết quả của nhóm an toàn.
+        Nhờ đó, mô hình học được ranh giới quyết định (decision boundary) chính xác hơn, cải thiện đáng kể khả năng nhận
+        diện sinh viên thực sự có rủi ro cao mà không ảnh hưởng tới kết quả của nhóm an toàn.
       </p>
     </div>
   </div>
@@ -528,7 +609,8 @@
       <span class="section-label">Đánh Giá Chi Tiết</span>
       <h2 class="section-h2">Báo Cáo Đánh Giá Chi Tiết Mô Hình LightGBM</h2>
       <p class="prose-body">
-        Dưới đây là bảng phân tích chi tiết (Classification Report) của thuật toán LightGBM trên tập kiểm thử độc lập cho từng nhóm rủi ro cụ thể:
+        Dưới đây là bảng phân tích chi tiết (Classification Report) của thuật toán LightGBM trên tập kiểm thử độc lập
+        cho từng nhóm rủi ro cụ thể:
       </p>
 
       <table class="model-table">
@@ -586,10 +668,13 @@
           <div class="visuals-caption">Đường cong ROC đa lớp (One-vs-Rest)</div>
         </div>
       </div>
-      
+
       <p class="prose-body" style="margin-top: 28px;">
         <strong>Phân tích chỉ số:</strong>
-        Mô hình đạt độ nhạy (Recall) cực kỳ cao ở các lớp rủi ro Thấp (99%) và rủi ro Nguy cấp (90%). Điều này có ý nghĩa quan trọng trong y tế cũng như giáo dục: đảm bảo chúng ta <strong>không bỏ sót</strong> bất kỳ trường hợp nguy cấp nào cần giúp đỡ. Lớp rủi ro Cao (High Risk) do có số lượng mẫu kiểm thử rất nhỏ nên đạt F1-score ở mức 63%, là điểm cần tiếp tục tối ưu trong tương lai thông qua việc thu thập thêm mẫu.
+        Mô hình đạt độ nhạy (Recall) cực kỳ cao ở các lớp rủi ro Thấp (99%) và rủi ro Nguy cấp (90%). Điều này có ý
+        nghĩa quan trọng trong y tế cũng như giáo dục: đảm bảo chúng ta <strong>không bỏ sót</strong> bất kỳ trường hợp
+        nguy cấp nào cần giúp đỡ. Lớp rủi ro Cao (High Risk) do có số lượng mẫu kiểm thử rất nhỏ nên đạt F1-score ở mức
+        63%, là điểm cần tiếp tục tối ưu trong tương lai thông qua việc thu thập thêm mẫu.
       </p>
     </div>
   </div>
@@ -602,7 +687,10 @@
       <span class="section-label">Trí Tuệ Nhân Tạo Giải Thích Được (XAI)</span>
       <h2 class="section-h2">Xác Định Yếu Tố Quyết Định Với Feature Importance</h2>
       <p class="prose-body">
-        Một trong những rào cản lớn nhất của việc ứng dụng AI trong nhà trường là hiện tượng "hộp đen" (Black Box) — mô hình đưa ra dự đoán nhưng giảng viên không hiểu lý do vì sao. RiskSight giải quyết vấn đề này bằng cách trích xuất <strong>Feature Importance</strong> (Tầm quan trọng đặc trưng) từ cây quyết định của LightGBM để lượng hóa mức độ đóng góp của từng hành vi học tập.
+        Một trong những rào cản lớn nhất của việc ứng dụng AI trong nhà trường là hiện tượng "hộp đen" (Black Box) — mô
+        hình đưa ra dự đoán nhưng giảng viên không hiểu lý do vì sao. RiskSight giải quyết vấn đề này bằng cách trích
+        xuất <strong>Feature Importance</strong> (Tầm quan trọng đặc trưng) từ cây quyết định của LightGBM để lượng hóa
+        mức độ đóng góp của từng hành vi học tập.
       </p>
 
       <div style="max-width:760px; margin: 32px auto;" class="visuals-card">
@@ -612,11 +700,16 @@
 
       <p class="prose-body">
         <strong>Giải thích các đặc trưng hàng đầu ảnh hưởng đến rủi ro:</strong>
-        <br>• <strong>Điểm số trung bình (`avg_score`):</strong> Chỉ số học thuật mạnh mẽ nhất (tương quan nghịch r = -0.71). Điểm số các bài kiểm tra quá trình phản ánh trực tiếp sự tiếp thu kiến thức.
-        <br>• <strong>Điểm số thấp nhất (`min_score`):</strong> Thể hiện điểm số của bài kiểm tra kém nhất, phản ánh mức độ bất ổn hoặc việc bỏ qua một học phần trọng tâm.
-        <br>• <strong>Tổng lượt tương tác E-Learning (`total_clicks`):</strong> Tổng số lượt nhấp chuột vào các tài liệu, bài giảng, diễn đàn trực tuyến của VLE. Đây là chỉ số phản ánh mức độ chăm chỉ, kiên trì của sinh viên.
-        <br>• <strong>Số ngày hoạt động tích cực (`active_days`):</strong> Đo lường tính đều đặn trong thói quen học tập của sinh viên.
-        <br>• <strong>Số bài nộp muộn (`n_late`):</strong> Thể hiện thói quen quản lý thời gian và mức độ kỷ luật học tập.
+        <br>• <strong>Điểm số trung bình (`avg_score`):</strong> Chỉ số học thuật mạnh mẽ nhất (tương quan nghịch r =
+        -0.71). Điểm số các bài kiểm tra quá trình phản ánh trực tiếp sự tiếp thu kiến thức.
+        <br>• <strong>Điểm số thấp nhất (`min_score`):</strong> Thể hiện điểm số của bài kiểm tra kém nhất, phản ánh mức
+        độ bất ổn hoặc việc bỏ qua một học phần trọng tâm.
+        <br>• <strong>Tổng lượt tương tác E-Learning (`total_clicks`):</strong> Tổng số lượt nhấp chuột vào các tài
+        liệu, bài giảng, diễn đàn trực tuyến của VLE. Đây là chỉ số phản ánh mức độ chăm chỉ, kiên trì của sinh viên.
+        <br>• <strong>Số ngày hoạt động tích cực (`active_days`):</strong> Đo lường tính đều đặn trong thói quen học tập
+        của sinh viên.
+        <br>• <strong>Số bài nộp muộn (`n_late`):</strong> Thể hiện thói quen quản lý thời gian và mức độ kỷ luật học
+        tập.
       </p>
     </div>
   </div>
@@ -625,10 +718,15 @@
 <!-- ── THANK YOU BANNER ─────────────────────────────────── -->
 <section class="section" style="background:white; padding: 64px 0;">
   <div class="container">
-    <div class="thankyou-card" style="background: #4a0e17; color: white; border-radius: 12px; padding: 48px 32px; text-align: center; max-width: 960px; margin: 0 auto;">
-      <h2 style="font-size:2rem; font-weight:900; margin-bottom:18px; color:white;">Trí Tuệ Nhân Tạo Đồng Hành Cùng Giáo Dục</h2>
-      <p style="font-size:1.05rem; line-height:1.8; max-width:760px; margin:0 auto; font-weight:500; opacity:0.95;">
-        RiskSight không chỉ dừng lại ở những con số phần trăm chính xác. Sứ mệnh của chúng tôi là minh bạch hóa các thuật toán học máy phức tạp, đưa dữ liệu học tập trở thành những thông tin hữu ích và trực quan giúp giáo viên dễ dàng thấu hiểu và nâng đỡ từng sinh viên của mình.
+    <div class="thankyou-card"
+      style="background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%); color: var(--text-dim); border: 1px solid rgba(200, 16, 46, 0.1); border-radius: 12px; padding: 48px 32px; text-align: center; max-width: 960px; margin: 0 auto;">
+      <h2 style="font-size:2rem; font-weight:900; margin-bottom:18px; color:var(--primary);">Trí Tuệ Nhân Tạo Đồng Hành
+        Cùng Giáo Dục</h2>
+      <p
+        style="font-size:1.05rem; line-height:1.8; max-width:760px; margin:0 auto; font-weight:500; color:var(--text-dim);">
+        RiskSight không chỉ dừng lại ở những con số phần trăm chính xác. Sứ mệnh của chúng tôi là minh bạch hóa các
+        thuật toán học máy phức tạp, đưa dữ liệu học tập trở thành những thông tin hữu ích và trực quan giúp giáo viên
+        dễ dàng thấu hiểu và nâng đỡ từng sinh viên của mình.
       </p>
     </div>
   </div>

@@ -214,7 +214,7 @@ p {
 /* ── HERO ───────────────────────────────────────────────── */
 .hero {
   padding: 48px 0 32px;
-  background: linear-gradient(160deg, #fdfdff 0%, #fff8f9 100%);
+  background: linear-gradient(180deg, #fff2f4 0%, #fffafd 60%, #ffffff 100%);
   text-align: center;
   border-bottom: 1px solid var(--border);
 }

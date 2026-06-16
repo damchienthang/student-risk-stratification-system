@@ -61,7 +61,7 @@
     min-height: 28px;
     font-size: var(--text-xs);
     font-weight: 700;
-    color: #7c8fa6;
+    color: #31383f;
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.9px;
@@ -213,16 +213,17 @@
     letter-spacing: 1.5px !important;
     text-transform: uppercase !important;
     transition: background-position 0.5s ease, transform 0.2s ease, box-shadow 0.3s ease !important;
-    box-shadow: 0 6px 22px rgba(200, 16, 46, 0.30), inset 0 1px 0 rgba(255,255,255,0.15) !important;
+    box-shadow: 0 6px 22px rgba(200, 16, 46, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
   }
 
   #submitPredictionBtn::before {
     content: '';
     position: absolute;
-    top: 0; left: -100%;
+    top: 0;
+    left: -100%;
     width: 60%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
     transition: left 0.55s ease;
     pointer-events: none;
   }
@@ -234,7 +235,7 @@
   #submitPredictionBtn:hover {
     background-position: right center !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 12px 32px rgba(200, 16, 46, 0.40), 0 0 0 3px rgba(200,16,46,0.12), inset 0 1px 0 rgba(255,255,255,0.18) !important;
+    box-shadow: 0 12px 32px rgba(200, 16, 46, 0.40), 0 0 0 3px rgba(200, 16, 46, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
   }
 
   #submitPredictionBtn:active {
@@ -252,7 +253,7 @@
     display: none;
     width: 16px;
     height: 16px;
-    border: 2px solid rgba(255,255,255,0.4);
+    border: 2px solid rgba(255, 255, 255, 0.4);
     border-top-color: white;
     border-radius: 50%;
     animation: spin 0.75s linear infinite;
@@ -268,7 +269,9 @@
   }
 
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   /* Search / Login button glow effect */
@@ -283,7 +286,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, transparent 60%);
     opacity: 0;
     transition: opacity 0.25s ease;
     pointer-events: none;
@@ -295,12 +298,12 @@
 
   .search-btn:hover {
     transform: translateY(-1px) scale(1.03) !important;
-    box-shadow: 0 6px 20px rgba(200,16,46,0.35) !important;
+    box-shadow: 0 6px 20px rgba(200, 16, 46, 0.35) !important;
   }
 
   .search-btn:active {
     transform: translateY(0) scale(0.97) !important;
-    box-shadow: 0 2px 8px rgba(200,16,46,0.22) !important;
+    box-shadow: 0 2px 8px rgba(200, 16, 46, 0.22) !important;
   }
 </style>
 {% endblock %}
@@ -308,7 +311,7 @@
 {% block content %}
 <!-- ── HERO ──────────────────────────────────────────────── -->
 <section class="hero" id="about"
-  style="padding: 80px 0 60px; background: var(--bg-alt); text-align: center; position: relative; border-bottom: 1px solid var(--border);">
+  style="padding: 80px 0 60px; background: linear-gradient(180deg, #fff2f4 0%, #fffafd 60%, #ffffff 100%); text-align: center; position: relative; border-bottom: 1px solid var(--border);">
 
   <div class="container" style="max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:5;">
     <h1 class="hero-title">Phân Tầng Rủi Ro <span style="color: var(--primary);">Học Tập Sinh Viên</span></h1>
@@ -358,9 +361,9 @@
     <div id="guest-trial"
       style="max-width:1100px;margin:0 auto;background:white;padding:48px 48px;border-radius:16px;border:1px solid #eef1f6;box-shadow:0 4px 24px rgba(0,0,0,0.06);position:relative;z-index:10;">
       <h3
-        style="text-align:center;margin-bottom:10px;color:#2d3748;font-size:1.75rem;font-weight:800;letter-spacing:-0.5px;">
+        style="text-align:center;margin-bottom:10px;color:#b20000;font-size:1.75rem;font-weight:800;letter-spacing:-0.5px;">
         Thử nghiệm dự báo rủi ro</h3>
-      <p style="text-align:center;color:#8a9bb0;margin-bottom:24px;font-size:0.97rem;font-weight:500;">Hoàn thành
+      <p style="text-align:center;color:#2a2a2a;margin-bottom:24px;font-size:0.97rem;font-weight:500;">Hoàn thành
         các thông số dưới đây để AI tiến hành phân tích và phân tầng rủi ro.</p>
 
 
@@ -368,32 +371,37 @@
       <div
         style="background:#fafbfd;border-left:3px solid var(--primary);border-radius:10px;padding:16px 20px;margin-bottom:28px;text-align:left;">
         <h4
-          style="font-size:0.82rem;font-weight:700;color:#5a6a7e;margin-top:0;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px;line-height:1.3;">
+          style="font-size:0.82rem;font-weight:700;color:#1a1a1a;margin-top:0;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px;line-height:1.3;">
           Chỉ số ảnh hưởng lớn nhất đến dự đoán
         </h4>
-        <p style="font-size:0.84rem;color:#8a9bb0;line-height:1.7;margin-bottom:14px;font-weight:400;">
-          Dựa trên phân tích trọng số mô hình <strong style="color:#4a5568;">LightGBM</strong>, kết quả rủi ro chịu ảnh hưởng sâu sắc nhất bởi
+        <p style="font-size:0.84rem;color:#59616b;line-height:1.7;margin-bottom:14px;font-weight:400;">
+          Dựa trên phân tích trọng số mô hình <strong style="color:#4a5568;">LightGBM</strong>, kết quả rủi ro chịu ảnh
+          hưởng sâu sắc nhất bởi
           4 nhóm chỉ số sau:
         </p>
         <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:14px;">
           <div style="font-size:0.82rem;line-height:1.65;">
             <strong style="color:#4a5568;">Tương tác trực tuyến:</strong>
-            <span style="color:#8a9bb0;font-weight:400;"> Tần suất click học liệu. Lượng click <strong style="color:#4a5568;">dưới
+            <span style="color:#4d545c;font-weight:400;"> Tần suất click học liệu. Lượng click <strong
+                style="color:#4a5568;">dưới
                 400</strong> đẩy nguy cơ vào nhóm Cao/Nguy cấp lên gấp 3 lần.</span>
           </div>
           <div style="font-size:0.82rem;line-height:1.65;">
             <strong style="color:#4a5568;">Điểm trung bình học phần:</strong>
-            <span style="color:#8a9bb0;font-weight:400;"> Kết quả kiểm tra tích lũy. Điểm <strong style="color:#4a5568;">dưới
+            <span style="color:#4d545;font-weight:400;"> Kết quả kiểm tra tích lũy. Điểm <strong
+                style="color:#4a5568;">dưới
                 55/100</strong> là ngưỡng cảnh báo cực kỳ lớn.</span>
           </div>
           <div style="font-size:0.82rem;line-height:1.65;">
             <strong style="color:#4a5568;">Số lần học lại học phần:</strong>
-            <span style="color:#8a9bb0;font-weight:400;"> Lịch sử trượt môn. Từng trượt <strong style="color:#4a5568;">1 lần trở
+            <span style="color:#4d545;font-weight:400;"> Lịch sử trượt môn. Từng trượt <strong style="color:#4a5568;">1
+                lần trở
                 lên</strong> khiến tỷ lệ rủi ro cao hơn 45%.</span>
           </div>
           <div style="font-size:0.82rem;line-height:1.65;">
             <strong style="color:#4a5568;">Kỷ luật nộp bài tập:</strong>
-            <span style="color:#8a9bb0;font-weight:400;"> Số ngày trễ trung bình <strong style="color:#4a5568;">trên 3 ngày</strong>
+            <span style="color:#4d545;font-weight:400;"> Số ngày trễ trung bình <strong style="color:#4a5568;">trên 3
+                ngày</strong>
               trực tiếp đẩy sinh viên vào ranh giới rủi ro.</span>
           </div>
         </div>
@@ -403,7 +411,7 @@
       <form id="guestForm" onsubmit="event.preventDefault();"
         style="background:#f7f9fc;border-radius:12px;padding:36px 40px;margin-bottom:28px;border:1.5px solid #eef1f6;">
         <h4
-          style="font-size:0.88rem;color:#c8102e;text-transform:uppercase;margin-bottom:20px;border-bottom:1.5px solid #eef1f6;padding-bottom:12px;font-weight:700;display:flex;align-items:center;gap:8px;letter-spacing:0.8px;">
+          style="font-size:0.88rem;color:#c10323;text-transform:uppercase;margin-bottom:20px;border-bottom:1.5px solid #eef1f6;padding-bottom:12px;font-weight:700;display:flex;align-items:center;gap:8px;letter-spacing:0.8px;">
           <span style="width:3px;height:14px;background:var(--primary);display:inline-block;border-radius:2px;"></span>
           THÔNG TIN HÀNH VI HỌC TẬP
         </h4>
@@ -411,7 +419,7 @@
           <!-- CỘT 1 -->
           <div style="display:flex;flex-direction:column;gap:16px;">
             <h5
-              style="color:#5a6a7e;font-size:0.76rem;font-weight:700;border-bottom:1px solid #e8edf3;padding-bottom:8px;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.8px;">
+              style="color:#2d3743;font-size:0.76rem;font-weight:700;border-bottom:1px solid #e8edf3;padding-bottom:8px;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.8px;">
               I. NĂNG LỰC &amp; NỀN TẢNG</h5>
             <div class="form-group">
               <label>ĐIỂM TRUNG BÌNH HIỆN TẠI (0–100)</label>
@@ -453,7 +461,7 @@
           <!-- CỘT 2 -->
           <div style="display:flex;flex-direction:column;gap:16px;">
             <h5
-              style="color:#5a6a7e;font-size:0.76rem;font-weight:700;border-bottom:1px solid #e8edf3;padding-bottom:8px;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.8px;">
+              style="color:#2d3743;font-size:0.76rem;font-weight:700;border-bottom:1px solid #e8edf3;padding-bottom:8px;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.8px;">
               II. THÁI ĐỘ &amp; ÁP LỰC</h5>
             <div class="form-group">
               <label style="display:flex;justify-content:space-between;">
@@ -504,7 +512,7 @@
           <button type="button" id="submitPredictionBtn" class="btn-ripple" onclick="handlePredictionClick(event)"
             style="display:inline-flex;align-items:center;gap:10px;">
             <span class="btn-spinner"></span>
-            <span class="btn-text">CHẠY DỰ BÁO NHANH</span>
+            <span class="btn-text">Dự báo kết quả</span>
           </button>
         </div>
       </form>
@@ -527,7 +535,7 @@
         style="background:white;border:1px solid var(--border);padding:16px;border-radius:var(--radius-sm);text-align:center;box-shadow:var(--shadow-sm);border-top:3px solid var(--primary);">
         <div
           style="font-size:2.4rem;font-weight:900;color:var(--primary);margin-bottom:8px;font-family:'Plus Jakarta Sans',sans-serif;">
-          92.08%</div>
+          93.00%</div>
         <h4
           style="font-size:0.9rem;font-weight:800;color:var(--secondary);text-transform:uppercase;margin-bottom:10px;letter-spacing:0.5px;">
           Độ chính xác (Accuracy)</h4>
@@ -539,7 +547,7 @@
         style="background:white;border:1px solid var(--border);padding:16px;border-radius:var(--radius-sm);text-align:center;box-shadow:var(--shadow-sm);border-top:3px solid var(--border);">
         <div
           style="font-size:2.4rem;font-weight:900;color:var(--text-dim);margin-bottom:8px;font-family:'Plus Jakarta Sans',sans-serif;">
-          84.03%</div>
+          84.45%</div>
         <h4
           style="font-size:0.9rem;font-weight:800;color:var(--secondary);text-transform:uppercase;margin-bottom:10px;letter-spacing:0.5px;">
           Độ đo F1-Score</h4>
@@ -551,7 +559,7 @@
         style="background:white;border:1px solid var(--border);padding:16px;border-radius:var(--radius-sm);text-align:center;box-shadow:var(--shadow-sm);border-top:3px solid var(--secondary);">
         <div
           style="font-size:2.4rem;font-weight:900;color:var(--secondary);margin-bottom:8px;font-family:'Plus Jakarta Sans',sans-serif;">
-          98.68%</div>
+          98.87%</div>
         <h4
           style="font-size:0.9rem;font-weight:800;color:var(--secondary);text-transform:uppercase;margin-bottom:10px;letter-spacing:0.5px;">
           Chỉ số AUC-ROC</h4>
@@ -709,19 +717,33 @@
 </div>
 
 <!-- ── MODEL BANNER ───────────────────────────────────── -->
-<section class="section section--dark" style="padding: 64px 0;">
+<section class="section" style="background: #ffffff; padding: 64px 0; border-top: 1px solid var(--border);">
   <div class="container" style="max-width:960px; margin: 0 auto; padding: 0 20px;">
-    <div style="background: linear-gradient(135deg, #0b1329 0%, #1a2a4a 100%); border-radius: 16px; padding: 40px; text-align: center; box-shadow: var(--shadow-lg); border: 1px solid rgba(255, 255, 255, 0.05); position: relative; overflow: hidden;">
-      <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(200, 16, 46, 0.08); border-radius: 50%; filter: blur(30px); pointer-events: none;"></div>
-      <div style="position: absolute; bottom: -50px; left: -50px; width: 150px; height: 150px; background: rgba(200, 16, 46, 0.08); border-radius: 50%; filter: blur(30px); pointer-events: none;"></div>
-      
-      <span class="hero-badge" style="background: rgba(200, 16, 46, 0.15); color: #ff4d6d; margin-bottom: 16px;">Đánh Giá Mô Hình &amp; Thuật Toán</span>
-      <h3 style="color: white; font-size: 1.8rem; font-weight: 800; margin-bottom: 16px; font-family: 'Plus Jakarta Sans', sans-serif;">Kiến Trúc Học Máy &amp; Chỉ Số Khoa Học</h3>
-      <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem; line-height: 1.7; max-width: 680px; margin: 0 auto 28px; font-weight: 500;">
-        Chúng tôi đã nghiên cứu, thử nghiệm đối sánh 4 mô hình học máy (LightGBM, XGBoost, Random Forest, Logistic Regression) và áp dụng giải pháp cân bằng lớp SMOTE. Khám phá toàn bộ cơ chế hoạt động, ma trận nhầm lẫn và đường cong hiệu năng chi tiết tại trang chuyên biệt.
+    <div
+      style="background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%); border-radius: 16px; padding: 40px; text-align: center; box-shadow: var(--shadow); border: 1px solid rgba(200, 16, 46, 0.1); position: relative; overflow: hidden;">
+      <div
+        style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(200, 16, 46, 0.04); border-radius: 50%; filter: blur(30px); pointer-events: none;">
+      </div>
+      <div
+        style="position: absolute; bottom: -50px; left: -50px; width: 150px; height: 150px; background: rgba(200, 16, 46, 0.04); border-radius: 50%; filter: blur(30px); pointer-events: none;">
+      </div>
+
+      <span class="hero-badge" style="background: var(--primary-soft); color: var(--primary); margin-bottom: 16px;">Đánh
+        Giá Mô Hình &amp; Thuật Toán</span>
+      <h3
+        style="color: var(--secondary); font-size: 1.8rem; font-weight: 800; margin-bottom: 16px; font-family: 'Plus Jakarta Sans', sans-serif;">
+        Kiến Trúc Học Máy &amp; Chỉ Số Khoa Học</h3>
+      <p
+        style="color: var(--text-dim); font-size: 0.95rem; line-height: 1.7; max-width: 680px; margin: 0 auto 28px; font-weight: 500;">
+        Chúng tôi đã nghiên cứu, thử nghiệm đối sánh 4 mô hình học máy (LightGBM, XGBoost, Random Forest, Logistic
+        Regression) và áp dụng giải pháp cân bằng lớp SMOTE. Khám phá toàn bộ cơ chế hoạt động, ma trận nhầm lẫn và
+        đường cong hiệu năng chi tiết tại trang chuyên biệt.
       </p>
       <div>
-        <a href="/model" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.8px; transition: all 0.3s; box-shadow: 0 4px 14px rgba(200, 16, 46, 0.3);" onmouseover="this.style.background='var(--primary-dark)'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='var(--primary)'; this.style.transform='translateY(0)';">
+        <a href="/model"
+          style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.8px; transition: all 0.3s; box-shadow: 0 4px 14px rgba(200, 16, 46, 0.25);"
+          onmouseover="this.style.background='var(--primary-dark)'; this.style.transform='translateY(-1px)';"
+          onmouseout="this.style.background='var(--primary)'; this.style.transform='translateY(0)';">
           Xem Chi Tiết Đánh Giá Mô Hình
         </a>
       </div>
