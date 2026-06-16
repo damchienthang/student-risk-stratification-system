@@ -34,7 +34,7 @@ RECOMMENDATIONS: Dict[int, str] = {
     0: "Sinh viên đang có tiến độ học tập tốt. Tiếp tục duy trì và tham gia đầy đủ các hoạt động học tập.",
     1: "Sinh viên cần chú ý hơn đến việc học. Nên tăng cường tương tác với hệ thống VLE và ôn tập bài thường xuyên hơn.",
     2: "Sinh viên có nguy cơ cao cần được hỗ trợ ngay. Giảng viên nên liên hệ trực tiếp và đề xuất kế hoạch học tập phù hợp.",
-    3: "Sinh viên có nguy cơ rất cao bỏ học hoặc trượt môn. Cần can thiệp khẩn cấp từ cố vấn học thuật và gia đình."
+    3: "Sinh viên có nguy cơ rất cao bỏ học hoặc trượt môn. Cần can thiệp khẩn cấp từ cố vấn học tập và gia đình."
 }
 
 # Các cột thuộc tính (features) theo đúng thứ tự huấn luyện mô hình

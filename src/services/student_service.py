@@ -21,6 +21,11 @@ class StudentService:
             features = student.model_dump()
             prediction = self.predictor.predict(features)
             
+            # Attempt to retrieve email from users table
+            from src.models.user import User
+            user = session.exec(select(User).where(User.username == str(student_id))).first()
+            features["email"] = user.email if user else None
+            
             return {
                 "student": features,
                 "prediction": prediction

@@ -46,10 +46,18 @@ async def query_student(student_id: str, request: Request):
             if not log:
                 raise HTTPException(status_code=404, detail="Không tìm thấy lịch sử dự báo")
             
+            # Retrieve user email if log is linked to a user
+            user_email = None
+            if log.user_id:
+                user = session.get(User, log.user_id)
+                if user:
+                    user_email = user.email
+            
             # Format to match StudentRisk report
             return {
                 "student": {
                     "id_student": f"GUEST_{log.id}",
+                    "email": user_email,
                     "code_module": log.code_module,
                     "code_presentation": log.code_presentation,
                     "gender_num": log.gender_num,

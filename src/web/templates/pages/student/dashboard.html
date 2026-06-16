@@ -528,11 +528,12 @@
 {% block extra_js %}
 <script>
   function switchDashboardTab(tabId, btn) {
+    window.location.hash = tabId;
     document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.add('hidden'));
     document.getElementById('tab-' + tabId).classList.remove('hidden');
 
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
   }
 
   async function loadHistory() {
@@ -599,5 +600,25 @@
       btn.innerText = 'LƯU THAY ĐỔI';
     }
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && ['results', 'history', 'profile'].includes(hash)) {
+      const buttons = document.querySelectorAll('.tab-nav .tab-btn');
+      let targetButton = null;
+      buttons.forEach(btn => {
+        const onclickAttr = btn.getAttribute('onclick') || '';
+        if (onclickAttr.includes(`'${hash}'`)) {
+          targetButton = btn;
+        }
+      });
+      if (targetButton) {
+        if (hash === 'history') {
+          loadHistory();
+        }
+        switchDashboardTab(hash, targetButton);
+      }
+    }
+  });
 </script>
 {% endblock %}

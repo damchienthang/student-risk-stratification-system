@@ -44,7 +44,7 @@
                 </button>
             </nav>
             <div class="sidebar-footer">
-                <a href="/api/v1/auth/logout" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất không?');"
+                <a href="/api/v1/auth/logout" onclick="confirmLogout(event)"
                     class="nav-item logout-btn">
                     <span>Đăng xuất</span>
                 </a>
@@ -158,6 +158,7 @@
                     <div class="search-bar" style="margin-bottom: 16px; gap: 10px;">
                         <input type="text" id="adminSearchInput" class="input-field"
                             placeholder="Tra cứu nhanh mã sinh viên (VD: 11391)..."
+                            autocomplete="off"
                             onkeydown="if(event.key==='Enter') adminSearchStudent()">
                         <button onclick="adminSearchStudent()" class="btn btn-primary"
                             style="padding: 8px 20px; height: auto; border-radius: var(--radius-sm); font-size: 0.9rem;">Tìm
@@ -318,9 +319,9 @@
                             style="display:none; padding:12px; background:var(--bg); border-bottom:1px solid var(--border-light);">
                             <div
                                 style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:8px; align-items:end;">
-                                <input type="text" id="newUsername" class="input-field" placeholder="Tên đăng nhập">
-                                <input type="password" id="newPassword" class="input-field" placeholder="Mật khẩu">
-                                <input type="text" id="newFullname" class="input-field" placeholder="Họ tên">
+                                <input type="text" id="newUsername" class="input-field" placeholder="Tên đăng nhập" autocomplete="off">
+                                <input type="password" id="newPassword" class="input-field" placeholder="Mật khẩu" autocomplete="new-password">
+                                <input type="text" id="newFullname" class="input-field" placeholder="Họ tên" autocomplete="off">
                                 <select id="newRole" class="select-field">
                                     <option value="lecturer">Giảng viên</option>
                                     <option value="student">Sinh viên</option>
@@ -374,7 +375,7 @@
             <label
                 style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--text-muted); letter-spacing:1px; display:block; margin-bottom:6px;">Địa
                 chỉ Email người nhận</label>
-            <input id="emailRecipientInput" type="email" placeholder="example@email.com"
+            <input id="emailRecipientInput" type="email" placeholder="example@gmail.com"
                 style="width:100%; padding:10px 14px; border:1px solid var(--border-light); border-radius:var(--radius-sm); font-size:0.95rem; outline:none; box-sizing:border-box; transition:border 0.2s;"
                 onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--border-light)'">
             <div style="display:flex; gap:10px; margin-top:16px;">
@@ -394,10 +395,11 @@
     </div>
 
     <script>
-        const RISK_LABELS = { Low: 'Rủi ro thấp', Medium: 'Trung bình', High: 'Rủi ro cao', 'Very High': 'Nguy cấp' };
+        const RISK_LABELS_VI = { Low: 'Rủi ro thấp', Medium: 'Trung bình', High: 'Rủi ro cao', 'Very High': 'Nguy cấp' };
         const COLORS = { Low: '#64748b', Medium: '#94a3b8', High: '#fca5a5', 'Very High': '#991b1b' };
 
         function showSection(id, el) {
+            window.location.hash = id;
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.getElementById('section-' + id).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -532,7 +534,7 @@
                         <td>${s.code_module} (${s.code_presentation})</td>
                         <td>${(s.score ?? 0).toFixed(1)}</td>
                         <td>${(s.clicks ?? 0).toLocaleString()}</td>
-                        <td><span class="badge badge-${s.risk.toLowerCase().replace(' ', '')}">${RISK_LABELS[s.risk]}</span></td>
+                        <td><span class="badge badge-${s.risk.toLowerCase().replace(' ', '')}">${RISK_LABELS_VI[s.risk]}</span></td>
                         <td><button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.75rem;" onclick="quickView('${s.id}')">Chi tiết</button></td>
                     </tr>
                 `).join('');
@@ -650,25 +652,25 @@
                             style="padding: 8px 12px; background: #c92a2a; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Gửi Email Cảnh Báo
                         </button>
-                        <button onclick="alert('Đã tạo lịch hẹn tư vấn học thuật với sinh viên vào tuần tới.')" style="padding: 8px 12px; background: #e67700; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="showToast('Thông báo', 'Chức năng đang được cập nhật.', 'info')" style="padding: 8px 12px; background: #e67700; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Lên Lịch Tư Vấn
                         </button>
-                        <button onclick="alert('Sinh viên đã được đưa vào danh sách theo dõi đặc biệt.')" style="padding: 8px 12px; background: #1864ab; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="showToast('Thông báo', 'Chức năng đang được cập nhật.', 'info')" style="padding: 8px 12px; background: #1864ab; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Theo Dõi Đặc Biệt
                         </button>
                     `;
                 } else if (p.risk_label === 'Medium' || p.risk_level === 1) {
                     actionsHtml = `
-                        <button onclick="alert('Đã gửi thông báo nhắc nhở tự động qua VLE.')" style="padding: 8px 12px; background: #e67700; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="showToast('Thông báo', 'Chức năng đang được cập nhật.', 'info')" style="padding: 8px 12px; background: #e67700; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Gửi Nhắc Nhở
                         </button>
-                        <button onclick="alert('Đã gửi tài liệu hướng dẫn ôn tập bổ sung.')" style="padding: 8px 12px; background: #1864ab; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="showToast('Thông báo', 'Chức năng đang được cập nhật.', 'info')" style="padding: 8px 12px; background: #1864ab; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Gửi Tài Liệu Ôn Tập
                         </button>
                     `;
                 } else {
                     actionsHtml = `
-                        <button onclick="alert('Đã gửi email khích lệ tinh thần học tập của sinh viên.')" style="padding: 8px 12px; background: #2b8a3e; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <button onclick="showToast('Thông báo', 'Chức năng đang được cập nhật.', 'info')" style="padding: 8px 12px; background: #2b8a3e; color: white; border: none; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
                             Gửi Lời Khen Ngợi
                         </button>
                     `;
@@ -684,7 +686,7 @@
                             <div style="text-align:right;">
                                 <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-light); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">PHÂN LOẠI RỦI RO</div>
                                 <span class="badge" style="background:${COLORS[p.risk_label]}; color:white; font-size:1.1rem; padding:8px 16px; font-weight: 900; border-radius: var(--radius-sm);">
-                                    ${RISK_LABELS[p.risk_label].toUpperCase()} (${p.confidence.toFixed(1)}%)
+                                    ${RISK_LABELS_VI[p.risk_label].toUpperCase()} (${p.confidence.toFixed(1)}%)
                                 </span>
                             </div>
                         </div>
@@ -757,10 +759,15 @@
             _emailStudentId = studentId;
             _emailRecommendation = recommendation;
             _emailRiskLabel = riskLabel;
-            document.getElementById('emailModalStudentInfo').textContent = `Sinh viên #${studentId} — Mức rủi ro: ${RISK_LABELS[riskLabel] || riskLabel}`;
+            document.getElementById('emailModalStudentInfo').textContent = `Sinh viên #${studentId} — Mức rủi ro: ${RISK_LABELS_VI[riskLabel] || riskLabel}`;
             document.getElementById('emailModalRec').textContent = `"${recommendation}"`;
             document.getElementById('emailRecipientInput').value = '';
             document.getElementById('emailStatusMsg').style.display = 'none';
+            const btn = document.getElementById('emailSendBtn');
+            if (btn) {
+                btn.textContent = 'Gửi Ngay';
+                btn.disabled = false;
+            }
             document.getElementById('emailModal').style.display = 'flex';
         }
         function closeEmailModal() {
@@ -771,7 +778,7 @@
             const statusEl = document.getElementById('emailStatusMsg');
             const btn = document.getElementById('emailSendBtn');
             if (!toEmail) {
-                statusEl.textContent = '⚠️ Vui lòng nhập địa chỉ email người nhận.';
+                statusEl.textContent = 'Vui lòng nhập địa chỉ email người nhận.';
                 statusEl.style.color = '#e67700';
                 statusEl.style.display = 'block';
                 return;
@@ -791,28 +798,50 @@
                 });
                 const data = await res.json();
                 if (res.ok) {
-                    statusEl.textContent = `✅ ${data.message}`;
+                    statusEl.textContent = `${data.message}`;
                     statusEl.style.color = '#2b8a3e';
                     statusEl.style.display = 'block';
                     btn.textContent = 'Đã gửi!';
-                    setTimeout(closeEmailModal, 2500);
+                    showToast('Gửi email thành công', `Đã gửi email cảnh báo tới ${toEmail}`, 'success');
+                    setTimeout(closeEmailModal, 2000);
                 } else {
-                    statusEl.textContent = `❌ ${data.detail || 'Gửi email thất bại.'}`;
+                    statusEl.textContent = `${data.detail || 'Gửi email thất bại.'}`;
                     statusEl.style.color = '#c92a2a';
                     statusEl.style.display = 'block';
                     btn.textContent = 'Gửi Ngay';
                     btn.disabled = false;
+                    showToast('Gửi email thất bại', data.detail || 'Vui lòng kiểm tra cấu hình SMTP.', 'error');
                 }
             } catch (e) {
-                statusEl.textContent = '❌ Lỗi kết nối. Vui lòng thử lại.';
+                statusEl.textContent = 'Lỗi kết nối. Vui lòng thử lại.';
                 statusEl.style.color = '#c92a2a';
                 statusEl.style.display = 'block';
                 btn.textContent = 'Gửi Ngay';
                 btn.disabled = false;
+                showToast('Lỗi kết nối', 'Không thể kết nối đến máy chủ.', 'error');
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadOverview);
+        document.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && ['overview', 'students', 'analytics', 'users'].includes(hash)) {
+                const buttons = document.querySelectorAll('.sidebar-nav .nav-item');
+                let targetButton = null;
+                buttons.forEach(btn => {
+                    const onclickAttr = btn.getAttribute('onclick') || '';
+                    if (onclickAttr.includes(`'${hash}'`)) {
+                        targetButton = btn;
+                    }
+                });
+                if (targetButton) {
+                    showSection(hash, targetButton);
+                } else {
+                    loadOverview();
+                }
+            } else {
+                loadOverview();
+            }
+        });
     </script>
     <div id="toast-container"></div>
     <script src="/static/app.js?v=4"></script>

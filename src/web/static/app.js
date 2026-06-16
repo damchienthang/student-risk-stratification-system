@@ -138,7 +138,7 @@ async function searchStudent() {
     displayStudent(data);
   } catch (err) {
     console.error('❌ Lỗi:', err.message);
-    if (searchInput && !searchInput.disabled) alert('❌ Lỗi: ' + err.message);
+    if (searchInput && !searchInput.disabled) showToast('Lỗi truy vấn', err.message, 'error');
   } finally {
     if (btn && !btn.disabled) btn.innerText = originalText;
   }
@@ -319,10 +319,10 @@ async function submitGuestPrediction(event) {
     if (resp.ok) {
       showGuestResult(result, data);
     } else {
-      alert("Lỗi: " + (result.detail || "Không thể thực hiện dự báo"));
+      showToast('Lỗi dự báo', result.detail || "Không thể thực hiện dự báo", 'error');
     }
   } catch (err) {
-    alert("Lỗi kết nối server");
+    showToast('Lỗi kết nối', "Không thể kết nối đến máy chủ. Vui lòng thử lại.", 'error');
   } finally {
     btn.innerHTML = originalText;
     btn.disabled = false;
@@ -599,17 +599,6 @@ function renderAnalysis(features) {
 }
 
 // ── Utils ─────────────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-  let current = '';
-  sections.forEach(s => {
-    if (window.scrollY >= s.offsetTop - 120) current = s.id;
-  });
-  navLinks.forEach(l => {
-    l.classList.toggle('active', l.getAttribute('href') === '#' + current || l.getAttribute('href') === '/' + current);
-  });
-}, { passive: true });
 
 document.addEventListener('click', () => {
   const dropdown = document.querySelector('.dropdown-content');
@@ -617,5 +606,84 @@ document.addEventListener('click', () => {
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') {
+    closeModal();
+    const logoutModal = document.getElementById('custom-logout-modal');
+    if (logoutModal) logoutModal.remove();
+  }
 });
+
+// Custom Premium Logout Confirmation Modal
+function confirmLogout(event) {
+  event.preventDefault();
+  
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'custom-logout-modal';
+  overlay.style.position = 'fixed';
+  overlay.style.inset = '0';
+  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+  overlay.style.zIndex = '9999';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.padding = '20px';
+  overlay.style.backdropFilter = 'blur(4px)';
+  overlay.style.animation = 'fadeIn 0.2s ease-out';
+
+  // Modal Card
+  const card = document.createElement('div');
+  card.style.background = 'white';
+  card.style.padding = '28px';
+  card.style.borderRadius = '8px';
+  card.style.maxWidth = '400px';
+  card.style.width = '100%';
+  card.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+  card.style.border = '1px solid #f1f5f9';
+  card.style.textAlign = 'center';
+  card.style.animation = 'scaleIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+
+  card.innerHTML = `
+    <div style="width: 56px; height: 56px; background: #fff1f2; color: #e11d48; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.5rem;">
+      🚪
+    </div>
+    <h3 style="margin: 0 0 10px; color: #0f172a; font-size: 1.25rem; font-weight: 700; font-family: 'Inter', sans-serif;">Xác nhận đăng xuất</h3>
+    <p style="margin: 0 0 24px; color: #64748b; font-size: 0.95rem; line-height: 1.5; font-family: 'Inter', sans-serif;">Bạn có chắc chắn muốn đăng xuất khỏi hệ thống RiskSight?</p>
+    <div style="display: flex; gap: 12px;">
+      <button id="logout-cancel-btn" style="flex: 1; padding: 10px 16px; background: #f1f5f9; color: #475569; border: none; border-radius: 6px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;">Hủy</button>
+      <a href="/api/v1/auth/logout" style="flex: 1; padding: 10px 16px; background: #c8102e; color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 0.95rem; cursor: pointer; text-decoration: none; text-align: center; display: block; transition: all 0.2s; font-family: 'Inter', sans-serif;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Đăng xuất</a>
+    </div>
+  `;
+
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+
+  // Add keyframe animations dynamically if they don't exist
+  if (!document.getElementById('custom-modal-styles')) {
+    const style = document.createElement('style');
+    style.id = 'custom-modal-styles';
+    style.innerHTML = `
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes scaleIn {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Cancel action
+  card.querySelector('#logout-cancel-btn').addEventListener('click', () => {
+    overlay.remove();
+  });
+
+  // Click outside to close
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.remove();
+    }
+  });
+}
