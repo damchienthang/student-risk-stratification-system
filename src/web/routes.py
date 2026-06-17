@@ -1,3 +1,4 @@
+# Create web routes, HTML templates, and static assets for frontend dashboard
 from typing import Optional
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
