@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Project deployment, dependencies, and entrypoint configuration
 """
 main.py - Entry point for Student Risk Stratification System
 """
