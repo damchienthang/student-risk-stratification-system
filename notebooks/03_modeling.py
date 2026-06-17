@@ -1,3 +1,4 @@
+# Data cleaning, exploratory data analysis, and model training notebooks
 import pandas as pd
 import numpy as np
 import matplotlib
