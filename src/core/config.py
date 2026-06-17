@@ -1,3 +1,4 @@
+# Configure core settings, database connection, and security session handlers
 import os
 from pathlib import Path
 from dotenv import load_dotenv
