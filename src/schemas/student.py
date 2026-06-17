@@ -1,3 +1,4 @@
+# Implement Pydantic schemas for request and response validation
 """
 Schemas - Định nghĩa kiểu dữ liệu đầu vào/đầu ra (Pydantic)
 """
