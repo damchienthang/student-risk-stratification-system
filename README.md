@@ -13,7 +13,8 @@ A machine learning system that classifies university students into four risk lev
 - [Pipeline](#pipeline)
 - [Model Performance](#model-performance)
 - [Key Features Used](#key-features-used)
-- [Installation](#installation)
+- [Installation & Configuration](#installation--configuration)
+- [Database Setup & Seeding](#database-setup--seeding)
 - [Running the Project](#running-the-project)
 - [API Endpoints](#api-endpoints)
 - [Visualisations](#visualisations)
@@ -27,9 +28,14 @@ This system analyses student data and predicts whether a student is at Low, Medi
 
 The system consists of:
 - A data processing and feature engineering pipeline
-- Exploratory data analysis with 13 generated charts
+- Exploratory data analysis (EDA) and model comparison scripts
 - A supervised classification model (LightGBM) selected via fair comparison
-- A web application built with FastAPI and Jinja2 for student lookup and risk prediction
+- A web application built with FastAPI, Jinja2, SQLModel (SQLite), and Tailwind/Vanilla CSS for student lookup, risk prediction, user management, and intervention email alerts.
+
+### Role-Based Access Control:
+- **Guest / External Users**: Can register, log in, perform custom predictions on the Home page (simulated Day 60 milestone parameters), and view their individual query history.
+- **Official Students**: Can log in using their OULAD student ID (with fallback auto-registration) to immediately view their dashboard, profile, and active risk prediction.
+- **Admin Users**: Access the Admin Dashboard to monitor system statistics, search student records, manage registered accounts (toggle status, delete, create new users), and dispatch formatted email warnings directly to at-risk students via SMTP.
 
 ---
 
@@ -79,20 +85,42 @@ Class distribution before balancing:
 ├── data/
 │   ├── raw/                        # Original OULAD CSV files
 │   └── processed/
-│       └── student_features_labeled.csv   # Final feature table (32,593 rows x 24 cols)
+│       ├── student_features_labeled.csv   # Final feature table (32,593 rows x 24 cols)
+│       └── database.db             # SQLite application database (generated on startup)
 ├── notebooks/
 │   ├── 01_data_cleaning.ipynb      # Data loading, merging, feature engineering, labelling
 │   ├── 02_eda.ipynb                # Exploratory data analysis (13 charts)
 │   ├── 03_modeling.py              # Model training, evaluation, and comparison
-│   └── models/                    # Saved .pkl model files (excluded from git, regenerate by running 03_modeling.py)
+│   ├── 03B_CompareImbalance.py     # Comparison of class imbalance handling strategies
+│   └── models/                    # Saved .pkl model files (excluded from git, regenerate via 03_modeling.py)
 ├── src/
-│   ├── api/                        # FastAPI route handlers
-│   ├── core/                       # Application configuration
-│   ├── models/                     # SQLModel database models
-│   ├── schemas/                    # Pydantic request/response schemas
-│   ├── services/                   # Prediction and database logic
-│   ├── utils/                      # Helper utilities
-│   └── web/                        # Jinja2 HTML templates and static files
+│   ├── api/                        # FastAPI sub-routers
+│   │   └── v1/
+│   │       ├── admin.py            # Admin statistics, user list, email interventions
+│   │       ├── auth.py             # Login, logout, register, profile update
+│   │       ├── general.py          # API health status, active model features list
+│   │       └── student.py          # Student/Guest query details, guest prediction, query history
+│   ├── core/                       # Core configurations
+│   │   ├── config.py               # Settings loader (dotenv support)
+│   │   ├── database.py             # SQLModel engine initialization and schema creation
+│   │   └── security.py             # JWT-free cookie session validation & passwords hashing
+│   ├── models/                     # SQLModel database schemas
+│   │   ├── student_risk.py         # StudentRisk & InferenceLog tables
+│   │   └── user.py                 # User account details and roles table
+│   ├── schemas/                    # Pydantic schemas
+│   │   └── student.py              # Validation models for input/output payloads
+│   ├── scripts/                    # Helper scripts
+│   │   └── migrate_db.py           # Database schema migration script
+│   ├── services/                   # Business logic layer
+│   │   ├── admin_service.py        # Analytics compiler for admin stats
+│   │   ├── auth_service.py         # Registration & custom authentication logic
+│   │   ├── email_service.py        # SMTP wrapper for email notifications
+│   │   ├── predictor.py            # Model loading, scaling, inference, recommendations
+│   │   └── student_service.py      # Database query functions for students
+│   └── web/                        # Web pages & frontend assets
+│       ├── routes.py               # Jinja2 template routes (Web views)
+│       ├── static/                 # Javascript (app.js) and CSS styling
+│       └── templates/              # HTML layout, component fragments, and page templates
 ├── visuals/                        # All generated charts (PNG, 150 dpi)
 ├── main.py                         # FastAPI application entry point
 ├── requirements.txt                # Python dependencies
@@ -161,6 +189,13 @@ Four models are trained under identical conditions (same SMOTE data, no class_we
 | XGBoost | 300 | 0.05 | Gradient boosting |
 | LightGBM | 300 | 0.05 | Gradient boosting, num_leaves=31 |
 
+### Step 3B — Imbalance Strategy Evaluation (`03B_CompareImbalance.py`)
+
+Compares different LightGBM class imbalance handling strategies on the validation set:
+1. **No Processing**: Training on imbalanced raw data.
+2. **Class Weight**: Applying class weights balanced inversely to class frequencies.
+3. **SMOTE**: Synthesizing minority class samples (implemented strategy).
+
 ---
 
 ## Model Performance
@@ -174,9 +209,7 @@ Four models are trained under identical conditions (same SMOTE data, no class_we
 | Random Forest | 0.8331 | 0.9845 | 3 |
 | Logistic Regression | 0.7041 | 0.9624 | 4 |
 
-LightGBM is selected as the final model because it achieves the highest F1 Macro score on the validation set. The AUC difference between LightGBM and XGBoost is 0.0004, which is not meaningful in practice.
-
-F1 Macro is used as the primary selection criterion because it measures actual prediction quality across all four classes equally, and is directly relevant to how the system performs in deployment.
+LightGBM is selected as the final model because it achieves the highest F1 Macro score on the validation set.
 
 ### Test Set Results — LightGBM
 
@@ -192,8 +225,8 @@ F1 Macro is used as the primary selection criterion because it measures actual p
    macro avg       0.83      0.86      0.84      6519
 weighted avg       0.93      0.93      0.93      6519
 
-Test F1 Macro : 0.844
-Test AUC      : 0.989
+Test F1 Macro : 0.8445
+Test AUC      : 0.9887
 ```
 
 The High risk class (only 1.9% of the dataset) is the hardest to classify, with an F1 of 0.63. This is expected given the low sample count even after SMOTE.
@@ -217,44 +250,56 @@ The top features by importance (from LightGBM):
 
 ---
 
-## Installation
+## Installation & Configuration
 
 Requirements: Python 3.11+
 
+1. **Clone the repository and install requirements**:
 ```bash
 git clone https://github.com/damchienthang/student-risk-stratification-system.git
 cd student-risk-stratification-system
 pip install -r requirements.txt
 ```
 
-Model files (`.pkl`) are not included in the repository because they exceed GitHub's file size limit. Regenerate them by running the training script:
+2. **Configure Environment Variables**:
+   Create a `.env` file in the root directory (based on the comments in the project configuration):
+```env
+HOST=0.0.0.0
+PORT=8000
+SECRET_KEY=your-super-secret-key-change-me
 
-```bash
-cd student-risk-stratification-system
-python notebooks/03_modeling.py
+# SMTP Settings for Intervention Emails (e.g. Gmail)
+SMTP_EMAIL=your_email@gmail.com
+SMTP_PASSWORD=your_16_character_google_app_password
 ```
 
-This will save all model files to `notebooks/models/`.
+3. **Regenerate Machine Learning Models**:
+   Model files (`.pkl`) are excluded from Git because they exceed GitHub's size limit. Generate them by running:
+```bash
+python notebooks/03_modeling.py
+```
+This saves `lightgbm.pkl`, `scaler.pkl`, etc., to `notebooks/models/`.
+
+---
+
+## Database Setup & Seeding
+
+The application uses **SQLModel** with an **SQLite** database backend. 
+
+- On **first startup**, the system automatically creates the database file `data/processed/database.db` and runs all schema creations.
+- It then **seeds** the database automatically:
+  - Creates the default administrator account: username `admin` / password `admin123`.
+  - Migrates all 32,593 pre-processed student records from `student_features_labeled.csv` to the database.
+- If you change the database schema, run the database migration helper script:
+```bash
+python src/scripts/migrate_db.py
+```
 
 ---
 
 ## Running the Project
 
-### 1. Regenerate the processed dataset (optional — already included)
-
-Open and run `notebooks/01_data_cleaning.ipynb` in Jupyter.
-
-### 2. Run EDA (optional)
-
-Open and run `notebooks/02_eda.ipynb` in Jupyter. Charts are saved to `visuals/`.
-
-### 3. Train models
-
-```bash
-python notebooks/03_modeling.py
-```
-
-### 4. Start the web application
+### 1. Start the web application
 
 ```bash
 uvicorn main:app --reload
@@ -262,7 +307,15 @@ uvicorn main:app --reload
 
 The application will be available at http://localhost:8000.
 
-### 5. Docker (optional)
+- **Admin Account**: login with `admin` / `admin123`
+- **OULAD Student Account**: login with OULAD Student ID as username & password (e.g., student ID `588497` / `588497` - lookup in CSV/admin dashboard)
+- **Register Guest**: Click register on home page to create a guest trial profile.
+
+### 2. Run EDA (optional)
+
+Open and run `notebooks/02_eda.ipynb` in Jupyter. Charts are saved to `visuals/`.
+
+### 3. Docker (optional)
 
 ```bash
 docker build -t student-risk .
@@ -273,13 +326,52 @@ docker run -p 8000:8000 student-risk
 
 ## API Endpoints
 
+### 1. Web UI Pages (Jinja2 Rendered)
+
+| Method | Path | Description | Access Level |
+|--------|------|-------------|--------------|
+| GET | `/` | Home page / Guest prediction input / Authentication | Public / Guest |
+| GET | `/about` | About page describing project members and goal | Public |
+| GET | `/model` | Performance metrics, plots, and charts | Public |
+| GET | `/student` | Student/Guest history dashboard & reports | Student / Guest |
+| GET | `/admin` | Admin monitoring dashboard, user table & emails | Admin |
+
+### 2. API Routes (`/api/v1`)
+
+#### Auth Router (`/api/v1/auth`)
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/` | Home page |
-| GET | `/student` | Student dashboard |
-| GET | `/admin` | Admin dashboard |
-| POST | `/predict` | Predict risk level for a student |
-| GET | `/about` | About page |
+| POST | `/login` | Form-based authentication login |
+| GET | `/logout` | Clears cookie session |
+| POST | `/register` | Register an external Guest user |
+| GET | `/me` | Get current logged-in user profile details |
+| POST | `/me/update` | Update personal profile (email, phone, name) |
+| POST | `/forgot-password` | Simulates a password reset trigger |
+
+#### Student Router (`/api/v1/student`)
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/history` | Fetch prediction logs for current logged-in user |
+| GET | `/query/{student_id}` | Lookup full records (OULAD student or Guest logs) |
+| POST | `/predict/guest` | Run ML model inference on user inputs & log results |
+| POST | `/persist-trial` | Link anonymous Guest predictions to logged-in user |
+
+#### Admin Router (`/api/v1/admin`)
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/stats` | Compile statistics, risk groups, and students lists |
+| GET | `/users` | List all registered accounts & their risk status |
+| POST | `/users/{user_id}/toggle-status` | Toggle user active/locked status |
+| DELETE | `/users/{user_id}` | Remove a user account from the system |
+| GET | `/users/{user_id}/details` | Get details and prediction logs for a user |
+| POST | `/users` | Manually create new student or admin users |
+| POST | `/send-email` | Send HTML risk warning & advisor recommendation email |
+
+#### General Router (`/api/v1/general`)
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/health` | Check backend & model load health status |
+| GET | `/models/info` | Get list of features, classes, and LightGBM metrics |
 
 ---
 
