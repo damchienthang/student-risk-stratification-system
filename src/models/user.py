@@ -1,3 +1,4 @@
+# Define SQLModel database schemas for Users, StudentRisk, and InferenceLogs
 from typing import ClassVar, Optional
 from sqlmodel import Field, SQLModel
 
