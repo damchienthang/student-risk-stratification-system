@@ -5,3 +5,15 @@ data/raw/
 # Model files (too large for GitHub)
 *.pkl
 notebooks/models/
+
+# Environment variables
+.env
+
+# Databases
+*.db
+data/processed/*.db
+
+# Virtual environments
+.venv/
+venv/
+env/
