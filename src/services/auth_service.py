@@ -7,6 +7,7 @@ from src.core.security import hash_password, UserRole
 from src.core.config import settings
 from src.models.student_risk import StudentRisk, InferenceLog
 from src.models.user import User
+from src.services.predictor import FEATURE_DEFAULTS
 
 class AuthService:
     def __init__(self):
@@ -35,7 +36,23 @@ class AuthService:
                     return
 
                 chunksize = 5000
+                int_cols = [
+                    'gender_num', 'imd_band_num', 'education_num', 'age_num', 'disability_num',
+                    'num_of_prev_attempts', 'studied_credits', 'early_registration', 'reg_days_before',
+                    'unregistered', 'total_clicks', 'active_days', 'max_clicks_day', 'n_resources',
+                    'n_submitted', 'n_late', 'risk_level'
+                ]
                 for chunk in pd.read_csv(csv_path, chunksize=chunksize):
+                    # Fill NaNs using defaults
+                    for col, default_val in FEATURE_DEFAULTS.items():
+                        if col in chunk.columns:
+                            chunk[col] = chunk[col].fillna(default_val)
+                    
+                    # Ensure integer columns are correctly typed (pandas casts ints with NaNs to floats)
+                    for col in int_cols:
+                        if col in chunk.columns:
+                            chunk[col] = chunk[col].astype(int)
+
                     chunk = chunk.where(pd.notnull(chunk), None)
                     records = [StudentRisk(**row.to_dict()) for _, row in chunk.iterrows()]
                     session.add_all(records)
