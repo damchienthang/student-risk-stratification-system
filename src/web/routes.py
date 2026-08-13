@@ -4,7 +4,7 @@ from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from src.core.config import settings
-from src.core.security import get_current_user, is_admin, is_student, is_guest, UserRole
+from src.core.security import get_current_user, is_admin, is_student, UserRole
 from src.services.student_service import student_service
 
 from src.core.database import engine
@@ -53,8 +53,8 @@ async def admin_page(request: Request):
 @router.get("/student", response_class=HTMLResponse)
 async def student_page(request: Request):
     user = await get_db_user(request)
-    # Both Official Students and Registered External Guests can access their dashboard
-    if not user or user.role not in [UserRole.STUDENT, UserRole.GUEST]:
+    # Only Official Students can access their dashboard
+    if not user or user.role != UserRole.STUDENT:
         return RedirectResponse(url="/")
     
     # Auto-fetch official prediction for OULAD students

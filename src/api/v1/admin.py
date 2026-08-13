@@ -7,7 +7,7 @@ from src.core.database import engine
 from src.core.security import get_current_user, is_admin, hash_password
 from src.services.admin_service import admin_service
 from src.models.user import User
-from src.models.student_risk import StudentRisk, InferenceLog
+from src.models.student_risk import StudentRisk
 from src.services.email_service import send_warning_email
 
 router = APIRouter()
@@ -28,53 +28,6 @@ async def get_analytics(
         raise HTTPException(status_code=403, detail="Unauthorized")
 
     with Session(engine) as session:
-        # Handle Guest Logs
-        if source == "guest":
-            statement = select(InferenceLog)
-            if risk != "all":
-                statement = statement.where(InferenceLog.risk_label == risk)
-            
-            all_guest_logs = session.exec(statement.order_by(InferenceLog.timestamp.desc())).all()
-            total_count = len(all_guest_logs)
-            
-            # Compute stats
-            avg_c = sum([l.total_clicks or 0 for l in all_guest_logs]) / total_count if total_count > 0 else 0
-            avg_s = sum([l.avg_score or 0 for l in all_guest_logs]) / total_count if total_count > 0 else 0
-            
-            risk_dist = [0, 0, 0, 0]
-            for l in all_guest_logs:
-                if l.risk_level is not None and 0 <= l.risk_level <= 3:
-                    risk_dist[l.risk_level] += 1
-                    
-            # Top at risk (level 2 and 3)
-            urgent_logs = [l for l in all_guest_logs if l.risk_level and l.risk_level >= 2]
-            top_urgent = sorted(urgent_logs, key=lambda x: getattr(x, 'avg_score') or 0)[:5]
-            
-            guest_list = [{
-                "id": f"GUEST_{l.id}",
-                "score": round(l.avg_score or 0, 2),
-                "clicks": l.total_clicks or 0,
-                "risk": l.risk_label or "Unknown",
-                "risk_level": l.risk_level or 0,
-                "code_module": "Guest",
-                "code_presentation": l.timestamp
-            } for l in all_guest_logs[(page-1)*limit : page*limit]]
-            
-            top_at_risk = [{
-                "id_student": f"GUEST_{l.id}",
-                "avg_score": round(l.avg_score or 0, 2),
-                "code_module": "Guest",
-                "code_presentation": l.timestamp
-            } for l in top_urgent]
-            
-            return {
-                "summary": {"total_students": total_count, "avg_clicks": round(avg_c, 1), "avg_score": round(avg_s, 2)},
-                "risk_distribution": risk_dist,
-                "top_at_risk": top_at_risk,
-                "all_students": guest_list,
-                "pagination": {"page": page, "limit": limit, "total_records": total_count, "total_pages": (total_count + limit - 1) // limit}
-            }
-
         # Handle Official Students
         stats_data = admin_service.get_dashboard_stats(module, semester, risk)
         
@@ -122,19 +75,12 @@ async def list_users(request: Request):
             # Try to get latest risk if external/student
             latest_risk = "N/A"
             if u.role == "student":
-                # Check inference logs
-                log = session.exec(
-                    select(InferenceLog).where(InferenceLog.user_id == u.id).order_by(InferenceLog.timestamp.desc())
-                ).first()
-                if log:
-                    latest_risk = log.risk_label
-                else:
-                    # Check official data
-                    try:
-                        sid = int(u.username)
-                        official = session.exec(select(StudentRisk).where(StudentRisk.id_student == sid)).first()
-                        if official: latest_risk = official.risk_label
-                    except: pass
+                # Check official data
+                try:
+                    sid = int(u.username)
+                    official = session.exec(select(StudentRisk).where(StudentRisk.id_student == sid)).first()
+                    if official: latest_risk = official.risk_label
+                except: pass
 
             result.append({
                 "id": u.id,
@@ -199,14 +145,9 @@ async def get_user_details(user_id: int, request: Request):
         if not db_user:
             raise HTTPException(status_code=404, detail="User not found")
         
-        # Get history
-        logs = session.exec(
-            select(InferenceLog).where(InferenceLog.user_id == user_id).order_by(InferenceLog.timestamp.desc())
-        ).all()
-        
         return {
             "user": db_user,
-            "history": logs
+            "history": []
         }
 
 @router.post("/users")

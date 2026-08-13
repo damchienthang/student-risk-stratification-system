@@ -200,7 +200,7 @@
       <form action="/api/v1/auth/login" method="POST">
         <div class="auth-form-group">
           <label class="auth-label">TÊN ĐĂNG NHẬP / MÃ SV</label>
-          <input type="text" name="username" class="auth-input" placeholder="VD: 11391 hoặc khach_01" required>
+          <input type="text" name="username" class="auth-input" placeholder="VD: 11391" required>
         </div>
 
         <div class="auth-form-group" style="margin-bottom: 30px;">
@@ -216,49 +216,6 @@
         <button type="submit" class="auth-btn auth-btn-primary">Đăng nhập</button>
       </form>
 
-      <!-- Register Link -->
-      <div class="auth-footer-text">
-        Sinh viên / Khách chưa có tài khoản? <br>
-        <a href="javascript:void(0)" onclick="switchView('view-register')" class="auth-link"
-          style="display: inline-block; margin-top: 10px; font-size: 1rem;">Đăng ký ngay</a>
-      </div>
-    </div>
-
-    <!-- REGISTER VIEW -->
-    <div id="view-register" class="hidden" style="padding: 45px 40px;">
-      <div class="auth-header">
-        <h3 style="color: var(--secondary);">ĐĂNG KÝ TÀI KHOẢN</h3>
-        <p>Dành cho tài khoản trải nghiệm</p>
-      </div>
-
-      <form action="/api/v1/auth/register" method="POST">
-        <div style="display: flex; gap: 15px;">
-          <div class="auth-form-group" style="flex: 1;">
-            <label class="auth-label">Tên đăng nhập</label>
-            <input type="text" name="username" class="auth-input" placeholder="VD: khach_01" required>
-          </div>
-          <div class="auth-form-group" style="flex: 1;">
-            <label class="auth-label">Họ và tên</label>
-            <input type="text" name="full_name" class="auth-input" placeholder="Nguyễn Văn A" required>
-          </div>
-        </div>
-
-        <div class="auth-form-group">
-          <label class="auth-label">Email</label>
-          <input type="email" name="email" class="auth-input" placeholder="example@email.com" required>
-        </div>
-
-        <div class="auth-form-group" style="margin-bottom: 30px;">
-          <label class="auth-label">Mật khẩu</label>
-          <input type="password" name="password" class="auth-input" placeholder="Tạo mật khẩu an toàn" required>
-        </div>
-
-        <button type="submit" class="auth-btn auth-btn-secondary" style="margin-bottom: 20px;">Tạo Tài Khoản</button>
-        <div class="auth-footer-text">
-          Đã có tài khoản? <a href="javascript:void(0)" onclick="switchView('view-login')" class="auth-link"
-            style="font-size: 1rem;">Đăng nhập</a>
-        </div>
-      </form>
     </div>
 
     <!-- FORGOT PASSWORD VIEW -->
@@ -292,7 +249,7 @@
 <script>
   // UI logic cho việc chuyển Form (Đăng nhập, Đăng ký, Quên MK)
   function switchView(viewId) {
-    const views = ['view-login', 'view-register', 'view-forgot'];
+    const views = ['view-login', 'view-forgot'];
     views.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.classList.add('hidden');

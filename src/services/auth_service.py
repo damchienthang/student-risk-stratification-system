@@ -5,7 +5,7 @@ from sqlmodel import Session, select, func
 from src.core.database import engine, create_db_and_tables
 from src.core.security import hash_password, UserRole
 from src.core.config import settings
-from src.models.student_risk import StudentRisk, InferenceLog
+from src.models.student_risk import StudentRisk
 from src.models.user import User
 from src.services.predictor import FEATURE_DEFAULTS
 
@@ -85,21 +85,5 @@ class AuthService:
                         session.commit()
                     return {"role": UserRole.STUDENT, "username": username, "is_external": False}
             return None
-
-    def register_user(self, username: str, email: str, password: str, full_name: str):
-        with Session(self.engine) as session:
-            if session.exec(select(User).where((User.username == username) | (User.email == email))).first():
-                return None
-            new_user = User(
-                username=username,
-                email=email,
-                password_hash=hash_password(password),
-                role=UserRole.GUEST,
-                is_external=True,
-                full_name=full_name
-            )
-            session.add(new_user)
-            session.commit()
-            return new_user
 
 auth_service = AuthService()

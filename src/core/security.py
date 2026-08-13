@@ -6,7 +6,6 @@ from typing import Optional, Dict, Any
 class UserRole(str, Enum):
     ADMIN = "lecturer"
     STUDENT = "student"
-    GUEST = "external"
 
 def hash_password(password: str) -> str:
     """Standard SHA256 hashing for passwords."""
@@ -33,6 +32,3 @@ def is_admin(user: Optional[Dict[str, Any]]) -> bool:
 def is_student(user: Optional[Dict[str, Any]]) -> bool:
     return user is not None and user.get("role") == UserRole.STUDENT
 
-def is_guest(user: Optional[Dict[str, Any]]) -> bool:
-    """Check if the user is an external/guest user with an account."""
-    return user is not None and user.get("role") == UserRole.GUEST

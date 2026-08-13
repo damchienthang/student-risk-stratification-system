@@ -26,7 +26,7 @@ class Settings:
     
     # Database
     DB_DIR = BASE_DIR / "data" / "processed"
-    DATABASE_URL: str = f"sqlite:///{DB_DIR}/database.db"
+    DATABASE_URL: str = os.getenv("DATABASE_URL") or f"sqlite:///{DB_DIR}/database.db"
     
     # Data Paths
     PROCESSED_DATA_PATH = DB_DIR / "student_features_labeled.csv"

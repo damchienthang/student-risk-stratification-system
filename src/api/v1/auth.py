@@ -74,17 +74,6 @@ async def logout():
     response.delete_cookie("session_v2", path="/")
     return response
 
-@router.post("/register")
-async def register(
-    username: str = Form(...),
-    email: str = Form(...),
-    password: str = Form(...),
-    full_name: str = Form(...)
-):
-    user = auth_service.register_user(username, email, password, full_name)
-    if user:
-        return RedirectResponse(url="/?msg=reg_success", status_code=303)
-    return RedirectResponse(url="/?error=reg_failed", status_code=303)
 
 @router.post("/forgot-password")
 async def forgot_password(

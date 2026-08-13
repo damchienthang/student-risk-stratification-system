@@ -318,204 +318,45 @@
     <p class="hero-desc">Ứng dụng trí tuệ nhân tạo chuyên sâu giúp nhận diện sớm các sinh viên có nguy cơ bỏ học hoặc
       trượt môn, đồng thời đề xuất giải pháp can thiệp kịp thời.</p>
 
-    {% if user and user.role != UserRole.GUEST %}
+    {% if user %}
     <!-- Student Search (Official) -->
     <div class="search-container" style="max-width:780px;margin:0 auto 16px;position:relative;padding:0 20px;">
       <h3
         style="text-align:center;margin-bottom:12px;color:var(--secondary);font-size:1.0rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;">
         Tra cứu rủi ro học tập chính thức</h3>
       <div class="search-box"
-        style="display:flex;background:white;padding:4px;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:all 0.3s;overflow:hidden;">
+        style="display:flex;background:white;padding:4px;border-radius:8px;box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:all 0.3s;overflow:hidden;">
         <input type="text" id="studentSearchInput" class="search-input"
           placeholder="Nhập mã sinh viên để truy vấn thông tin rủi ro (VD: 11391)..."
-          style="flex:1;border:none;padding:10px 16px;font-size:1.02rem;outline:none;font-weight:600;background:transparent;{{ 'color:var(--text-dim);cursor:not-allowed;background:#f9f9f9;' if user.role == UserRole.STUDENT else '' }}"
-          value="{{ user.username if user.role == UserRole.STUDENT else '' }}" {{ 'disabled' if
-          user.role==UserRole.STUDENT else '' }}>
+          style="flex:1;border:none;padding:10px 16px;font-size:1.02rem;outline:none;font-weight:600;background:transparent;{{ 'color:var(--text-dim);cursor:not-allowed;background:#f9f9f9;' if user.role == 'student' else '' }}"
+          value="{{ user.username if user.role == 'student' else '' }}" {{ 'disabled' if
+          user.role == 'student' else '' }}>
 
-        {% if user.role == UserRole.STUDENT %}
+        {% if user.role == 'student' %}
         <a href="/student" class="search-btn"
-          style="background:var(--primary);color:white;border:none;padding:10px 24px;border-radius:var(--radius-sm);font-weight:800;cursor:pointer;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;justify-content:center;">XEM
+          style="background:var(--primary);color:white;border:none;padding:10px 24px;border-radius:8px;font-weight:800;cursor:pointer;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;justify-content:center;">XEM
           KẾT QUẢ</a>
-        {% elif user.role == UserRole.ADMIN %}
+        {% elif user.role == 'lecturer' %}
         <button class="search-btn" onclick="searchStudent()"
-          style="background:var(--primary);color:white;border:none;padding:0 24px;border-radius:var(--radius-sm);font-weight:800;cursor:pointer;text-transform:uppercase;">Tra
+          style="background:var(--primary);color:white;border:none;padding:0 24px;border-radius:8px;font-weight:800;cursor:pointer;text-transform:uppercase;">Tra
           cứu</button>
         {% endif %}
       </div>
-      {% if user.role == UserRole.STUDENT %}
+      {% if user.role == 'student' %}
       <p style="margin-top:8px;font-size:0.83rem;color:var(--text-dim);font-weight:500;">Bạn đang đăng nhập với tư cách
         sinh viên. Kết quả rủi ro học tập của bạn được hiển thị bên dưới.</p>
       {% endif %}
     </div>
-
-    <div style="text-align:center;margin:20px 0;">
-      <span style="background:var(--border);height:1px;width:100px;display:inline-block;vertical-align:middle;"></span>
-      <span style="margin:0 18px;color:var(--text-dim);font-weight:800;font-size:0.82rem;letter-spacing:1px;">HOẶC THỬ
-        NGHIỆM</span>
-      <span style="background:var(--border);height:1px;width:100px;display:inline-block;vertical-align:middle;"></span>
-    </div>
-    {% endif %}
-
-    <!-- Guest Trial -->
-    {% if not user or user.role != UserRole.ADMIN %}
-    <div id="guest-trial"
-      style="max-width:1100px;margin:0 auto;background:white;padding:48px 48px;border-radius:16px;border:1px solid #eef1f6;box-shadow:0 4px 24px rgba(0,0,0,0.06);position:relative;z-index:10;">
-      <h3
-        style="text-align:center;margin-bottom:10px;color:#b20000;font-size:1.75rem;font-weight:800;letter-spacing:-0.5px;">
-        Thử nghiệm dự báo rủi ro</h3>
-      <p style="text-align:center;color:#2a2a2a;margin-bottom:24px;font-size:0.97rem;font-weight:500;">Hoàn thành
-        các thông số dưới đây để AI tiến hành phân tích và phân tầng rủi ro.</p>
-
-
-      <!-- Feature importance box — no emoji -->
-      <div
-        style="background:#fafbfd;border-left:3px solid var(--primary);border-radius:10px;padding:16px 20px;margin-bottom:28px;text-align:left;">
-        <h4
-          style="font-size:0.82rem;font-weight:700;color:#1a1a1a;margin-top:0;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px;line-height:1.3;">
-          Chỉ số ảnh hưởng lớn nhất đến dự đoán
-        </h4>
-        <p style="font-size:0.84rem;color:#59616b;line-height:1.7;margin-bottom:14px;font-weight:400;">
-          Dựa trên phân tích trọng số mô hình <strong style="color:#4a5568;">LightGBM</strong>, kết quả rủi ro chịu ảnh
-          hưởng sâu sắc nhất bởi
-          4 nhóm chỉ số sau:
-        </p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:14px;">
-          <div style="font-size:0.82rem;line-height:1.65;">
-            <strong style="color:#4a5568;">Tương tác trực tuyến:</strong>
-            <span style="color:#4d545c;font-weight:400;"> Tần suất click học liệu. Lượng click <strong
-                style="color:#4a5568;">dưới
-                400</strong> đẩy nguy cơ vào nhóm Cao/Nguy cấp lên gấp 3 lần.</span>
-          </div>
-          <div style="font-size:0.82rem;line-height:1.65;">
-            <strong style="color:#4a5568;">Điểm trung bình học phần:</strong>
-            <span style="color:#4d545;font-weight:400;"> Kết quả kiểm tra tích lũy. Điểm <strong
-                style="color:#4a5568;">dưới
-                55/100</strong> là ngưỡng cảnh báo cực kỳ lớn.</span>
-          </div>
-          <div style="font-size:0.82rem;line-height:1.65;">
-            <strong style="color:#4a5568;">Số lần học lại học phần:</strong>
-            <span style="color:#4d545;font-weight:400;"> Lịch sử trượt môn. Từng trượt <strong style="color:#4a5568;">1
-                lần trở
-                lên</strong> khiến tỷ lệ rủi ro cao hơn 45%.</span>
-          </div>
-          <div style="font-size:0.82rem;line-height:1.65;">
-            <strong style="color:#4a5568;">Kỷ luật nộp bài tập:</strong>
-            <span style="color:#4d545;font-weight:400;"> Số ngày trễ trung bình <strong style="color:#4a5568;">trên 3
-                ngày</strong>
-              trực tiếp đẩy sinh viên vào ranh giới rủi ro.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Form -->
-      <form id="guestForm" onsubmit="event.preventDefault();"
-        style="background:#f7f9fc;border-radius:12px;padding:36px 40px;margin-bottom:28px;border:1.5px solid #eef1f6;">
-        <h4
-          style="font-size:0.88rem;color:#c10323;text-transform:uppercase;margin-bottom:20px;border-bottom:1.5px solid #eef1f6;padding-bottom:12px;font-weight:700;display:flex;align-items:center;gap:8px;letter-spacing:0.8px;">
-          <span style="width:3px;height:14px;background:var(--primary);display:inline-block;border-radius:2px;"></span>
-          THÔNG TIN HÀNH VI HỌC TẬP
-        </h4>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;text-align:left;">
-          <!-- CỘT 1 -->
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <h5
-              style="color:#2d3743;font-size:0.76rem;font-weight:700;border-bottom:1px solid #e8edf3;padding-bottom:8px;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.8px;">
-              I. NĂNG LỰC &amp; NỀN TẢNG</h5>
-            <div class="form-group">
-              <label>ĐIỂM TRUNG BÌNH HIỆN TẠI (0–100)</label>
-              <input type="number" name="avg_score" class="form-control" value="70" min="0" max="100">
-              <small style="color:var(--text-dim);font-size:0.73rem;margin-top:3px;display:block;">Đánh giá học lực tổng
-                quát.</small>
-            </div>
-            <div class="form-group">
-              <label>ĐIỂM BÀI THI THẤP NHẤT</label>
-              <input type="number" name="min_score" class="form-control" value="50" min="0" max="100">
-              <small style="color:var(--text-dim);font-size:0.73rem;margin-top:3px;display:block;">Phát hiện lỗ hổng
-                kiến thức nghiêm trọng.</small>
-            </div>
-            <div class="form-group">
-              <label>PHONG ĐỘ HỌC TẬP (BIẾN ĐỘNG ĐIỂM)</label>
-              <select name="std_score_eval" class="form-control">
-                <option value="5.0">Rất ổn định (Duy trì đều đặn)</option>
-                <option value="12.0" selected>Trung bình (Có biến động nhẹ)</option>
-                <option value="15.0">Thất thường (Lúc cao lúc thấp)</option>
-                <option value="25.0">Sa sút trầm trọng (Biến động lớn)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>TRÌNH ĐỘ HỌC VẤN ĐẦU VÀO</label>
-              <select name="education_num" class="form-control">
-                <option value="0">Chưa tốt nghiệp THPT</option>
-                <option value="1">Tốt nghiệp THCS / Trung cấp nghề</option>
-                <option value="2" selected>Tốt nghiệp THPT (Hệ phổ thông)</option>
-                <option value="3">Đang học Đại học / Cử nhân Cao đẳng</option>
-                <option value="4">Sau đại học (Thạc sĩ, Tiến sĩ)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>SỐ LẦN ĐÃ HỌC LẠI MÔN NÀY</label>
-              <input type="number" name="num_of_prev_attempts" class="form-control" value="0" min="0">
-            </div>
-          </div>
-
-          <!-- CỘT 2 -->
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <h5
-              style="color:#2d3743;font-size:0.76rem;font-weight:700;border-bottom:1px solid #e8edf3;padding-bottom:8px;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.8px;">
-              II. THÁI ĐỘ &amp; ÁP LỰC</h5>
-            <div class="form-group">
-              <label style="display:flex;justify-content:space-between;">
-                <span>TƯƠNG TÁC HỆ THỐNG LMS (CLICKS)</span>
-              </label>
-              <input type="range" name="total_clicks" value="600" min="50" max="3500" step="10">
-              <div
-                style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--text-dim);margin-top:3px;font-weight:700;">
-                <span>Rất ít</span><span>Trung bình</span><span>Rất tích cực</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>SỐ BÀI TẬP ĐÃ NỘP TRỄ HẠN</label>
-              <input type="number" name="n_late" class="form-control" value="0" min="0"
-                oninput="document.getElementById('hidden_avg_delay').value = this.value > 0 ? this.value * 2 : 0;">
-            </div>
-            <div class="form-group" style="display:flex;gap:13px;">
-              <div style="flex:1;">
-                <label>SỐ BÀI ĐÃ NỘP</label>
-                <input type="number" name="n_submitted" class="form-control" value="4" min="0">
-              </div>
-              <div style="flex:1;">
-                <label>TỶ LỆ CHUYÊN CẦN (%)</label>
-                <input type="number" name="attendance_rate" class="form-control" value="80" min="0" max="100">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>THỜI ĐIỂM ĐĂNG KÝ MÔN</label>
-              <select name="reg_days_before" class="form-control">
-                <option value="-90" selected>Đăng ký sớm (Chủ động chuẩn bị)</option>
-                <option value="-10">Đăng ký sát ngày (Nước đến chân...)</option>
-                <option value="10">Đăng ký bổ sung (Trễ hạn)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hidden -->
-        <div style="display:none;">
-          <input type="hidden" name="gender_num" value="0">
-          <input type="hidden" name="age_num" value="0">
-          <input type="hidden" name="imd_band_num" value="5">
-          <input type="hidden" name="disability_num" value="0">
-          <input type="hidden" name="avg_submit_delay" id="hidden_avg_delay" value="0">
-        </div>
-
-        <div style="margin-top:28px;text-align:center;">
-          <button type="button" id="submitPredictionBtn" class="btn-ripple" onclick="handlePredictionClick(event)"
-            style="display:inline-flex;align-items:center;gap:10px;">
-            <span class="btn-spinner"></span>
-            <span class="btn-text">Dự báo kết quả</span>
-          </button>
-        </div>
-      </form>
+    {% else %}
+    <!-- Prompt to Log In -->
+    <div style="max-width:600px; margin:0 auto; padding:0 20px;">
+      <p style="color:var(--text-dim); font-size:0.95rem; margin-bottom:20px; font-weight:500;">
+        Vui lòng đăng nhập bằng tài khoản Cố vấn (Lecturer) hoặc Sinh viên (Student) để sử dụng chức năng tra cứu và quản lý rủi ro học tập.
+      </p>
+      <button onclick="toggleLoginModal()" class="search-btn" 
+        style="background:var(--primary); color:white; border:none; padding:12px 32px; border-radius:8px; font-weight:800; cursor:pointer; text-transform:uppercase; font-size:0.9rem; letter-spacing:0.5px;">
+        Đăng nhập hệ thống
+      </button>
     </div>
     {% endif %}
   </div>

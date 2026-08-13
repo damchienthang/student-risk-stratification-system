@@ -1,5 +1,4 @@
 from typing import ClassVar, Optional
-from datetime import datetime
 from sqlmodel import Field, SQLModel
 
 class StudentRisk(SQLModel, table=True):
@@ -36,33 +35,3 @@ class StudentRisk(SQLModel, table=True):
     risk_level: int
     risk_label: str
     final_result: str
-
-class InferenceLog(SQLModel, table=True):
-    __tablename__: ClassVar[str] = "inference_logs"
-
-    id: Optional[int] = Field(default=None, primary_key=True)
-    timestamp: str = Field(default_factory=lambda: datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    user_id: Optional[int] = Field(default=None, index=True) # Linked user if logged in
-
-    # Input features
-    code_module: str = Field(default="Guest")
-    code_presentation: str = Field(default="Guest")
-    gender_num: int
-    imd_band_num: int
-    education_num: int
-    age_num: int
-    disability_num: int
-    num_of_prev_attempts: int
-    studied_credits: int
-    total_clicks: int
-    avg_score: float
-    min_score: float = Field(default=0.0)
-    n_submitted: int = Field(default=0)
-    n_late: int = Field(default=0)
-    avg_submit_delay: float = Field(default=0.0)
-    reg_days_before: int = Field(default=0)
-
-    # Result
-    risk_level: int
-    risk_label: str
-    confidence: float
