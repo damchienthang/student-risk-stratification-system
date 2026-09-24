@@ -1,6 +1,13 @@
-*.csv
+# Large OULAD raw files
+data/raw/*.csv
 studentVle.csv
-data/raw/
+data/processed/student_features_labeled.csv
+
+# Allow UCI benchmark datasets
+!data/raw/uci_dropout/
+!data/raw/uci_dropout/**
+!data/raw/uci_student_performance/
+!data/raw/uci_student_performance/**
 **/__pycache__
 # Model files (too large for GitHub)
 *.pkl
